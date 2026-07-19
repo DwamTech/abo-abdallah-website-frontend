@@ -1,0 +1,237 @@
+.ticker {
+  position: relative;
+  z-index: 60;
+  height: 43px;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.82);
+  border-bottom: 1px solid rgba(221, 194, 142, 0.13);
+  background: #241813;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.inner {
+  display: grid;
+  width: min(100%, 1440px);
+  height: 100%;
+  margin-inline: auto;
+  grid-template-columns: auto minmax(0, 1fr) 44px;
+  align-items: stretch;
+}
+
+.badge {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-width: 165px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding-inline: 22px;
+  color: var(--brown-950);
+  background: var(--gold-300);
+  box-shadow: -14px 0 26px rgba(0, 0, 0, 0.18);
+  font-size: 10px;
+}
+
+.badge::after {
+  position: absolute;
+  top: 0;
+  left: -12px;
+  width: 24px;
+  height: 100%;
+  content: "";
+  background: var(--gold-300);
+  transform: skewX(-17deg);
+  transform-origin: bottom;
+}
+
+.liveDot {
+  position: relative;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brown-800);
+}
+
+.liveDot::after {
+  position: absolute;
+  inset: -4px;
+  content: "";
+  border: 1px solid rgba(57, 39, 31, 0.45);
+  border-radius: inherit;
+  animation: pulse 1.8s ease-out infinite;
+}
+
+.viewport {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 38px,
+    #000 calc(100% - 38px),
+    transparent 100%
+  );
+}
+
+.track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: max-content;
+  height: 100%;
+  will-change: transform;
+  animation: tickerMove 42s linear infinite;
+}
+
+.viewport:hover .track,
+.track.paused {
+  animation-play-state: paused;
+}
+
+.group,
+.itemWrap,
+.item {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+}
+
+.group {
+  height: 100%;
+}
+
+.itemWrap {
+  height: 100%;
+}
+
+.item {
+  height: 100%;
+  gap: 9px;
+  padding-inline: 26px;
+  white-space: nowrap;
+  transition: color 160ms ease;
+}
+
+.item:hover {
+  color: var(--gold-300);
+}
+
+.item svg {
+  color: var(--gold-300);
+  transition: transform 160ms ease;
+}
+
+.item:hover svg {
+  transform: translateX(-3px);
+}
+
+.category {
+  color: var(--gold-300);
+  font-size: 8px;
+}
+
+.title {
+  font-size: 10px;
+}
+
+.separator {
+  width: 4px;
+  height: 4px;
+  border: 1px solid rgba(221, 194, 142, 0.62);
+  transform: rotate(45deg);
+}
+
+.control {
+  display: grid;
+  width: 44px;
+  height: 100%;
+  padding: 0;
+  place-items: center;
+  color: var(--gold-300);
+  border: 0;
+  border-right: 1px solid rgba(221, 194, 142, 0.15);
+  background: rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+  transition: color 160ms ease, background 160ms ease;
+}
+
+.control:hover {
+  color: var(--cream-50);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@keyframes tickerMove {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.8;
+    transform: scale(0.7);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+@media (max-width: 620px) {
+  .ticker {
+    height: 40px;
+  }
+
+  .inner {
+    grid-template-columns: auto minmax(0, 1fr) 38px;
+  }
+
+  .badge {
+    min-width: auto;
+    padding-inline: 13px;
+  }
+
+  .badge strong,
+  .badge svg {
+    display: none;
+  }
+
+  .liveDot {
+    width: 7px;
+    height: 7px;
+  }
+
+  .item {
+    padding-inline: 18px;
+  }
+
+  .category {
+    display: none;
+  }
+
+  .title {
+    font-size: 9px;
+  }
+
+  .control {
+    width: 38px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+
+  .liveDot::after {
+    animation: none;
+  }
+}

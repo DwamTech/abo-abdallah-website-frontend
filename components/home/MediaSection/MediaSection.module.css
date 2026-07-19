@@ -1,0 +1,268 @@
+.section {
+  position: relative;
+  padding: 120px 0;
+  overflow: hidden;
+  color: var(--cream-50);
+  background: var(--brown-950);
+}
+
+.pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  background-image:
+    linear-gradient(30deg, transparent 48%, var(--gold-300) 49%, var(--gold-300) 51%, transparent 52%),
+    linear-gradient(150deg, transparent 48%, var(--gold-300) 49%, var(--gold-300) 51%, transparent 52%);
+  background-position: 0 0, 19px 33px;
+  background-size: 38px 66px;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 100%);
+}
+
+.section::before {
+  position: absolute;
+  top: -250px;
+  right: -250px;
+  width: 650px;
+  height: 650px;
+  content: "";
+  border: 1px solid rgba(221, 194, 142, 0.12);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 75px rgba(221, 194, 142, 0.02),
+    0 0 0 150px rgba(221, 194, 142, 0.015);
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: min(calc(100% - 48px), var(--container));
+  margin-inline: auto;
+  grid-template-columns: minmax(0, 0.9fr) minmax(380px, 1.1fr);
+  align-items: center;
+  gap: clamp(60px, 8vw, 115px);
+}
+
+.kicker {
+  color: var(--gold-300);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+}
+
+.copy h2 {
+  margin: 8px 0 17px;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: clamp(31px, 3.7vw, 47px);
+  font-weight: 580;
+  line-height: 1.5;
+  letter-spacing: -0.03em;
+}
+
+.copy > p {
+  max-width: 580px;
+  margin-bottom: 38px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 18px;
+  line-height: 1.9;
+}
+
+.player {
+  display: grid;
+  min-height: 115px;
+  padding: 20px;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid rgba(221, 194, 142, 0.23);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.player > button {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  place-items: center;
+  color: var(--brown-950);
+  border: 0;
+  border-radius: 50%;
+  background: var(--gold-300);
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.player > button:hover {
+  background: #ead5aa;
+  transform: scale(1.05);
+}
+
+.playerInfo {
+  display: grid;
+}
+
+.playerInfo > span {
+  color: rgba(255, 255, 255, 0.42);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 8px;
+}
+
+.playerInfo strong {
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.progress {
+  height: 2px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.progress i {
+  display: block;
+  width: 18%;
+  height: 100%;
+  background: var(--gold-300);
+}
+
+.progressPlaying {
+  animation: playProgress 7s linear infinite;
+}
+
+.time {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: rgba(255, 255, 255, 0.44);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 8px;
+}
+
+.playlists {
+  display: grid;
+  border-top: 1px solid rgba(221, 194, 142, 0.18);
+}
+
+.playlists > button {
+  position: relative;
+  display: grid;
+  min-height: 135px;
+  padding: 22px 20px;
+  grid-template-columns: 30px 52px 1fr;
+  align-items: center;
+  gap: 16px;
+  color: inherit;
+  border: 0;
+  border-bottom: 1px solid rgba(221, 194, 142, 0.18);
+  background: transparent;
+  text-align: right;
+  cursor: pointer;
+  transition: background 180ms ease, padding 180ms ease;
+}
+
+.playlists > button:hover,
+.playlists .selected {
+  padding-inline: 28px 20px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.playlists .selected::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3px;
+  height: 100%;
+  content: "";
+  background: var(--gold-300);
+}
+
+.index {
+  color: rgba(255, 255, 255, 0.32);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 9px;
+}
+
+.listIcon {
+  display: grid;
+  width: 50px;
+  height: 50px;
+  place-items: center;
+  color: var(--gold-300);
+  border: 1px solid rgba(221, 194, 142, 0.25);
+  border-radius: 50%;
+}
+
+.listCopy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.listCopy small {
+  margin-bottom: 2px;
+  color: var(--gold-300);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 8px;
+}
+
+.listCopy strong {
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 14px;
+  font-weight: 550;
+}
+
+.listCopy > span {
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 14px;
+}
+
+@keyframes playProgress {
+  from {
+    width: 18%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .section {
+    padding-block: 82px;
+  }
+
+  .container {
+    width: min(calc(100% - 32px), var(--container));
+    gap: 55px;
+  }
+
+  .player {
+    grid-template-columns: auto 1fr;
+  }
+
+  .time {
+    display: none;
+  }
+
+  .playlists > button {
+    min-height: 128px;
+    padding-inline: 8px;
+    grid-template-columns: 28px 42px 1fr;
+    gap: 10px;
+  }
+
+  .playlists > button:hover,
+  .playlists .selected {
+    padding-inline: 13px 8px;
+  }
+
+  .listIcon {
+    width: 42px;
+    height: 42px;
+  }
+}

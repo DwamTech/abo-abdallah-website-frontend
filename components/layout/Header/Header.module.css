@@ -1,0 +1,740 @@
+.header {
+  position: sticky;
+  z-index: 50;
+  top: 0;
+  border-bottom: 1px solid rgba(103, 73, 58, 0.12);
+  background: rgba(253, 251, 246, 0.93);
+  box-shadow: 0 8px 30px rgba(57, 39, 31, 0.04);
+  backdrop-filter: blur(18px) saturate(130%);
+  transition:
+    background 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.scrolled {
+  background: rgba(253, 251, 246, 0.98);
+  box-shadow: 0 12px 38px rgba(57, 39, 31, 0.1);
+}
+
+.navShell {
+  display: grid;
+  width: min(calc(100% - 48px), var(--container));
+  min-height: 92px;
+  margin-inline: auto;
+  grid-template-columns: minmax(215px, 0.75fr) auto minmax(215px, 0.75fr);
+  align-items: center;
+  gap: 28px;
+  transition: min-height 220ms ease;
+}
+
+.scrolled .navShell {
+  min-height: 76px;
+}
+
+.brand {
+  display: flex;
+  width: clamp(215px, 21vw, 275px);
+  height: 68px;
+  align-items: center;
+  justify-self: start;
+}
+
+.brandLogo {
+  width: 100%;
+  height: auto;
+  max-height: 75px;
+  object-fit: contain;
+  object-position: right center;
+  filter: drop-shadow(0 2px 8px rgba(103, 73, 58, 0.15));
+  transition: transform 220ms ease;
+}
+
+.brand:hover .brandLogo {
+  transform: translateY(-1px);
+}
+
+.desktopNav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 5px;
+  color: #64574d;
+  border: 1px solid rgba(166, 122, 53, 0.18);
+  border-radius: 999px;
+  background: rgba(248, 243, 233, 0.72);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+}
+
+.desktopNav a {
+  position: relative;
+  display: flex;
+  min-height: 39px;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 15px;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition:
+    color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.desktopNav a:hover {
+  color: var(--brown-900);
+  background: rgba(255, 255, 255, 0.88);
+  transform: translateY(-1px);
+}
+
+.desktopNav .activeLink {
+  color: var(--cream-50);
+  background: var(--brown-800);
+  box-shadow: 0 7px 18px rgba(75, 51, 40, 0.16);
+}
+
+.desktopNav .activeLink::before {
+  width: 4px;
+  height: 4px;
+  margin-left: 7px;
+  content: "";
+  border-radius: 50%;
+  background: var(--gold-300);
+  box-shadow: 0 0 0 3px rgba(221, 194, 142, 0.12);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  justify-self: end;
+  gap: 9px;
+}
+
+.searchButton,
+.menuButton {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  place-items: center;
+  color: var(--brown-800);
+  border: 1px solid var(--cream-300);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.62);
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.searchButton:hover,
+.menuButton:hover {
+  color: var(--cream-50);
+  border-color: var(--brown-800);
+  background: var(--brown-800);
+  transform: translateY(-2px);
+}
+
+.actionDivider {
+  width: 1px;
+  height: 23px;
+  margin-inline: 2px;
+  background: var(--cream-300);
+}
+
+.libraryButton {
+  display: inline-flex;
+  min-height: 45px;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 15px;
+  color: var(--brown-950);
+  border: 1px solid #d0ad69;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #ead4a7, var(--gold-300));
+  box-shadow: 0 8px 24px rgba(166, 122, 53, 0.14);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 10px;
+  transition:
+    box-shadow 180ms ease,
+    transform 180ms ease,
+    background 180ms ease;
+}
+
+.libraryButton svg:last-child {
+  margin-right: 4px;
+  transition: transform 180ms ease;
+}
+
+.libraryButton:hover {
+  background: linear-gradient(135deg, #efdcb8, #e1c48e);
+  box-shadow: 0 11px 28px rgba(166, 122, 53, 0.2);
+  transform: translateY(-2px);
+}
+
+.libraryButton:hover svg:last-child {
+  transform: translate(-3px, -3px);
+}
+
+.menuButton {
+  display: none;
+}
+
+.drawerLayer {
+  position: fixed;
+  z-index: 90;
+  inset: 0;
+  visibility: hidden;
+  background: rgba(45, 30, 24, 0);
+  backdrop-filter: blur(0);
+  transition:
+    visibility 260ms ease,
+    background 260ms ease,
+    backdrop-filter 260ms ease;
+}
+
+.drawerLayerOpen {
+  visibility: visible;
+  background: rgba(45, 30, 24, 0.67);
+  backdrop-filter: blur(7px);
+}
+
+.drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  width: min(88vw, 390px);
+  height: 100%;
+  flex-direction: column;
+  padding: 24px;
+  overflow-y: auto;
+  border-left: 1px solid rgba(221, 194, 142, 0.35);
+  background:
+    radial-gradient(circle at 100% 0, rgba(191, 150, 80, 0.09), transparent 27%),
+    var(--cream-50);
+  box-shadow: -30px 0 80px rgba(31, 20, 15, 0.22);
+  transform: translateX(105%);
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.drawerLayerOpen .drawer {
+  transform: translateX(0);
+}
+
+.drawerHead {
+  display: flex;
+  min-height: 62px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 19px;
+  border-bottom: 1px solid var(--cream-300);
+}
+
+.drawerLogo {
+  width: 230px;
+  height: auto;
+  max-height: 58px;
+  object-fit: contain;
+  object-position: right center;
+}
+
+.drawerHead button,
+.searchPanelTop button {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  padding: 0;
+  place-items: center;
+  color: var(--brown-800);
+  border: 1px solid var(--cream-300);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    background 180ms ease;
+}
+
+.drawerHead button:hover,
+.searchPanelTop button:hover {
+  color: var(--cream-50);
+  background: var(--brown-800);
+}
+
+.drawerIntro {
+  padding: 28px 5px 22px;
+}
+
+.drawerIntro > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--gold-600);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 9px;
+}
+
+.drawerIntro p {
+  margin: 7px 0 0;
+  color: var(--ink-muted);
+  font-size: 15px;
+}
+
+.mobileNav {
+  display: grid;
+  border-top: 1px solid var(--cream-300);
+}
+
+.mobileNav a {
+  display: grid;
+  min-height: 67px;
+  padding-inline: 4px;
+  grid-template-columns: 30px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--cream-300);
+  transition:
+    color 180ms ease,
+    padding 180ms ease,
+    background 180ms ease;
+}
+
+.mobileNav a:hover {
+  padding-inline: 12px 8px;
+  color: var(--gold-600);
+  background: rgba(248, 243, 233, 0.72);
+}
+
+.navNumber {
+  color: #b4a28c;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 8px;
+}
+
+.mobileNav strong {
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 13px;
+  font-weight: 580;
+}
+
+.mobileNav svg {
+  color: var(--gold-600);
+}
+
+.drawerFooter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 28px;
+  color: var(--ink-muted);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 9px;
+}
+
+.drawerFooter svg {
+  color: var(--gold-600);
+}
+
+.searchOverlay {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  padding: clamp(14px, 3vw, 34px);
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(191, 150, 80, 0.16), transparent 30%),
+    rgba(35, 23, 18, 0.82);
+  backdrop-filter: blur(14px) saturate(115%);
+  animation: overlayIn 220ms ease both;
+}
+
+.searchPanel {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 780px);
+  max-height: calc(100dvh - clamp(28px, 6vw, 68px));
+  padding: clamp(25px, 4vw, 42px);
+  overflow: hidden;
+  border: 1px solid rgba(221, 194, 142, 0.62);
+  border-radius: 20px;
+  background:
+    linear-gradient(145deg, rgba(248, 243, 233, 0.92), transparent 42%),
+    var(--cream-50);
+  box-shadow:
+    0 35px 110px rgba(24, 15, 11, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  animation: panelIn 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.searchPanel::before {
+  position: absolute;
+  top: 0;
+  right: 44px;
+  width: 110px;
+  height: 4px;
+  content: "";
+  border-radius: 0 0 8px 8px;
+  background: linear-gradient(90deg, var(--gold-300), var(--gold-600));
+}
+
+.searchPanel::after {
+  position: absolute;
+  z-index: -1;
+  top: -135px;
+  left: -110px;
+  width: 320px;
+  height: 320px;
+  content: "";
+  border: 1px solid rgba(166, 122, 53, 0.09);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 42px rgba(166, 122, 53, 0.025),
+    0 0 0 84px rgba(166, 122, 53, 0.016);
+}
+
+.searchPanelTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 28px;
+  margin-bottom: clamp(18px, 3vh, 26px);
+}
+
+.searchEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--gold-600);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 9px;
+}
+
+.searchPanel h2 {
+  margin: 7px 0 3px;
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 620;
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+}
+
+.searchPanelTop p {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 15px;
+}
+
+.searchField {
+  display: grid;
+  min-height: 68px;
+  padding-inline: 20px;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 13px;
+  color: var(--gold-600);
+  border: 1px solid #d7c6a9;
+  border-radius: 12px;
+  background: var(--white);
+  box-shadow:
+    0 10px 35px rgba(63, 45, 34, 0.055),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.searchField:focus-within {
+  border-color: var(--gold-500);
+  box-shadow:
+    0 0 0 4px rgba(191, 150, 80, 0.1),
+    0 15px 42px rgba(63, 45, 34, 0.09);
+  transform: translateY(-1px);
+}
+
+.searchField input {
+  width: 100%;
+  color: var(--ink);
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 17px;
+}
+
+.searchField input::placeholder {
+  color: #a1958b;
+}
+
+.searchField kbd {
+  padding: 3px 8px;
+  color: #a09286;
+  border: 1px solid var(--cream-300);
+  border-radius: 5px;
+  background: var(--cream-100);
+  font-family: sans-serif;
+  font-size: 9px;
+  box-shadow: 0 2px 0 var(--cream-300);
+}
+
+.searchResults {
+  display: grid;
+  margin-top: clamp(17px, 2.7vh, 24px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.searchResults > span {
+  grid-column: 1 / -1;
+  margin-bottom: 1px;
+  color: var(--ink-muted);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 9px;
+}
+
+.searchResults a {
+  display: flex;
+  min-height: 82px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 13px 16px;
+  overflow: hidden;
+  border: 1px solid var(--cream-300);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.58);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.searchResults a:hover {
+  border-color: #cfb47f;
+  background: var(--white);
+  box-shadow: 0 10px 28px rgba(63, 45, 34, 0.07);
+  transform: translateY(-2px);
+}
+
+.searchResults a > span {
+  display: flex;
+  flex-direction: column;
+}
+
+.searchResults strong {
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.searchResults small {
+  color: var(--ink-muted);
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.searchResults svg {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  padding: 7px;
+  color: var(--gold-600);
+  border: 1px solid var(--cream-300);
+  border-radius: 50%;
+  background: var(--cream-100);
+  transition:
+    color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.searchResults a:hover svg {
+  color: var(--cream-50);
+  background: var(--brown-800);
+  transform: translate(-2px, -2px);
+}
+
+.emptyResult {
+  grid-column: 1 / -1;
+  margin: 4px 0 0;
+  padding: 18px;
+  color: var(--ink-muted);
+  border: 1px dashed var(--cream-300);
+  border-radius: 10px;
+  background: rgba(248, 243, 233, 0.5);
+  text-align: center;
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+}
+
+@media (max-width: 1120px) {
+  .navShell {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .desktopNav {
+    display: none;
+  }
+
+  .menuButton {
+    display: grid;
+  }
+}
+
+@media (max-width: 680px) {
+  .navShell {
+    width: min(calc(100% - 28px), var(--container));
+    min-height: 76px;
+    gap: 10px;
+  }
+
+  .scrolled .navShell {
+    min-height: 68px;
+  }
+
+  .brand {
+    width: clamp(170px, 50vw, 220px);
+    height: 54px;
+    min-width: 0;
+  }
+
+  .actions {
+    gap: 6px;
+  }
+
+  .searchButton,
+  .menuButton {
+    width: 40px;
+    height: 40px;
+  }
+
+  .actionDivider,
+  .libraryButton {
+    display: none;
+  }
+
+  .searchPanel {
+    max-height: calc(100dvh - 20px);
+    padding: 25px 18px 20px;
+    border-radius: 15px;
+  }
+
+  .searchPanelTop {
+    margin-bottom: 17px;
+  }
+
+  .searchPanelTop p {
+    display: none;
+  }
+
+  .searchPanel h2 {
+    margin-top: 5px;
+    font-size: clamp(20px, 6vw, 25px);
+  }
+
+  .searchField {
+    min-height: 58px;
+    padding-inline: 14px;
+    border-radius: 9px;
+  }
+
+  .searchField kbd {
+    display: none;
+  }
+
+  .searchResults {
+    margin-top: 15px;
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .searchResults a {
+    min-height: 62px;
+    padding: 9px 12px;
+    border-radius: 8px;
+  }
+
+  .searchResults > span {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 390px) {
+  .brand {
+    width: 155px;
+  }
+
+  .navShell {
+    width: calc(100% - 20px);
+  }
+}
+
+@media (max-height: 650px) {
+  .searchPanel {
+    padding-block: 20px 16px;
+  }
+
+  .searchPanelTop {
+    margin-bottom: 12px;
+  }
+
+  .searchPanelTop p,
+  .searchResults small {
+    display: none;
+  }
+
+  .searchPanel h2 {
+    margin-top: 3px;
+    font-size: 21px;
+  }
+
+  .searchField {
+    min-height: 54px;
+  }
+
+  .searchResults {
+    margin-top: 11px;
+  }
+
+  .searchResults a {
+    min-height: 52px;
+    padding-block: 7px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer,
+  .searchOverlay,
+  .searchPanel {
+    animation: none;
+    transition: none;
+  }
+}

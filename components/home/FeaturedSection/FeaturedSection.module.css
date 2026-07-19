@@ -1,0 +1,209 @@
+.section {
+  padding: 115px 0 125px;
+  background: var(--cream-50);
+}
+
+.container {
+  width: min(calc(100% - 48px), var(--container));
+  margin-inline: auto;
+}
+
+.top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 45px;
+}
+
+.kicker {
+  color: var(--gold-600);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+}
+
+.top h2 {
+  margin: 6px 0 0;
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: clamp(29px, 3.3vw, 42px);
+  font-weight: 620;
+  line-height: 1.5;
+  letter-spacing: -0.03em;
+}
+
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--cream-300);
+  background: var(--cream-100);
+}
+
+.tabs button {
+  min-width: 75px;
+  padding: 10px 14px;
+  color: var(--ink-muted);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 10px;
+  transition: color 160ms ease, background 160ms ease;
+}
+
+.tabs button:hover {
+  color: var(--brown-900);
+}
+
+.tabs .activeTab {
+  color: var(--cream-50);
+  background: var(--brown-800);
+}
+
+.materials {
+  display: grid;
+  min-height: 335px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.material {
+  display: flex;
+  min-height: 325px;
+  flex-direction: column;
+  padding: 29px 25px 23px;
+  border: 1px solid var(--cream-300);
+  background: var(--white);
+  box-shadow: 0 8px 30px rgba(63, 45, 34, 0.035);
+  animation: fadeIn 260ms ease both;
+  transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.material:hover {
+  border-color: #cfb888;
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-4px);
+}
+
+.materialTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 23px;
+}
+
+.materialIcon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  color: var(--gold-600);
+  border: 1px solid var(--cream-300);
+  border-radius: 50%;
+  background: var(--cream-100);
+}
+
+.type {
+  color: var(--gold-600);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 10px;
+}
+
+.material h3 {
+  margin: 0 0 11px;
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 17px;
+  font-weight: 620;
+  line-height: 1.7;
+}
+
+.material > p {
+  margin: 0 0 24px;
+  color: var(--ink-muted);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.materialFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--cream-200);
+}
+
+.materialFooter > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #897b6f;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 9px;
+}
+
+.materialFooter a {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: var(--brown-700);
+  border: 1px solid var(--cream-300);
+  border-radius: 50%;
+  transition: color 180ms ease, background 180ms ease;
+}
+
+.materialFooter a:hover {
+  color: var(--cream-50);
+  background: var(--brown-800);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1040px) {
+  .materials {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .top {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .tabs {
+    align-self: stretch;
+    overflow-x: auto;
+  }
+
+  .tabs button {
+    flex: 1 0 auto;
+  }
+}
+
+@media (max-width: 620px) {
+  .section {
+    padding-block: 82px;
+  }
+
+  .container {
+    width: min(calc(100% - 32px), var(--container));
+  }
+
+  .materials {
+    grid-template-columns: 1fr;
+  }
+}

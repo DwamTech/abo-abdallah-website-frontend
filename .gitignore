@@ -1,0 +1,28 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next
+/out
+
+# production
+/build
+
+# local environment files
+.env*
+!.env.example
+
+# logs and diagnostics
+*.log
+desktop-*.png
+mobile-*.png
+npm-debug.log*
+
+# editors and operating systems
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+
+# typescript
+*.tsbuildinfo

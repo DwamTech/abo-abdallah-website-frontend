@@ -1,0 +1,237 @@
+.section {
+  padding: 125px 0;
+  overflow: hidden;
+  background: var(--cream-100);
+}
+
+.container {
+  display: grid;
+  width: min(calc(100% - 48px), var(--container));
+  margin-inline: auto;
+  grid-template-columns: minmax(340px, 0.75fr) minmax(0, 1.25fr);
+  align-items: center;
+  gap: clamp(60px, 9vw, 130px);
+}
+
+.portrait {
+  position: relative;
+  min-height: 530px;
+}
+
+.portrait::before {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  width: calc(100% - 20px);
+  height: calc(100% - 30px);
+  content: "";
+  border: 1px solid var(--cream-300);
+}
+
+.frame {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: calc(100% - 30px);
+  min-height: 490px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid #bca679;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(221, 194, 142, 0.28), transparent 30%),
+    linear-gradient(145deg, #4c3329, #2f211b);
+  box-shadow: var(--shadow-md);
+}
+
+.frame::before,
+.frame::after {
+  position: absolute;
+  content: "";
+  transform: rotate(45deg);
+}
+
+.frame::before {
+  width: 340px;
+  height: 340px;
+  border: 1px solid rgba(221, 194, 142, 0.13);
+  box-shadow: 0 0 0 35px rgba(221, 194, 142, 0.02);
+}
+
+.frame::after {
+  width: 220px;
+  height: 220px;
+  border: 1px dashed rgba(221, 194, 142, 0.13);
+}
+
+.monogram {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 250px;
+  height: 330px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  color: var(--cream-100);
+  border: 1px solid rgba(221, 194, 142, 0.45);
+  border-radius: 125px 125px 4px 4px;
+  text-align: center;
+}
+
+.monogram span {
+  color: var(--gold-300);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+}
+
+.monogram strong {
+  font-family: "Noto Naskh Arabic Variable", serif;
+  font-size: 72px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.monogram small {
+  padding-top: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(221, 194, 142, 0.24);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 9px;
+}
+
+.caption {
+  position: absolute;
+  z-index: 2;
+  right: -18px;
+  bottom: 14px;
+  padding: 13px 22px;
+  color: var(--brown-900);
+  border: 1px solid var(--cream-300);
+  background: var(--cream-50);
+  box-shadow: var(--shadow-sm);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 9px;
+}
+
+.kicker {
+  color: var(--gold-600);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+}
+
+.content h2 {
+  max-width: 650px;
+  margin: 7px 0 19px;
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: clamp(30px, 3.6vw, 45px);
+  font-weight: 620;
+  line-height: 1.55;
+  letter-spacing: -0.03em;
+}
+
+.intro {
+  max-width: 670px;
+  margin-bottom: 34px;
+  color: var(--ink-muted);
+  font-size: 18px;
+  line-height: 1.95;
+}
+
+.highlights {
+  display: grid;
+  margin-bottom: 32px;
+  border-top: 1px solid var(--cream-300);
+}
+
+.highlight {
+  display: grid;
+  padding: 20px 0;
+  grid-template-columns: 44px 1fr;
+  gap: 15px;
+  border-bottom: 1px solid var(--cream-300);
+}
+
+.highlight > span {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  color: var(--gold-600);
+  border: 1px solid var(--cream-300);
+  border-radius: 50%;
+  background: var(--cream-50);
+}
+
+.highlight h3 {
+  margin: 0 0 2px;
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 13px;
+  font-weight: 620;
+}
+
+.highlight p {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 15px;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 5px;
+  color: var(--brown-800);
+  border-bottom: 1px solid var(--gold-500);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+}
+
+.link svg {
+  transition: transform 180ms ease;
+}
+
+.link:hover svg {
+  transform: translateX(-4px);
+}
+
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .content {
+    order: -1;
+  }
+
+  .portrait {
+    width: min(100%, 520px);
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 620px) {
+  .section {
+    padding-block: 82px;
+  }
+
+  .container {
+    width: min(calc(100% - 32px), var(--container));
+    gap: 60px;
+  }
+
+  .portrait {
+    min-height: 460px;
+  }
+
+  .frame {
+    min-height: 430px;
+  }
+
+  .monogram {
+    width: 220px;
+    height: 300px;
+  }
+}

@@ -1,0 +1,134 @@
+.trigger {
+  position: relative;
+  display: grid;
+  width: min(100%, 650px);
+  min-height: 60px;
+  margin-bottom: 19px;
+  padding: 8px 11px;
+  grid-template-columns: 40px minmax(0, 1fr) 34px;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+  color: var(--cream-50);
+  border: 1px solid rgba(221, 194, 142, 0.3);
+  border-radius: 6px;
+  background: rgba(37, 23, 17, 0.46);
+  box-shadow: 0 10px 28px rgba(12, 7, 4, 0.14);
+  backdrop-filter: blur(10px);
+  text-align: right;
+  cursor: pointer;
+  transition:
+    border-color 200ms ease,
+    background 200ms ease,
+    box-shadow 200ms ease,
+    transform 200ms ease;
+}
+
+.trigger::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 2px;
+  content: "";
+  background: linear-gradient(90deg, transparent, var(--gold-300));
+  transition: width 260ms ease;
+}
+
+.trigger:hover {
+  border-color: rgba(221, 194, 142, 0.62);
+  background: rgba(45, 29, 22, 0.62);
+  box-shadow: 0 13px 32px rgba(12, 7, 4, 0.2);
+  transform: translateY(-1px);
+}
+
+.trigger:hover::before {
+  width: 100%;
+}
+
+.searchIcon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  color: var(--brown-950);
+  border: 1px solid rgba(255, 241, 199, 0.68);
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ecd49f, var(--gold-300));
+  box-shadow: 0 5px 14px rgba(166, 122, 53, 0.16);
+  transition: transform 220ms ease;
+}
+
+.trigger:hover .searchIcon {
+  transform: rotate(-6deg) scale(1.04);
+}
+
+.copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.copy strong {
+  overflow: hidden;
+  color: rgba(255, 189, 123, 0.59);
+  font-size: 15px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.action {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-300);
+  border: 1px solid rgba(221, 194, 142, 0.22);
+  border-radius: 50%;
+}
+
+.action svg {
+  transition: transform 180ms ease;
+}
+
+.trigger:hover .action svg {
+  transform: translate(-3px, -3px);
+}
+
+@media (max-width: 980px) {
+  .trigger {
+    margin-inline: auto;
+    text-align: right;
+  }
+}
+
+@media (max-width: 620px) {
+  .trigger {
+    min-height: 56px;
+    grid-template-columns: 38px minmax(0, 1fr) 30px;
+    gap: 9px;
+    padding: 7px 9px;
+  }
+
+  .searchIcon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .copy strong {
+    font-size: 12px;
+  }
+
+  .action {
+    width: 28px;
+    height: 28px;
+  }
+}
