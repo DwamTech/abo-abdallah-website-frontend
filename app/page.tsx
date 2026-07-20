@@ -1,11 +1,11 @@
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
+import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import HeroSection from "@/components/home/HeroSection/HeroSection";
-import MissionSection from "@/components/home/MissionSection/MissionSection";
-import CollectionsSection from "@/components/home/CollectionsSection/CollectionsSection";
-import FeaturedSection from "@/components/home/FeaturedSection/FeaturedSection";
-import MediaSection from "@/components/home/MediaSection/MediaSection";
-import BiographySection from "@/components/home/BiographySection/BiographySection";
+import AboutSection from "@/components/home/AboutSection/AboutSection";
+import ListeningSection from "@/components/home/ListeningSection/ListeningSection";
+import DigitalLibrarySection from "@/components/home/DigitalLibrarySection/DigitalLibrarySection";
+import DissertationSection from "@/components/home/DissertationSection/DissertationSection";
 
 export default function HomePage() {
   return (
@@ -13,11 +13,12 @@ export default function HomePage() {
       <Header />
       <main>
         <HeroSection />
-        <MissionSection />
-        <CollectionsSection />
-        <FeaturedSection />
-        <MediaSection />
-        <BiographySection />
+        <AboutSection />
+        <ListeningSection />
+        <DigitalLibrarySection />
+        <SectionDivider variant="book" />
+        <DissertationSection />
+        <SectionDivider variant="manuscript" />
       </main>
       <Footer />
     </>

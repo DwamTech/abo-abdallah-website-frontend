@@ -1,0 +1,128 @@
+.backdrop {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.backdrop i {
+  position: absolute;
+  display: block;
+}
+
+.orbit {
+  top: 12%;
+  right: -145px;
+  width: 340px;
+  height: 340px;
+  border: 1px solid rgba(166, 122, 53, 0.1);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 36px rgba(166, 122, 53, 0.025),
+    0 0 0 76px rgba(166, 122, 53, 0.016);
+}
+
+.diamond {
+  bottom: 10%;
+  left: -78px;
+  width: 178px;
+  height: 178px;
+  border: 1px solid rgba(103, 73, 58, 0.085);
+  background:
+    linear-gradient(
+      45deg,
+      transparent 49.5%,
+      rgba(166, 122, 53, 0.08) 50%,
+      transparent 50.5%
+    ),
+    linear-gradient(
+      -45deg,
+      transparent 49.5%,
+      rgba(166, 122, 53, 0.08) 50%,
+      transparent 50.5%
+    );
+  transform: rotate(24deg);
+}
+
+.dots {
+  top: 42%;
+  right: 2.5%;
+  width: 82px;
+  height: 205px;
+  opacity: 0.32;
+  background-image: radial-gradient(
+    circle,
+    rgba(166, 122, 53, 0.48) 1px,
+    transparent 1.5px
+  );
+  background-size: 11px 11px;
+}
+
+.arches {
+  right: 26%;
+  bottom: -95px;
+  width: 250px;
+  height: 170px;
+  opacity: 0.65;
+  border: 1px solid rgba(166, 122, 53, 0.07);
+  border-radius: 125px 125px 0 0;
+  box-shadow:
+    inset 0 0 0 24px rgba(166, 122, 53, 0.018),
+    0 0 0 31px rgba(166, 122, 53, 0.012);
+}
+
+.thread {
+  top: 23%;
+  left: 4%;
+  width: 1px;
+  height: 145px;
+  background: linear-gradient(
+    transparent,
+    rgba(166, 122, 53, 0.17),
+    transparent
+  );
+}
+
+.thread::before,
+.thread::after {
+  position: absolute;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  content: "";
+  border: 1px solid rgba(166, 122, 53, 0.25);
+  border-radius: 50%;
+  background: var(--cream-50);
+  transform: translateX(-50%);
+}
+
+.thread::before {
+  top: 22px;
+}
+
+.thread::after {
+  bottom: 22px;
+}
+
+@media (max-width: 720px) {
+  .orbit {
+    top: 8%;
+    right: -205px;
+  }
+
+  .dots {
+    right: -25px;
+    opacity: 0.22;
+  }
+
+  .diamond {
+    bottom: 5%;
+    left: -125px;
+  }
+
+  .arches,
+  .thread {
+    display: none;
+  }
+}

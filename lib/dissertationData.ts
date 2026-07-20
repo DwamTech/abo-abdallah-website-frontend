@@ -1,0 +1,289 @@
+export type ParticipationType = "مشرف" | "مناقش" | "عضو لجنة";
+
+export type DissertationDegree = "ماجستير" | "دكتوراه";
+
+export type Dissertation = {
+  id: string;
+  title: string;
+  researcher: string;
+  university: string;
+  college: string;
+  degree: DissertationDegree;
+  specialization: string;
+  year: number;
+  participation: ParticipationType;
+  abstract?: string;
+  link?: string;
+};
+
+export const participationTypes: Array<ParticipationType | "الكل"> = [
+  "الكل",
+  "مشرف",
+  "مناقش",
+  "عضو لجنة",
+];
+
+export const dissertationDegrees: Array<DissertationDegree | "الكل"> = [
+  "الكل",
+  "ماجستير",
+  "دكتوراه",
+];
+
+export const dissertations: Dissertation[] = [
+  {
+    id: "dissertation-001",
+    title: "دراسة تخريجية لأحاديث كتاب التوحيد للإمام ابن خزيمة",
+    researcher: "أحمد بن عبد الله العمري",
+    university: "جامعة الملك خالد",
+    college: "كلية أصول الدين",
+    degree: "ماجستير",
+    specialization: "علوم الحديث",
+    year: 1435,
+    participation: "مشرف",
+    abstract:
+      "رسالة علمية تهدف إلى تخريج الأحاديث الواردة في كتاب التوحيد لابن خزيمة، وبيان أحكامها ودرجاتها من الصحة والضعف.",
+  },
+  {
+    id: "dissertation-002",
+    title: "منهج الإمام مسلم في عرض الأسانيد: دراسة في صحيحه",
+    researcher: "سعد بن محمد الشهراني",
+    university: "جامعة أم القرى",
+    college: "كلية الشريعة والدراسات الإسلامية",
+    degree: "دكتوراه",
+    specialization: "مصطلح الحديث",
+    year: 1438,
+    participation: "مناقش",
+    abstract:
+      "دراسة تحليلية لأسلوب الإمام مسلم في عرض الأسانيد، مع بيان أثر ذلك في خدمة المتن والإسناد.",
+  },
+  {
+    id: "dissertation-003",
+    title: "الجرح والتعديل عند الإمام أحمد بن حنبل",
+    researcher: "خالد بن سليمان القحطاني",
+    university: "جامعة الملك سعود",
+    college: "كلية أصول الدين",
+    degree: "ماجستير",
+    specialization: "علم الرجال",
+    year: 1436,
+    participation: "عضو لجنة",
+  },
+  {
+    id: "dissertation-004",
+    title: "أثر علل الحديث في الاستدلال الفقهي",
+    researcher: "فهد بن عبد الرحمن السلمي",
+    university: "جامعة الملك خالد",
+    college: "كلية الشريعة",
+    degree: "دكتوراه",
+    specialization: "علل الحديث",
+    year: 1440,
+    participation: "مشرف",
+    abstract:
+      "رسالة تبحث في تأثير علل الحديث على الاستدلال الفقهي، مع تطبيقات من كتب الفقه الإسلامي.",
+  },
+  {
+    id: "dissertation-005",
+    title: "تخريج أحاديث كتاب الأحكام لابن القطان",
+    researcher: "عبد العزيز بن إبراهيم الحربي",
+    university: "جامعة الإمام محمد بن سعود الإسلامية",
+    college: "كلية أصول الدين",
+    degree: "ماجستير",
+    specialization: "التخريج ودراسة الأسانيد",
+    year: 1437,
+    participation: "مناقش",
+  },
+  {
+    id: "dissertation-006",
+    title: "مختلف الحديث بين المحدثين والفقهاء",
+    researcher: "يوسف بن علي الزهراني",
+    university: "جامعة الملك خالد",
+    college: "كلية أصول الدين",
+    degree: "دكتوراه",
+    specialization: "مختلف الحديث",
+    year: 1442,
+    participation: "مشرف",
+    abstract:
+      "دراسة مقارنة لطريقة المحدثين والفقهاء في التعامل مع الاختلاف في الأحاديث النبوية.",
+  },
+  {
+    id: "dissertation-007",
+    title: "شرح الأربعين النووية: دراسة في المنهج والمصادر",
+    researcher: "محمد بن سعيد الأحمري",
+    university: "جامعة أم القرى",
+    college: "كلية الدعوة وأصول الدين",
+    degree: "ماجستير",
+    specialization: "شروح الحديث",
+    year: 1439,
+    participation: "عضو لجنة",
+  },
+  {
+    id: "dissertation-008",
+    title: "منهج ابن حجر العسقلاني في فتح الباري",
+    researcher: "سلطان بن ناصر الغامدي",
+    university: "جامعة الملك عبد العزيز",
+    college: "كلية الشريعة",
+    degree: "دكتوراه",
+    specialization: "مناهج المحدثين",
+    year: 1441,
+    participation: "مناقش",
+    abstract:
+      "دراسة منهجية لأسلوب ابن حجر في شرح صحيح البخاري، مع التركيز على الجوانب الإسنادية والمتنية.",
+  },
+  {
+    id: "dissertation-009",
+    title: "الدراسات الحديثية المعاصرة في المملكة العربية السعودية",
+    researcher: "عبد الله بن محمد الشهري",
+    university: "جامعة الملك خالد",
+    college: "كلية أصول الدين",
+    degree: "ماجستير",
+    specialization: "الدراسات الحديثية المعاصرة",
+    year: 1443,
+    participation: "مشرف",
+  },
+  {
+    id: "dissertation-010",
+    title: "تطبيقات علم المصطلح في كتب السنة",
+    researcher: "ماجد بن عبد الله البيشي",
+    university: "جامعة القصيم",
+    college: "كلية الشريعة",
+    degree: "دكتوراه",
+    specialization: "مصطلح الحديث",
+    year: 1444,
+    participation: "عضو لجنة",
+    abstract:
+      "رسالة تطبيقية في استخدام قواعد علم مصطلح الحديث على نماذج من كتب السنة المعتمدة.",
+  },
+  {
+    id: "dissertation-011",
+    title: "الرواة المجهولون في صحيح مسلم",
+    researcher: "ناصر بن حمدان العتيبي",
+    university: "جامعة الملك خالد",
+    college: "كلية أصول الدين",
+    degree: "ماجستير",
+    specialization: "علم الرجال",
+    year: 1434,
+    participation: "مناقش",
+  },
+  {
+    id: "dissertation-012",
+    title: "أحاديث الأحكام في مسند الإمام أحمد",
+    researcher: "هاني بن عبد الكريم السهلي",
+    university: "جامعة الإمام محمد بن سعود الإسلامية",
+    college: "كلية أصول الدين",
+    degree: "دكتوراه",
+    specialization: "التخريج ودراسة الأسانيد",
+    year: 1439,
+    participation: "مشرف",
+    abstract:
+      "دراسة تخريجية لأحاديث الأحكام الواردة في مسند الإمام أحمد بن حنبل.",
+  },
+  {
+    id: "dissertation-013",
+    title: "الضعفاء والمتروكين في كتب الجرح والتعديل",
+    researcher: "بندر بن صالح المالكي",
+    university: "جامعة الملك سعود",
+    college: "كلية أصول الدين",
+    degree: "ماجستير",
+    specialization: "الجرح والتعديل",
+    year: 1435,
+    participation: "عضو لجنة",
+  },
+  {
+    id: "dissertation-014",
+    title: "علل الأحاديث في كتب الفقه المالكي",
+    researcher: "طارق بن محمد السواط",
+    university: "جامعة الملك خالد",
+    college: "كلية الشريعة",
+    degree: "دكتوراه",
+    specialization: "علل الحديث",
+    year: 1441,
+    participation: "مناقش",
+  },
+  {
+    id: "dissertation-015",
+    title: "دراسة مقارنة لروايات كتاب الطهارة في الصحيحين",
+    researcher: "فيصل بن عبد الله القرني",
+    university: "جامعة أم القرى",
+    college: "كلية الشريعة والدراسات الإسلامية",
+    degree: "ماجستير",
+    specialization: "مختلف الحديث",
+    year: 1438,
+    participation: "مشرف",
+    abstract:
+      "دراسة مقارنة لروايات كتاب الطهارة في صحيحي البخاري ومسلم، مع بيان أوجه الاختلاف والتأويل.",
+  },
+  {
+    id: "dissertation-016",
+    title: "شرح كتاب العلم من صحيح البخاري",
+    researcher: "مشعل بن عبد الرحمن الفهد",
+    university: "جامعة الملك عبد العزيز",
+    college: "كلية الشريعة",
+    degree: "دكتوراه",
+    specialization: "شروح الحديث",
+    year: 1442,
+    participation: "عضو لجنة",
+  },
+  {
+    id: "dissertation-017",
+    title: "منهج البخاري في التراجم",
+    researcher: "عبد الرحمن بن محمد الحجيلي",
+    university: "جامعة القصيم",
+    college: "كلية الشريعة",
+    degree: "ماجستير",
+    specialization: "مناهج المحدثين",
+    year: 1437,
+    participation: "مناقش",
+    abstract:
+      "دراسة في منهج الإمام البخاري في تراجم الأبواب وعلاقتها بالمتون الواردة تحتها.",
+  },
+  {
+    id: "dissertation-018",
+    title: "جهود المحدثين المعاصرين في خدمة السنة النبوية",
+    researcher: "سامي بن عبد الله العنزي",
+    university: "جامعة الملك خالد",
+    college: "كلية أصول الدين",
+    degree: "دكتوراه",
+    specialization: "الدراسات الحديثية المعاصرة",
+    year: 1444,
+    participation: "مشرف",
+  },
+  {
+    id: "dissertation-019",
+    title: "أحاديث العقيدة في السنن الأربع",
+    researcher: "عبد المحسن بن علي القرني",
+    university: "جامعة الإمام محمد بن سعود الإسلامية",
+    college: "كلية أصول الدين",
+    degree: "ماجستير",
+    specialization: "علوم الحديث",
+    year: 1436,
+    participation: "عضو لجنة",
+  },
+  {
+    id: "dissertation-020",
+    title: "تخريج أحاديث كتاب الزهد لابن المبارك",
+    researcher: "راشد بن حمدان العسيري",
+    university: "جامعة الملك سعود",
+    college: "كلية أصول الدين",
+    degree: "دكتوراه",
+    specialization: "التخريج ودراسة الأسانيد",
+    year: 1440,
+    participation: "مناقش",
+    abstract:
+      "رسالة تخريجية لأحاديث كتاب الزهد لعبد الله بن المبارك، مع دراسة إسنادية ومتنية.",
+  },
+];
+
+export const dissertationUniversities = Array.from(
+  new Set(dissertations.map((item) => item.university)),
+).sort();
+
+export const dissertationSpecializations = Array.from(
+  new Set(dissertations.map((item) => item.specialization)),
+).sort();
+
+export const dissertationYears = Array.from(
+  new Set(dissertations.map((item) => item.year)),
+).sort((a, b) => b - a);
+
+export function getDissertation(id: string) {
+  return dissertations.find((item) => item.id === id);
+}

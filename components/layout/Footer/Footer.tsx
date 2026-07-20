@@ -1,21 +1,22 @@
 import {
-  ArrowUp,
   Mail,
   MapPin,
   University,
 } from "lucide-react";
 import Image from "next/image";
+import { toArabicDigits } from "@/lib/arabicNumbers";
 import styles from "./Footer.module.css";
 
 const quickLinks = [
-  { label: "عن الشيخ", href: "#about" },
-  { label: "الكتب والمؤلفات", href: "#library" },
+  { label: "عن الشيخ", href: "/about" },
+  { label: "مجالس السماع", href: "/listening" },
+  { label: "الكتب والمؤلفات", href: "/library" },
   { label: "البحوث والدراسات", href: "#featured" },
-  { label: "الدروس والمحاضرات", href: "#media" },
 ];
 
 const knowledgeLinks = [
-  { label: "مجالس السماع", href: "#library" },
+  { label: "مجالس السماع", href: "/listening" },
+  { label: "المكتبة الرقمية", href: "/library" },
   { label: "الفتاوى والأجوبة", href: "#library" },
   { label: "السيرة العلمية", href: "#biography" },
   { label: "البحث في الموقع", href: "#home" },
@@ -30,7 +31,7 @@ export default function Footer() {
           <div className={styles.identity}>
             <a
               className={styles.brand}
-              href="#home"
+              href="/"
               aria-label="العودة إلى الصفحة الرئيسية"
             >
               <Image
@@ -84,13 +85,9 @@ export default function Footer() {
 
         <div className={styles.bottom}>
           <p>
-            © {new Date().getFullYear()} الموقع الرسمي للأستاذ الدكتور أبو عبد
+            © {toArabicDigits(new Date().getFullYear())} الموقع الرسمي للأستاذ الدكتور أبو عبد
             الله يحيى البكري الشهري
           </p>
-          <a href="#home" aria-label="العودة إلى أعلى الصفحة">
-            العودة للأعلى
-            <ArrowUp size={16} />
-          </a>
         </div>
       </div>
     </footer>

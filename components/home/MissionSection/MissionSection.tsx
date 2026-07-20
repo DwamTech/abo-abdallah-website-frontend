@@ -1,4 +1,5 @@
 import { BookMarked, Feather, LibraryBig } from "lucide-react";
+import { toArabicDigits } from "@/lib/arabicNumbers";
 import styles from "./MissionSection.module.css";
 
 const principles = [
@@ -55,7 +56,7 @@ export default function MissionSection() {
             return (
               <article key={item.title} className={styles.principle}>
                 <span className={styles.number}>
-                  {String(index + 1).padStart(2, "0")}
+                  {toArabicDigits(String(index + 1).padStart(2, "0"))}
                 </span>
                 <span className={styles.icon}>
                   <Icon size={23} strokeWidth={1.45} />

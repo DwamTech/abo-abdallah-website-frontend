@@ -1,0 +1,314 @@
+.divider {
+  position: relative;
+  z-index: 4;
+  width: 100%;
+  overflow: hidden;
+}
+
+.paperDivider {
+  height: 52px;
+  margin-top: -34px;
+  background: var(--cream-50);
+  clip-path: polygon(
+    0 44%,
+    3% 53%,
+    7% 39%,
+    11% 56%,
+    15% 42%,
+    20% 59%,
+    25% 38%,
+    30% 54%,
+    36% 41%,
+    42% 57%,
+    48% 39%,
+    54% 55%,
+    60% 40%,
+    66% 58%,
+    72% 42%,
+    78% 54%,
+    84% 38%,
+    90% 57%,
+    95% 42%,
+    100% 51%,
+    100% 100%,
+    0 100%
+  );
+}
+
+.paperGrain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background-image:
+    radial-gradient(circle at 18% 70%, rgba(103, 73, 58, 0.2) 0 1px, transparent 1px),
+    radial-gradient(circle at 74% 68%, rgba(103, 73, 58, 0.16) 0 1px, transparent 1px);
+  background-size: 29px 23px, 37px 31px;
+}
+
+.paperDivider i {
+  position: absolute;
+  top: 23px;
+  width: 10px;
+  height: 7px;
+  background: #e8ddca;
+  opacity: 0.75;
+  transform: rotate(22deg);
+}
+
+.fragmentOne {
+  right: 18%;
+}
+
+.fragmentTwo {
+  right: 47%;
+  transform: rotate(-18deg) !important;
+}
+
+.fragmentThree {
+  left: 14%;
+  transform: rotate(35deg) !important;
+}
+
+.manuscriptDivider {
+  display: flex;
+  height: 88px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--cream-100);
+}
+
+.audioDivider {
+  display: flex;
+  height: 92px;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: transparent;
+}
+
+.audioDivider::before {
+  position: absolute;
+  right: 0;
+  bottom: 28px;
+  left: 0;
+  height: 1px;
+  content: "";
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(221, 194, 142, 0.17),
+    transparent
+  );
+}
+
+.audioLine {
+  position: relative;
+  top: 10px;
+  z-index: 1;
+  width: min(17vw, 175px);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(166, 122, 53, 0.45)
+  );
+}
+
+.audioLine:last-child {
+  transform: scaleX(-1);
+}
+
+.audioWave {
+  position: relative;
+  top: 10px;
+  z-index: 1;
+  display: flex;
+  width: 145px;
+  height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid rgba(166, 122, 53, 0.28);
+  border-radius: 27px;
+  background: #271813;
+  box-shadow: 0 10px 28px rgba(35, 21, 16, 0.1);
+}
+
+.audioWave i {
+  width: 2px;
+  height: 9px;
+  border-radius: 4px;
+  background: var(--gold-500);
+  animation: dividerWave 1.8s ease-in-out infinite;
+}
+
+.audioWave i:nth-child(3n) {
+  height: 27px;
+  animation-delay: -0.45s;
+}
+
+.audioWave i:nth-child(4n) {
+  height: 17px;
+  animation-delay: -0.8s;
+}
+
+.audioWave i:nth-child(5n) {
+  height: 35px;
+  animation-delay: -1.1s;
+}
+
+@keyframes dividerWave {
+  0%,
+  100% {
+    transform: scaleY(0.65);
+  }
+
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.bookDivider {
+  display: flex;
+  height: 88px;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background:
+    linear-gradient(to bottom, #281914 50%, var(--cream-50) 50%);
+}
+
+.bookLine {
+  width: min(19vw, 190px);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(191, 150, 80, 0.48)
+  );
+}
+
+.bookLine:last-child {
+  transform: scaleX(-1);
+}
+
+.bookMark {
+  position: relative;
+  display: flex;
+  width: 76px;
+  height: 47px;
+  padding: 7px;
+  align-items: stretch;
+  border: 1px solid rgba(166, 122, 53, 0.3);
+  border-radius: 25px;
+  background:
+    linear-gradient(to bottom, #281914 50%, var(--cream-50) 50%);
+  box-shadow: 0 9px 25px rgba(45, 30, 24, 0.1);
+}
+
+.bookMark i,
+.bookMark b {
+  position: relative;
+  flex: 1;
+  border: 1px solid var(--gold-500);
+  background: rgba(253, 251, 246, 0.08);
+}
+
+.bookMark i {
+  border-radius: 14px 3px 3px 14px;
+  transform: skewY(-6deg);
+}
+
+.bookMark b {
+  border-radius: 3px 14px 14px 3px;
+  transform: skewY(6deg);
+}
+
+.bookMark::after {
+  position: absolute;
+  z-index: 2;
+  top: 8px;
+  bottom: 8px;
+  left: 50%;
+  width: 1px;
+  content: "";
+  background: var(--gold-500);
+}
+
+.manuscriptDivider::before,
+.manuscriptDivider::after {
+  position: absolute;
+  bottom: -27px;
+  width: 80px;
+  height: 80px;
+  content: "";
+  border: 1px solid rgba(166, 122, 53, 0.11);
+  transform: rotate(45deg);
+}
+
+.manuscriptDivider::before {
+  right: 8%;
+}
+
+.manuscriptDivider::after {
+  left: 8%;
+}
+
+.inkLine {
+  width: min(24vw, 230px);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(166, 122, 53, 0.48),
+    rgba(75, 51, 40, 0.26)
+  );
+}
+
+.inkLine:last-child {
+  transform: scaleX(-1);
+}
+
+.inkSeal {
+  display: grid;
+  width: 35px;
+  height: 35px;
+  place-items: center;
+  color: var(--gold-600);
+  border: 1px solid rgba(166, 122, 53, 0.3);
+  border-radius: 50%;
+  background: var(--cream-50);
+  box-shadow:
+    0 0 0 5px rgba(166, 122, 53, 0.045),
+    0 8px 22px rgba(75, 51, 40, 0.06);
+}
+
+@media (max-width: 620px) {
+  .paperDivider {
+    height: 40px;
+    margin-top: -24px;
+  }
+
+  .manuscriptDivider {
+    height: 72px;
+  }
+
+  .audioDivider {
+    height: 76px;
+  }
+
+  .audioWave {
+    width: 125px;
+    height: 46px;
+    gap: 3px;
+  }
+
+  .bookDivider {
+    height: 74px;
+  }
+
+  .inkLine {
+    width: 25vw;
+  }
+}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   ArrowUpLeft,
   BookOpenText,
@@ -12,40 +13,47 @@ import {
   X,
 } from "lucide-react";
 import NewsTicker from "@/components/layout/NewsTicker/NewsTicker";
+import { toArabicDigits } from "@/lib/arabicNumbers";
 import styles from "./Header.module.css";
 
 const navigation = [
-  { label: "الرئيسية", href: "#home" },
-  { label: "عن الشيخ", href: "#about" },
-  { label: "المكتبة العلمية", href: "#library" },
-  { label: "المرئيات والصوتيات", href: "#media" },
-  { label: "السيرة العلمية", href: "#biography" },
+  { label: "الرئيسية", href: "/" },
+  { label: "عن الشيخ", href: "/about" },
+  { label: "مجالس السماع", href: "/listening" },
+  { label: "المكتبة الرقمية", href: "/library" },
+  { label: "الإشراف العلمي", href: "/dissertations" },
 ];
 
 const searchLinks = [
   {
-    label: "الكتب والمؤلفات",
-    description: "الإصدارات والمصنفات العلمية",
-    href: "#library",
+    label: "المصنَّفات والمكتبة الرقمية",
+    description: "الكتب والتحقيقات والأبحاث مع قارئ PDF مدمج",
+    href: "/library",
   },
   {
-    label: "البحوث والدراسات",
-    description: "الأبحاث المحكمة والأوراق العلمية",
-    href: "#featured",
+    label: "مجالس السماع والمواد الصوتية",
+    description: "السلاسل الحديثية والمجالس المرتبة مع الكتاب المرتبط",
+    href: "/listening",
   },
   {
-    label: "الدروس والمحاضرات",
-    description: "المكتبة المرئية والصوتية",
-    href: "#media",
+    label: "الإنتاج الأكاديمي والإشراف العلمي",
+    description: "قاعدة بيانات الرسائل العلمية المشرف عليها أو المناقشة",
+    href: "/dissertations",
   },
   {
-    label: "مجالس السماع",
-    description: "المجالس والقراءات والإجازات",
-    href: "#library",
+    label: "عن الشيخ",
+    description: "التعريف والمسيرة العلمية والأكاديمية",
+    href: "/about",
+  },
+  {
+    label: "الصفحة الرئيسية",
+    description: "مدخل الموقع العلمي الرسمي",
+    href: "/",
   },
 ];
 
 export default function Header() {
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -99,7 +107,7 @@ export default function Header() {
         <div className={styles.navShell}>
           <a
             className={styles.brand}
-            href="#home"
+            href="/"
             aria-label="الانتقال إلى الصفحة الرئيسية"
           >
             <Image
@@ -113,11 +121,16 @@ export default function Header() {
           </a>
 
           <nav className={styles.desktopNav} aria-label="التنقل الرئيسي">
-            {navigation.map((item, index) => (
+            {navigation.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className={index === 0 ? styles.activeLink : undefined}
+                className={
+                  pathname === item.href ||
+                  (item.href !== "/" && pathname.startsWith(`${item.href}/`))
+                    ? styles.activeLink
+                    : undefined
+                }
               >
                 {item.label}
               </a>
@@ -136,9 +149,9 @@ export default function Header() {
 
             <span className={styles.actionDivider} aria-hidden="true" />
 
-            <a className={styles.libraryButton} href="#library">
+            <a className={styles.libraryButton} href="/listening">
               <BookOpenText size={18} strokeWidth={1.5} />
-              <span>المكتبة العلمية</span>
+              <span>مجالس السماع</span>
               <ArrowUpLeft size={15} strokeWidth={1.7} />
             </a>
 
@@ -201,7 +214,7 @@ export default function Header() {
                 onClick={() => setMenuOpen(false)}
               >
                 <span className={styles.navNumber}>
-                  {String(index + 1).padStart(2, "0")}
+                  {toArabicDigits(String(index + 1).padStart(2, "0"))}
                 </span>
                 <strong>{item.label}</strong>
                 <ArrowUpLeft size={17} />

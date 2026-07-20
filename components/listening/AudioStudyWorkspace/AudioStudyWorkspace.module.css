@@ -1,0 +1,1141 @@
+.intro {
+  position: relative;
+  padding: var(--subpage-hero-space) 0 52px;
+  overflow: hidden;
+  color: var(--cream-50);
+  background:
+    radial-gradient(circle at 10% 40%, rgba(191, 150, 80, 0.13), transparent 25%),
+    linear-gradient(135deg, #39261e, #211510 78%);
+}
+
+.intro::after {
+  position: absolute;
+  top: -230px;
+  left: -110px;
+  width: 550px;
+  height: 550px;
+  content: "";
+  border: 1px solid rgba(221, 194, 142, 0.08);
+  border-radius: 50%;
+  box-shadow: 0 0 0 68px rgba(221, 194, 142, 0.02);
+}
+
+.introWave {
+  position: absolute;
+  left: 5%;
+  top: 34%;
+  display: flex;
+  height: 125px;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.15;
+  filter: drop-shadow(0 0 9px rgba(221, 194, 142, 0.2));
+}
+
+.introWave i {
+  width: 2px;
+  height: 23px;
+  border-radius: 5px;
+  background: linear-gradient(to bottom, var(--gold-300), var(--gold-600));
+  transform-origin: center;
+  animation: sessionWave 1.9s ease-in-out infinite;
+}
+
+.introWave i:nth-child(3n) {
+  height: 83px;
+  animation-delay: -0.45s;
+}
+
+.introWave i:nth-child(4n) {
+  height: 48px;
+  animation-delay: -0.85s;
+}
+
+.introWave i:nth-child(7n) {
+  height: 112px;
+  animation-delay: -1.2s;
+}
+
+@keyframes sessionWave {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+  }
+
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.introInner,
+.workspaceInner {
+  position: relative;
+  z-index: 1;
+  width: min(calc(100% - 48px), var(--container));
+  margin-inline: auto;
+}
+
+.breadcrumb {
+  display: flex;
+  margin-bottom: 29px;
+  align-items: center;
+  gap: 8px;
+  color: rgba(248, 243, 233, 0.4);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 7px;
+}
+
+.breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.introGrid {
+  display: grid;
+  grid-template-columns: 83px 1fr auto;
+  align-items: center;
+  gap: 25px;
+}
+
+.sessionBadge {
+  display: flex;
+  width: 76px;
+  height: 76px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: var(--brown-900);
+  border-radius: 50%;
+  background: var(--gold-300);
+  box-shadow: 0 0 0 7px rgba(221, 194, 142, 0.08);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 20px;
+}
+
+.sessionBadge small {
+  font-size: 5px;
+}
+
+.introCopy > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--gold-300);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 7px;
+}
+
+.introCopy h1 {
+  margin: 4px 0 7px;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: clamp(27px, 3.4vw, 43px);
+  font-weight: 580;
+  line-height: 1.5;
+  letter-spacing: -0.045em;
+}
+
+.introCopy p {
+  max-width: 725px;
+  margin-bottom: 10px;
+  color: rgba(248, 243, 233, 0.62);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.introMeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(248, 243, 233, 0.45);
+  font-size: 10px;
+}
+
+.introMeta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.introMeta i {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--gold-500);
+}
+
+.introActions {
+  display: flex;
+  gap: 7px;
+}
+
+.introActions button {
+  display: grid;
+  width: 43px;
+  height: 43px;
+  place-items: center;
+  color: var(--gold-300);
+  border: 1px solid rgba(221, 194, 142, 0.2);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.introActions button:disabled {
+  opacity: 0.4;
+}
+
+.workspace {
+  position: relative;
+  padding: 67px 0 94px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 95% 15%, rgba(191, 150, 80, 0.07), transparent 25%),
+    var(--cream-50);
+}
+
+.workspaceHead {
+  display: flex;
+  margin-bottom: 24px;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.workspaceHead > div > span {
+  color: var(--gold-600);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 7px;
+}
+
+.workspaceHead h2 {
+  margin: 2px 0 0;
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: clamp(27px, 3vw, 38px);
+  font-weight: 620;
+}
+
+.syncState {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #8b7d6f;
+  font-size: 11px;
+}
+
+.syncState i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 4px rgba(69, 96, 72, 0.09);
+}
+
+.studyGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr);
+  align-items: stretch;
+  gap: 14px;
+}
+
+.audioPanel,
+.bookPanel {
+  min-width: 0;
+  border: 1px solid var(--cream-300);
+  background: var(--white);
+  box-shadow: 0 18px 50px rgba(75, 51, 40, 0.065);
+}
+
+.panelHead {
+  display: flex;
+  min-height: 56px;
+  padding-inline: 18px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--cream-300);
+  background: var(--cream-100);
+}
+
+.panelHead > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--brown-800);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 8px;
+}
+
+.panelHead > span svg {
+  color: var(--gold-600);
+}
+
+.panelHead > small {
+  color: #958475;
+  font-size: 10px;
+}
+
+.panelHead > div {
+  display: flex;
+  gap: 5px;
+}
+
+.panelHead button {
+  display: grid;
+  width: 31px;
+  height: 31px;
+  place-items: center;
+  color: var(--brown-700);
+  border: 1px solid var(--cream-300);
+  background: var(--cream-50);
+}
+
+.panelHead button:disabled {
+  opacity: 0.4;
+}
+
+.audioPanel {
+  padding-bottom: 18px;
+}
+
+.nowPlaying {
+  display: grid;
+  padding: 25px 24px 18px;
+  grid-template-columns: 62px 1fr;
+  align-items: center;
+  gap: 14px;
+}
+
+.miniCover {
+  display: grid;
+  width: 58px;
+  height: 72px;
+  place-items: center;
+  color: #f7ecd8;
+  border: 1px solid color-mix(in srgb, var(--series-accent), #fff 25%);
+  border-radius: 29px 29px 2px 2px;
+  background: color-mix(in srgb, var(--series-accent), #241710 52%);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.nowPlaying > div:last-child {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.nowPlaying small {
+  color: var(--gold-600);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 6px;
+}
+
+.nowPlaying strong {
+  overflow: hidden;
+  color: var(--brown-900);
+  font-size: 16px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nowPlaying span {
+  color: #928274;
+  font-size: 11px;
+}
+
+.waveform {
+  display: flex;
+  height: 76px;
+  padding-inline: 24px;
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.waveform i {
+  width: 3px;
+  height: 22px;
+  flex: 1;
+  border-radius: 4px;
+  background: var(--cream-300);
+}
+
+.waveform i:nth-child(3n) {
+  height: 55px;
+}
+
+.waveform i:nth-child(4n) {
+  height: 36px;
+}
+
+.waveform i:nth-child(7n) {
+  height: 68px;
+}
+
+.waveform .wavePlayed {
+  background: var(--gold-500);
+}
+
+.progressRow {
+  display: grid;
+  padding-inline: 24px;
+  grid-template-columns: 42px 1fr 62px;
+  align-items: center;
+  gap: 8px;
+  color: #9a8a7c;
+  direction: ltr;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 7px;
+}
+
+.progressRow input {
+  width: 100%;
+  height: 3px;
+  accent-color: var(--gold-600);
+}
+
+.controls {
+  display: flex;
+  margin-block: 24px 21px;
+  align-items: center;
+  justify-content: center;
+  gap: 21px;
+  direction: ltr;
+}
+
+.controls button {
+  position: relative;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  color: var(--brown-700);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.controls button:disabled {
+  cursor: default;
+  opacity: 0.42;
+}
+
+.controls button small {
+  position: absolute;
+  font-family: Arial, sans-serif;
+  font-size: 7px;
+}
+
+.controls .playButton {
+  width: 59px;
+  height: 59px;
+  color: var(--cream-50);
+  background: var(--brown-800);
+  box-shadow: 0 10px 25px rgba(75, 51, 40, 0.22);
+}
+
+.playButton svg {
+  margin-left: 2px;
+}
+
+.audioOptions {
+  display: flex;
+  min-height: 49px;
+  padding-inline: 19px;
+  align-items: center;
+  justify-content: space-between;
+  border-block: 1px solid var(--cream-300);
+  color: #8d7c6e;
+  font-size: 10px;
+}
+
+.audioOptions label,
+.audioOptions > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.audioOptions svg {
+  color: var(--gold-600);
+}
+
+.audioOptions select {
+  color: var(--brown-700);
+  border: 0;
+  background: transparent;
+  font-size: 10px;
+}
+
+.fileNotice {
+  display: grid;
+  margin: 17px 19px 0;
+  padding: 11px 12px;
+  grid-template-columns: 29px 1fr;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid rgba(166, 122, 53, 0.16);
+  background: rgba(234, 222, 199, 0.23);
+}
+
+.fileNotice > span {
+  display: grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  color: var(--success);
+  border-radius: 50%;
+  background: rgba(69, 96, 72, 0.09);
+}
+
+.fileNotice p {
+  display: flex;
+  margin: 0;
+  color: #8d7e70;
+  flex-direction: column;
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.fileNotice strong {
+  color: var(--brown-800);
+  font-size: 11px;
+}
+
+.audioPanel audio {
+  display: none;
+}
+
+.bookPanel {
+  display: flex;
+  min-height: 625px;
+  flex-direction: column;
+}
+
+.pdfFrame {
+  width: 100%;
+  min-height: 520px;
+  flex: 1;
+  border: 0;
+}
+
+.bookPreview {
+  position: relative;
+  display: grid;
+  min-height: 515px;
+  flex: 1;
+  padding: 27px;
+  place-items: center;
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(75, 51, 40, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(75, 51, 40, 0.025) 1px, transparent 1px),
+    #eae0ce;
+  background-size: 25px 25px;
+}
+
+.paper {
+  position: relative;
+  width: min(100%, 410px);
+  min-height: 425px;
+  padding: 56px 48px;
+  color: #4b3b30;
+  border: 1px solid #d1c2a7;
+  background:
+    radial-gradient(circle at 75% 12%, rgba(166, 122, 53, 0.07), transparent 24%),
+    #fffdf7;
+  box-shadow: 0 18px 43px rgba(75, 51, 40, 0.14);
+}
+
+.paper::before {
+  position: absolute;
+  inset: 14px;
+  content: "";
+  border: 1px solid rgba(166, 122, 53, 0.15);
+  pointer-events: none;
+}
+
+.paperKicker {
+  display: block;
+  color: var(--gold-600);
+  text-align: center;
+  font-size: 13px;
+}
+
+.paper h3 {
+  margin: 8px 0;
+  color: var(--brown-900);
+  text-align: center;
+  font-size: 28px;
+}
+
+.paper > i {
+  display: block;
+  width: 80px;
+  height: 1px;
+  margin: 0 auto 26px;
+  background: var(--gold-500);
+}
+
+.paper p {
+  margin-bottom: 15px;
+  font-size: 13px;
+  line-height: 2;
+  text-align: justify;
+}
+
+.paperNumber {
+  position: absolute;
+  right: 0;
+  bottom: 22px;
+  left: 0;
+  color: #a79784;
+  text-align: center;
+  font-size: 10px;
+}
+
+.pdfNotice {
+  position: absolute;
+  right: 39px;
+  bottom: 39px;
+  display: inline-flex;
+  padding: 7px 10px;
+  align-items: center;
+  gap: 6px;
+  color: var(--brown-700);
+  border: 1px solid var(--cream-300);
+  background: rgba(253, 251, 246, 0.94);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 6px;
+}
+
+.bookNavigation {
+  display: flex;
+  min-height: 53px;
+  padding-inline: 16px;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--cream-300);
+  background: var(--cream-100);
+}
+
+.bookNavigation button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #8f8072;
+  border: 0;
+  background: transparent;
+  font-size: 10px;
+}
+
+.bookNavigation span {
+  color: #968778;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 7px;
+}
+
+.sessionNavigation {
+  display: grid;
+  margin-top: 18px;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.sessionNavigation > a:not(.allSessions) {
+  display: flex;
+  min-height: 78px;
+  padding: 13px 17px;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--cream-300);
+  background: var(--white);
+}
+
+.sessionNavigation > a:last-child {
+  justify-content: flex-end;
+  text-align: left;
+}
+
+.sessionNavigation > a > span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.sessionNavigation small {
+  color: var(--gold-600);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 6px;
+}
+
+.sessionNavigation strong {
+  overflow: hidden;
+  color: var(--brown-800);
+  font-size: 13px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sessionNavigation svg {
+  flex: 0 0 auto;
+  color: var(--gold-600);
+}
+
+.allSessions {
+  display: grid;
+  min-width: 100px;
+  place-items: center;
+  color: var(--brown-700);
+  border: 1px solid var(--cream-300);
+  background: var(--cream-100);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 7px;
+}
+
+.emptyNavigation {
+  min-height: 78px;
+}
+
+@media (max-width: 900px) {
+  .studyGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .audioPanel {
+    order: 1;
+  }
+
+  .bookPanel {
+    order: 2;
+  }
+}
+
+@media (max-width: 680px) {
+  .intro {
+    padding: 56px 0 48px;
+  }
+
+  .introInner,
+  .workspaceInner {
+    width: min(calc(100% - 32px), var(--container));
+  }
+
+  .introGrid {
+    grid-template-columns: 62px 1fr;
+    gap: 15px;
+  }
+
+  .sessionBadge {
+    width: 58px;
+    height: 58px;
+    font-size: 16px;
+  }
+
+  .introActions {
+    grid-column: 2;
+  }
+
+  .introMeta {
+    flex-wrap: wrap;
+  }
+
+  .introWave {
+    left: -35px;
+    opacity: 0.08;
+  }
+
+  .workspaceHead {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .bookPreview {
+    padding: 18px;
+  }
+
+  .paper {
+    min-height: 380px;
+    padding: 48px 34px;
+  }
+
+  .sessionNavigation {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .allSessions {
+    min-height: 45px;
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 460px) {
+  .introGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sessionBadge {
+    margin-bottom: 4px;
+  }
+
+  .introActions {
+    grid-column: auto;
+  }
+
+  .waveform {
+    gap: 2px;
+  }
+
+  .audioOptions > span {
+    display: none;
+  }
+
+  .paper {
+    padding-inline: 27px;
+  }
+
+  .bookNavigation button {
+    font-size: 0;
+  }
+
+  .sessionNavigation > a:not(.allSessions) {
+    padding-inline: 11px;
+  }
+
+  .sessionNavigation strong {
+    font-size: 11px;
+  }
+}
+
+/* Readability scale for controls, metadata and navigation labels. */
+.breadcrumb,
+.introCopy > span,
+.workspaceHead > div > span,
+.progressRow,
+.bookNavigation span,
+.allSessions {
+  font-size: 12px;
+}
+
+.sessionBadge small,
+.nowPlaying small,
+.pdfNotice,
+.sessionNavigation small {
+  font-size: 11px;
+}
+
+.introMeta,
+.panelHead > span {
+  font-size: 13px;
+}
+
+.syncState,
+.nowPlaying span {
+  font-size: 15px;
+}
+
+.panelHead > small,
+.audioOptions,
+.audioOptions select,
+.fileNotice p,
+.paperNumber,
+.bookNavigation button {
+  font-size: 14px;
+}
+
+.fileNotice strong {
+  font-size: 15px;
+}
+
+/* Refined single-session study experience. */
+.intro {
+  background:
+    radial-gradient(circle at 12% 36%, rgba(191, 150, 80, 0.2), transparent 29%),
+    linear-gradient(108deg, rgba(30, 19, 15, 0.96), rgba(54, 33, 24, 0.86)),
+    url("/media/images/sub.jpg") center bottom / cover no-repeat;
+}
+
+.introGrid {
+  position: relative;
+  padding: 25px 27px;
+  border: 1px solid rgba(221, 194, 142, 0.16);
+  border-radius: 7px;
+  background:
+    linear-gradient(110deg, rgba(255, 255, 255, 0.045), transparent),
+    rgba(32, 20, 15, 0.2);
+  box-shadow:
+    0 24px 60px rgba(13, 8, 5, 0.16),
+    inset 0 1px rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(8px);
+}
+
+.introGrid::before {
+  position: absolute;
+  top: -1px;
+  right: 28px;
+  width: 92px;
+  height: 2px;
+  content: "";
+  background: linear-gradient(90deg, var(--gold-600), var(--gold-300));
+}
+
+.sessionBadge {
+  width: 78px;
+  height: 94px;
+  color: var(--brown-900);
+  border: 1px solid #e5c98f;
+  border-radius: 39px 39px 7px 7px;
+  background:
+    radial-gradient(circle at 50% 27%, rgba(255, 255, 255, 0.5), transparent 33%),
+    linear-gradient(150deg, #ecd39f, #cfa964);
+  box-shadow:
+    0 12px 30px rgba(12, 7, 4, 0.22),
+    inset 0 0 0 6px rgba(255, 255, 255, 0.12);
+}
+
+.introLabels {
+  display: flex;
+  margin-bottom: 5px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.introLabels > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--gold-300);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 12px;
+}
+
+.introLabels .verifiedLabel {
+  padding: 4px 9px;
+  color: rgba(248, 243, 233, 0.65);
+  border: 1px solid rgba(221, 194, 142, 0.16);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 10px;
+}
+
+.verifiedLabel i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-300);
+  box-shadow: 0 0 8px rgba(221, 194, 142, 0.7);
+}
+
+.introCopy h1 {
+  max-width: 850px;
+  margin-block: 2px 7px;
+}
+
+.introActions button {
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.045);
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.introActions button:not(:disabled):hover {
+  color: var(--brown-900);
+  border-color: var(--gold-300);
+  background: var(--gold-300);
+  transform: translateY(-2px);
+}
+
+.studyExperience {
+  padding: 9px;
+  overflow: hidden;
+  border: 1px solid var(--cream-300);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.48);
+  box-shadow:
+    0 24px 65px rgba(75, 51, 40, 0.085),
+    inset 0 1px rgba(255, 255, 255, 0.7);
+}
+
+.studyToolbar {
+  display: flex;
+  min-height: 58px;
+  padding-inline: 17px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: rgba(248, 243, 233, 0.7);
+  border-radius: 5px 5px 0 0;
+  background:
+    radial-gradient(circle at 85% 0%, rgba(221, 194, 142, 0.13), transparent 32%),
+    var(--brown-900);
+}
+
+.studyToolbar > span,
+.studyToolbar > div,
+.studyToolbar > div span {
+  display: flex;
+  align-items: center;
+}
+
+.studyToolbar > span {
+  gap: 8px;
+  color: var(--gold-300);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+}
+
+.studyToolbar > div {
+  gap: 13px;
+}
+
+.studyToolbar > div span {
+  gap: 6px;
+  font-size: 12px;
+}
+
+.studyToolbar svg {
+  color: var(--gold-300);
+}
+
+.studyToolbar > div > i {
+  width: 1px;
+  height: 22px;
+  background: rgba(221, 194, 142, 0.18);
+}
+
+.studyGrid {
+  gap: 9px;
+  padding-top: 9px;
+}
+
+.audioPanel,
+.bookPanel {
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: none;
+}
+
+.panelHead {
+  min-height: 62px;
+  background:
+    linear-gradient(100deg, rgba(255, 255, 255, 0.55), transparent),
+    var(--cream-100);
+}
+
+.nowPlaying {
+  margin: 16px 18px 5px;
+  padding: 16px;
+  border: 1px solid rgba(166, 122, 53, 0.16);
+  border-radius: 4px;
+  background:
+    linear-gradient(105deg, rgba(234, 222, 199, 0.3), transparent),
+    var(--cream-50);
+}
+
+.miniCover {
+  box-shadow: 0 9px 22px rgba(75, 51, 40, 0.17);
+}
+
+.waveform {
+  margin-inline: 18px;
+  padding-inline: 5px;
+}
+
+.controls .playButton {
+  box-shadow:
+    0 11px 27px rgba(75, 51, 40, 0.24),
+    0 0 0 6px rgba(166, 122, 53, 0.07);
+}
+
+.audioOptions {
+  margin-inline: 18px;
+  border: 1px solid var(--cream-300);
+  border-radius: 3px;
+  background: var(--cream-100);
+}
+
+.bookPreview {
+  background:
+    linear-gradient(rgba(75, 51, 40, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(75, 51, 40, 0.025) 1px, transparent 1px),
+    linear-gradient(145deg, #eee5d5, #e4d7c1);
+  background-size: 25px 25px, 25px 25px, auto;
+}
+
+.paper {
+  border-radius: 2px;
+  box-shadow:
+    0 23px 52px rgba(75, 51, 40, 0.16),
+    8px 8px 0 rgba(255, 253, 247, 0.5);
+}
+
+.sessionNavigation > a:not(.allSessions),
+.allSessions {
+  border-radius: 5px;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.sessionNavigation > a:not(.allSessions):hover {
+  border-color: rgba(166, 122, 53, 0.4);
+  background: var(--cream-100);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 680px) {
+  .introGrid {
+    padding: 20px 17px;
+  }
+
+  .sessionBadge {
+    width: 62px;
+    height: 76px;
+  }
+
+  .studyToolbar {
+    padding: 12px 13px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .studyToolbar > div {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .studyExperience {
+    padding: 6px;
+  }
+
+  .studyGrid {
+    gap: 6px;
+    padding-top: 6px;
+  }
+}
+
+@media (max-width: 430px) {
+  .verifiedLabel,
+  .studyToolbar > div > i {
+    display: none !important;
+  }
+
+  .studyToolbar > div span {
+    font-size: 10px;
+  }
+
+  .nowPlaying,
+  .audioOptions {
+    margin-inline: 10px;
+  }
+}

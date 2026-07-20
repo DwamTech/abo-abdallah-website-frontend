@@ -1,7 +1,7 @@
 import {
   ArrowLeft,
+  ArrowDown,
   BookOpen,
-  CirclePlay,
   Feather,
   ScrollText,
   Sparkles,
@@ -58,14 +58,14 @@ export default function HeroSection() {
           </p>
           <HeroSearchTrigger />
           <div className={styles.ctas}>
-            <a className={styles.primaryCta} href="#library">
+            <a className={styles.primaryCta} href="/about">
               <BookOpen size={19} strokeWidth={1.6} />
-              تصفّح المكتبة العلمية
+              السيرة العلمية
               <ArrowLeft size={17} />
             </a>
-            <a className={styles.secondaryCta} href="#media">
-              <CirclePlay size={20} strokeWidth={1.5} />
-              الدروس والمحاضرات
+            <a className={styles.secondaryCta} href="#about">
+              <ArrowDown size={20} strokeWidth={1.5} />
+              نبذة عن الشيخ
             </a>
           </div>
         </div>

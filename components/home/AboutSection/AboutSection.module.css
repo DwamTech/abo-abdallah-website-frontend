@@ -1,0 +1,589 @@
+.section {
+  position: relative;
+  padding: 76px 0 82px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 7% 16%, rgba(191, 150, 80, 0.08), transparent 25%),
+    var(--cream-50);
+}
+
+.section::before {
+  position: absolute;
+  top: 0;
+  right: 8%;
+  width: 1px;
+  height: 48px;
+  content: "";
+  background: linear-gradient(var(--cream-300), transparent);
+}
+
+.container {
+  display: grid;
+  width: min(calc(100% - 48px), var(--container));
+  margin-inline: auto;
+  grid-template-columns: minmax(0, 1.08fr) minmax(390px, 0.92fr);
+  align-items: center;
+  gap: clamp(52px, 7vw, 96px);
+}
+
+.content {
+  max-width: 720px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: var(--gold-600);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 9px;
+}
+
+.eyebrow svg {
+  color: var(--gold-500);
+}
+
+.content h2 {
+  margin: 0 0 16px;
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: clamp(31px, 3.55vw, 47px);
+  font-weight: 620;
+  line-height: 1.42;
+  letter-spacing: -0.045em;
+}
+
+.content h2 span {
+  display: block;
+  color: var(--brown-700);
+}
+
+.intro {
+  position: relative;
+  display: grid;
+  max-width: 675px;
+  margin-bottom: 23px;
+  padding: 16px 20px 16px 58px;
+  grid-template-columns: 1fr;
+  align-items: center;
+  border: 1px solid rgba(166, 122, 53, 0.18);
+  border-right: 3px solid var(--gold-500);
+  background:
+    linear-gradient(110deg, rgba(255, 255, 255, 0.5), transparent),
+    rgba(234, 222, 199, 0.24);
+}
+
+.intro p {
+  margin: 0;
+  color: #4b3e35;
+  font-size: 17px;
+  font-weight: 550;
+  line-height: 1.85;
+}
+
+.introMark {
+  position: absolute;
+  left: 19px;
+  top: 1px;
+  color: rgba(166, 122, 53, 0.22);
+  font-family: Georgia, serif;
+  font-size: 62px;
+  line-height: 1;
+}
+
+.profilePoints {
+  display: grid;
+  margin-bottom: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-block: 1px solid var(--cream-300);
+}
+
+.profilePoint {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 82px;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 12px;
+}
+
+.profilePoint + .profilePoint {
+  border-right: 1px solid var(--cream-300);
+}
+
+.pointIcon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  place-items: center;
+  color: var(--gold-600);
+  border: 1px solid var(--cream-300);
+  border-radius: 50%;
+  background: var(--cream-100);
+}
+
+.pointCopy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.pointCopy small {
+  color: var(--gold-600);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 7px;
+}
+
+.pointCopy strong {
+  color: var(--brown-900);
+  font-size: 13px;
+  font-weight: 620;
+  line-height: 1.65;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cta {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 18px;
+  padding-inline: 19px;
+  color: var(--cream-50);
+  border: 1px solid var(--brown-800);
+  border-radius: 3px;
+  background: var(--brown-800);
+  box-shadow: 0 11px 25px rgba(75, 51, 40, 0.13);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 9px;
+  transition:
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.cta:hover {
+  background: var(--brown-700);
+  box-shadow: 0 14px 30px rgba(75, 51, 40, 0.2);
+  transform: translateY(-2px);
+}
+
+.cta svg {
+  color: var(--gold-300);
+  transition: transform 180ms ease;
+}
+
+.cta:hover svg {
+  transform: translateX(-4px);
+}
+
+.actionNote {
+  color: #9b8976;
+  font-size: 13px;
+}
+
+.visual {
+  position: relative;
+  display: grid;
+  min-height: 440px;
+  place-items: center;
+  overflow: hidden;
+  background:
+    linear-gradient(145deg, rgba(47, 29, 22, 0.7), rgba(30, 18, 14, 0.93)),
+    url("/media/images/b2.jpg") center / cover;
+  box-shadow: 0 26px 62px rgba(63, 45, 34, 0.16);
+}
+
+.visual::before {
+  position: absolute;
+  inset: 14px;
+  content: "";
+  border: 1px solid rgba(221, 194, 142, 0.22);
+  pointer-events: none;
+}
+
+.visual::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: radial-gradient(circle, rgba(221, 194, 142, 0.07), transparent 48%);
+  pointer-events: none;
+}
+
+.visualLabel {
+  position: absolute;
+  z-index: 3;
+  top: 29px;
+  right: 30px;
+  color: rgba(245, 234, 211, 0.72);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 7px;
+  letter-spacing: 0.04em;
+}
+
+.orbit {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: 290px;
+  height: 290px;
+  place-items: center;
+  border: 1px solid rgba(221, 194, 142, 0.3);
+  border-radius: 50%;
+  animation: orbitGlow 5s ease-in-out infinite;
+}
+
+.orbit::before,
+.orbit::after {
+  position: absolute;
+  content: "";
+  border-radius: 50%;
+}
+
+.orbit::before {
+  inset: 12px;
+  border: 1px dashed rgba(221, 194, 142, 0.19);
+  animation: orbitTurn 32s linear infinite;
+}
+
+.orbit::after {
+  inset: -16px;
+  border: 1px solid rgba(221, 194, 142, 0.09);
+}
+
+.orbitText {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  width: 47px;
+  height: 47px;
+  place-items: center;
+  color: var(--gold-300);
+  border: 1px solid rgba(221, 194, 142, 0.31);
+  border-radius: 50%;
+  background: #302018;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 7px;
+  box-shadow: 0 8px 22px rgba(12, 7, 5, 0.3);
+}
+
+.orbitTextTop {
+  top: 23px;
+  right: -8px;
+}
+
+.orbitTextBottom {
+  bottom: 14px;
+  left: -2px;
+}
+
+.knowledgeSeal {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: 214px;
+  height: 214px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--cream-50);
+  border: 1px solid rgba(221, 194, 142, 0.36);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 34%, rgba(221, 194, 142, 0.13), transparent 37%),
+    rgba(35, 21, 16, 0.86);
+  box-shadow:
+    0 22px 58px rgba(12, 7, 5, 0.35),
+    inset 0 0 38px rgba(221, 194, 142, 0.04);
+  backdrop-filter: blur(7px);
+}
+
+.sealIcon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 4px;
+  place-items: center;
+  color: var(--gold-300);
+}
+
+.knowledgeSeal small {
+  color: rgba(245, 234, 211, 0.62);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 7px;
+}
+
+.knowledgeSeal strong {
+  color: #ead09b;
+  font-family: "Noto Naskh Arabic Variable", serif;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.sealRule {
+  display: flex;
+  width: 112px;
+  align-items: center;
+  gap: 7px;
+  margin-block: 6px 4px;
+  color: var(--gold-300);
+}
+
+.sealRule i {
+  height: 1px;
+  flex: 1;
+  background: rgba(221, 194, 142, 0.27);
+}
+
+.sealRule b {
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.knowledgeSeal em {
+  color: rgba(245, 234, 211, 0.56);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 6px;
+  font-style: normal;
+}
+
+.visualCaption {
+  position: absolute;
+  z-index: 3;
+  right: 30px;
+  bottom: 27px;
+  display: flex;
+  padding-right: 12px;
+  flex-direction: column;
+  border-right: 2px solid var(--gold-500);
+}
+
+.visualCaption span {
+  color: var(--gold-300);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 6px;
+}
+
+.visualCaption strong {
+  color: var(--cream-50);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.cornerMark {
+  position: absolute;
+  z-index: 3;
+  left: 29px;
+  bottom: 28px;
+  color: rgba(245, 234, 211, 0.32);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 8px;
+}
+
+.sparkOne,
+.sparkTwo {
+  position: absolute;
+  z-index: 3;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold-300);
+  box-shadow: 0 0 14px rgba(221, 194, 142, 0.7);
+}
+
+.sparkOne {
+  top: 76px;
+  left: 53px;
+}
+
+.sparkTwo {
+  right: 50px;
+  bottom: 87px;
+}
+
+@keyframes orbitTurn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbitGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(221, 194, 142, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 42px rgba(221, 194, 142, 0.08);
+  }
+}
+
+@media (max-width: 1100px) {
+  .container {
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 0.82fr);
+    gap: 45px;
+  }
+
+  .profilePoint {
+    padding-inline: 8px;
+  }
+
+  .pointCopy strong {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .content {
+    max-width: 760px;
+  }
+
+  .visual {
+    width: min(100%, 600px);
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 620px) {
+  .section {
+    padding-block: 58px 64px;
+  }
+
+  .container {
+    width: min(calc(100% - 32px), var(--container));
+    gap: 38px;
+  }
+
+  .content h2 {
+    font-size: 29px;
+  }
+
+  .intro {
+    padding: 14px 16px 14px 42px;
+  }
+
+  .intro p {
+    font-size: 15px;
+  }
+
+  .introMark {
+    left: 12px;
+    font-size: 48px;
+  }
+
+  .profilePoints {
+    grid-template-columns: 1fr;
+  }
+
+  .profilePoint {
+    min-height: 62px;
+    padding: 9px 5px;
+  }
+
+  .profilePoint + .profilePoint {
+    border-top: 1px solid var(--cream-300);
+    border-right: 0;
+  }
+
+  .pointCopy strong {
+    font-size: 13px;
+  }
+
+  .actions {
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .actionNote {
+    font-size: 11px;
+  }
+
+  .visual {
+    min-height: 380px;
+  }
+
+  .orbit {
+    width: 245px;
+    height: 245px;
+  }
+
+  .knowledgeSeal {
+    width: 180px;
+    height: 180px;
+  }
+
+  .knowledgeSeal strong {
+    font-size: 24px;
+  }
+
+  .sealIcon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0;
+  }
+
+  .orbitText {
+    width: 41px;
+    height: 41px;
+  }
+}
+
+@media (max-width: 430px) {
+  .actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit,
+  .orbit::before {
+    animation: none;
+  }
+}
+
+/* Readability scale for the biography preview. */
+.eyebrow {
+  font-size: 12px;
+}
+
+.pointCopy small,
+.visualLabel,
+.orbitText {
+  font-size: 10px;
+}
+
+.pointCopy strong,
+.actionNote {
+  font-size: 15px;
+}
+
+.cta {
+  font-size: 11px;
+}
+
+.knowledgeSeal small,
+.knowledgeSeal em {
+  font-size: 9px;
+}
+
+.visualCaption span,
+.cornerMark {
+  font-size: 9px;
+}
+
+.visualCaption strong {
+  font-size: 15px;
+}
