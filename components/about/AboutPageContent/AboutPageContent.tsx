@@ -10,25 +10,11 @@ import {
 } from "lucide-react";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
 import { toArabicDigits } from "@/lib/arabicNumbers";
+import siteContent from "@/data/site-content.json";
 import styles from "./AboutPageContent.module.css";
 
-const foundations = [
-  {
-    icon: GraduationCap,
-    title: "العمل الأكاديمي",
-    text: "أستاذ الحديث وعلومه بجامعة الملك خالد في أبها.",
-  },
-  {
-    icon: BookOpenCheck,
-    title: "التخصص العلمي",
-    text: "العناية بالحديث النبوي وعلوم الرواية والدراية.",
-  },
-  {
-    icon: Landmark,
-    title: "خدمة المعرفة",
-    text: "تيسير وصول الباحثين وطلاب العلم إلى المادة العلمية.",
-  },
-];
+const foundationIcons = { GraduationCap, BookOpenCheck, Landmark } as const;
+const foundations = siteContent.aboutFoundations;
 
 export default function AboutPageContent() {
   return (
@@ -124,7 +110,7 @@ export default function AboutPageContent() {
 
           <div className={styles.foundations}>
             {foundations.map((item, index) => {
-              const Icon = item.icon;
+              const Icon = foundationIcons[item.icon as keyof typeof foundationIcons];
               return (
                 <article key={item.title}>
                   <span className={styles.foundationNumber}>

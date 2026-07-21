@@ -1,0 +1,104 @@
+{
+  "announcements": [
+    { "category": "الفتاوى", "title": "أحدث الفتاوى والمسائل الحديثية", "href": "/fatwas" },
+    { "category": "المجالس العلمية", "title": "مواعيد مجالس السماع القادمة", "href": "/listening" },
+    { "category": "جديد المكتبة", "title": "الكتب والبحوث العلمية الجديدة", "href": "/library" },
+    { "category": "البرامج العلمية", "title": "المحاضرات والدورات", "href": "#media" },
+    { "category": "إعلان", "title": "الإعلانات والفعاليات العلمية", "href": "#featured" }
+  ],
+  "aboutFoundations": [
+    { "icon": "GraduationCap", "title": "العمل الأكاديمي", "text": "أستاذ الحديث وعلومه بجامعة الملك خالد في أبها." },
+    { "icon": "BookOpenCheck", "title": "التخصص العلمي", "text": "العناية بالحديث النبوي وعلوم الرواية والدراية." },
+    { "icon": "Landmark", "title": "خدمة المعرفة", "text": "تيسير وصول الباحثين وطلاب العلم إلى المادة العلمية." }
+  ],
+  "aboutProfilePoints": [
+    { "icon": "GraduationCap", "label": "المرتبة العلمية", "value": "أستاذ الحديث وعلومه" },
+    { "icon": "BookOpenCheck", "label": "مجال التخصص", "value": "الحديث النبوي وعلومه" },
+    { "icon": "Landmark", "label": "الجهة الأكاديمية", "value": "جامعة الملك خالد" }
+  ],
+  "collections": [
+    { "icon": "BookOpen", "number": "٠١", "title": "الكتب والمؤلفات", "description": "إصدارات الشيخ العلمية، مرتبة حسب الموضوع وسنة النشر." },
+    { "icon": "FileText", "number": "٠٢", "title": "البحوث والدراسات", "description": "الأبحاث المحكمة والأوراق العلمية في الحديث وعلومه." },
+    { "icon": "Mic2", "number": "٠٣", "title": "الدروس والمحاضرات", "description": "مكتبة مرئية وصوتية قابلة للاستماع والمتابعة بسهولة." },
+    { "icon": "ScrollText", "number": "٠٤", "title": "مجالس السماع", "description": "توثيق المجالس العلمية وقراءات الكتب والإجازات." },
+    { "icon": "MessageCircleQuestion", "number": "٠٥", "title": "الفتاوى والأجوبة", "description": "أجوبة علمية مفهرسة مع إمكان البحث حسب الموضوع." },
+    { "icon": "GraduationCap", "number": "٠٦", "title": "الإشراف الأكاديمي", "description": "الرسائل العلمية والمناقشات والأنشطة الجامعية." }
+  ],
+  "biographyHighlights": [
+    { "icon": "Landmark", "title": "المسار الأكاديمي", "text": "أستاذ الحديث وعلومه بجامعة الملك خالد في أبها." },
+    { "icon": "BookOpenCheck", "title": "التخصص العلمي", "text": "العناية بالسنة النبوية وعلوم الرواية والدراية." },
+    { "icon": "Award", "title": "الرسالة", "text": "خدمة العلم وطلابه، وإتاحة المعرفة بمنهج واضح وموثوق." }
+  ],
+  "missionPrinciples": [
+    { "icon": "BookMarked", "title": "مرجعية علمية", "text": "جمع الإنتاج العلمي والدعوي في مكان موثوق ومنظم." },
+    { "icon": "LibraryBig", "title": "وصول ميسّر", "text": "تجربة هادئة تيسّر البحث والقراءة والاستماع." },
+    { "icon": "Feather", "title": "أصالة ووضوح", "text": "هوية تجمع روح التراث مع التنظيم الأكاديمي الحديث." }
+  ],
+  "featuredTabs": [
+    { "id": "all", "label": "الكل" },
+    { "id": "books", "label": "المؤلفات" },
+    { "id": "research", "label": "البحوث" },
+    { "id": "sessions", "label": "المجالس" }
+  ],
+  "featuredMaterials": [
+    { "category": "books", "icon": "BookMarked", "type": "كتب ومؤلفات", "title": "فهرس المؤلفات العلمية", "description": "وصول مرتب إلى كتب الشيخ وإصداراته مع بيانات النشر والنسخ المتاحة.", "meta": "تصنيف موضوعي" },
+    { "category": "research", "icon": "FileStack", "type": "بحوث ودراسات", "title": "الأبحاث العلمية المحكمة", "description": "أرشيف للبحوث والأوراق العلمية، مهيأ للباحثين والتوثيق الأكاديمي.", "meta": "فهرسة أكاديمية" },
+    { "category": "sessions", "icon": "ScrollText", "type": "مجالس علمية", "title": "مجالس السماع والإجازات", "description": "سجل للمجالس والقراءات العلمية، مع تفاصيل الكتاب والمجلس والتاريخ.", "meta": "توثيق زمني" },
+    { "category": "sessions", "icon": "Headphones", "type": "مكتبة صوتية", "title": "الدروس والمحاضرات المسجلة", "description": "مواد صوتية منظمة في سلاسل مع إمكان متابعة الاستماع من آخر موضع.", "meta": "استماع ميسّر" }
+  ],
+  "mediaPlaylists": [
+    { "id": 1, "icon": "Headphones", "kind": "سلسلة صوتية", "title": "دروس الحديث وعلومه", "description": "سلسلة علمية مرتبة في أبواب الحديث ومصطلحه." },
+    { "id": 2, "icon": "Video", "kind": "محاضرات مرئية", "title": "المجالس واللقاءات العلمية", "description": "لقاءات أكاديمية ومجالس علمية موثقة ومرتبة." },
+    { "id": 3, "icon": "Play", "kind": "مختارات", "title": "فوائد حديثية موجزة", "description": "مقاطع مختارة تعين طالب العلم على المراجعة." }
+  ],
+  "knowledgeItems": [
+    { "icon": "BookOpenText", "label": "الحديث", "description": "رواية · دراية · تحقيق" },
+    { "icon": "MessageCircleQuestion", "label": "الفتاوى", "description": "تأصيل · بيان · إجابة" },
+    { "icon": "BookOpen", "label": "الكتب", "description": "تصنيف · تحقيق · نشر" },
+    { "icon": "FileText", "label": "الأبحاث", "description": "دراسة · توثيق · تحليل" },
+    { "icon": "ScrollText", "label": "مجالس السماع", "description": "قراءة · إجازة · توثيق" },
+    { "icon": "LibraryBig", "label": "الإنتاج الأكاديمي", "description": "علم · بحث · إثراء" },
+    { "icon": "GraduationCap", "label": "الإشراف العلمي", "description": "توجيه · متابعة · تأهيل" }
+  ],
+  "listeningCategories": [
+    { "label": "جميع السلاسل", "value": "all" },
+    { "label": "كتب الصحاح", "value": "كتب الصحاح" },
+    { "label": "السنن والمسانيد", "value": "دواوين السنة" },
+    { "label": "علوم الحديث", "value": "علوم الحديث" },
+    { "label": "الدروس والشروح", "value": "دروس علمية" }
+  ],
+  "navigation": [
+    { "label": "الرئيسية", "href": "/" },
+    { "label": "عن الشيخ", "href": "/about" },
+    { "label": "مجالس السماع", "href": "/listening" },
+    { "label": "المكتبة الرقمية", "href": "/library" },
+    { "label": "الإشراف العلمي", "href": "/dissertations" },
+    { "label": "الفتاوى", "href": "/fatwas" }
+  ],
+  "searchLinks": [
+    { "label": "الفتاوى والمسائل الحديثية", "description": "أجوبة علمية مفهرسة في الحديث وعلومه مع استقبال الأسئلة الجديدة", "href": "/fatwas" },
+    { "label": "المصنَّفات والمكتبة الرقمية", "description": "الكتب والتحقيقات والأبحاث مع قارئ PDF مدمج", "href": "/library" },
+    { "label": "مجالس السماع والمواد الصوتية", "description": "السلاسل الحديثية والمجالس المرتبة مع الكتاب المرتبط", "href": "/listening" },
+    { "label": "الإنتاج الأكاديمي والإشراف العلمي", "description": "قاعدة بيانات الرسائل العلمية المشرف عليها أو المناقشة", "href": "/dissertations" },
+    { "label": "عن فضيلة الشيخ", "description": "السيرة العلمية والأكاديمية والتعريف بفضيلته", "href": "/about" },
+    { "label": "الصفحة الرئيسية", "description": "مدخل الموقع العلمي الرسمي", "href": "/" }
+  ],
+  "footerQuickLinks": [
+    { "label": "عن الشيخ", "href": "/about" },
+    { "label": "مجالس السماع", "href": "/listening" },
+    { "label": "الكتب والمؤلفات", "href": "/library" },
+    { "label": "البحوث والدراسات", "href": "#featured" }
+  ],
+  "footerKnowledgeLinks": [
+    { "label": "مجالس السماع", "href": "/listening" },
+    { "label": "المكتبة الرقمية", "href": "/library" },
+    { "label": "الإشراف العلمي", "href": "/dissertations" },
+    { "label": "الفتاوى والأجوبة", "href": "/fatwas" },
+    { "label": "السيرة العلمية", "href": "/about" },
+    { "label": "البحث في الموقع", "href": "#home" }
+  ],
+  "footerLegalLinks": [
+    { "label": "الشروط والأحكام", "href": "/terms" },
+    { "label": "سياسة الخصوصية", "href": "/privacy-policy" }
+  ]
+}

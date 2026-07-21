@@ -21,16 +21,11 @@ import {
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
 import SeriesIcon from "@/components/listening/SeriesIcon/SeriesIcon";
+import siteContent from "@/data/site-content.json";
 import styles from "./ListeningIndexContent.module.css";
 
 export default function ListeningIndexContent() {
-  const categories = [
-    { label: "جميع السلاسل", value: "all" },
-    { label: "كتب الصحاح", value: "كتب الصحاح" },
-    { label: "السنن والمسانيد", value: "دواوين السنة" },
-    { label: "علوم الحديث", value: "علوم الحديث" },
-    { label: "الدروس والشروح", value: "دروس علمية" },
-  ];
+  const categories = siteContent.listeningCategories;
   const [activeCategory, setActiveCategory] = useState("all");
   const [query, setQuery] = useState("");
   const normalizedQuery = query.trim();

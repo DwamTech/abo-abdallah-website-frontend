@@ -2,31 +2,11 @@
 
 import { useState } from "react";
 import { Clock3, Headphones, Pause, Play, Video } from "lucide-react";
+import siteContent from "@/data/site-content.json";
 import styles from "./MediaSection.module.css";
 
-const playlists = [
-  {
-    id: 1,
-    kind: "سلسلة صوتية",
-    title: "دروس الحديث وعلومه",
-    description: "سلسلة علمية مرتبة في أبواب الحديث ومصطلحه.",
-    icon: Headphones,
-  },
-  {
-    id: 2,
-    kind: "محاضرات مرئية",
-    title: "المجالس واللقاءات العلمية",
-    description: "لقاءات أكاديمية ومجالس علمية موثقة ومرتبة.",
-    icon: Video,
-  },
-  {
-    id: 3,
-    kind: "مختارات",
-    title: "فوائد حديثية موجزة",
-    description: "مقاطع مختارة تعين طالب العلم على المراجعة.",
-    icon: Play,
-  },
-];
+const playlistIcons = { Headphones, Video, Play } as const;
+const playlists = siteContent.mediaPlaylists;
 
 export default function MediaSection() {
   const [selected, setSelected] = useState(1);
@@ -72,7 +52,7 @@ export default function MediaSection() {
 
         <div className={styles.playlists}>
           {playlists.map((item, index) => {
-            const Icon = item.icon;
+            const Icon = playlistIcons[item.icon as keyof typeof playlistIcons];
             const isSelected = selected === item.id;
             return (
               <button

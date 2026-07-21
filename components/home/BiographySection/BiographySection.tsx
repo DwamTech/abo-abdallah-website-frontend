@@ -1,23 +1,9 @@
 import { ArrowLeft, Award, BookOpenCheck, Landmark } from "lucide-react";
+import siteContent from "@/data/site-content.json";
 import styles from "./BiographySection.module.css";
 
-const highlights = [
-  {
-    icon: Landmark,
-    title: "المسار الأكاديمي",
-    text: "أستاذ الحديث وعلومه بجامعة الملك خالد في أبها.",
-  },
-  {
-    icon: BookOpenCheck,
-    title: "التخصص العلمي",
-    text: "العناية بالسنة النبوية وعلوم الرواية والدراية.",
-  },
-  {
-    icon: Award,
-    title: "الرسالة",
-    text: "خدمة العلم وطلابه، وإتاحة المعرفة بمنهج واضح وموثوق.",
-  },
-];
+const highlightIcons = { Landmark, BookOpenCheck, Award } as const;
+const highlights = siteContent.biographyHighlights;
 
 export default function BiographySection() {
   return (
@@ -44,7 +30,7 @@ export default function BiographySection() {
 
           <div className={styles.highlights}>
             {highlights.map((item) => {
-              const Icon = item.icon;
+              const Icon = highlightIcons[item.icon as keyof typeof highlightIcons];
               return (
                 <div key={item.title} className={styles.highlight}>
                   <span>

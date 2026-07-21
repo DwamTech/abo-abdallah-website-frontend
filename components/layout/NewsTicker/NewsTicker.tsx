@@ -2,35 +2,10 @@
 
 import { useState } from "react";
 import { ChevronLeft, Megaphone, Pause, Play } from "lucide-react";
+import siteContent from "@/data/site-content.json";
 import styles from "./NewsTicker.module.css";
 
-const announcements = [
-  {
-    category: "الفتاوى",
-    title: "أحدث الفتاوى والمسائل الحديثية",
-    href: "#library",
-  },
-  {
-    category: "المجالس العلمية",
-    title: "مواعيد مجالس السماع القادمة",
-    href: "#library",
-  },
-  {
-    category: "جديد المكتبة",
-    title: "الكتب والبحوث العلمية الجديدة",
-    href: "#featured",
-  },
-  {
-    category: "البرامج العلمية",
-    title: "المحاضرات والدورات",
-    href: "#media",
-  },
-  {
-    category: "إعلان",
-    title: "الإعلانات والفعاليات العلمية",
-    href: "#featured",
-  },
-];
+const announcements = siteContent.announcements;
 
 function AnnouncementGroup({ duplicate = false }: { duplicate?: boolean }) {
   return (

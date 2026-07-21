@@ -7,46 +7,11 @@ import {
   Mic2,
   ScrollText,
 } from "lucide-react";
+import siteContent from "@/data/site-content.json";
 import styles from "./CollectionsSection.module.css";
 
-const collections = [
-  {
-    icon: BookOpen,
-    number: "٠١",
-    title: "الكتب والمؤلفات",
-    description: "إصدارات الشيخ العلمية، مرتبة حسب الموضوع وسنة النشر.",
-  },
-  {
-    icon: FileText,
-    number: "٠٢",
-    title: "البحوث والدراسات",
-    description: "الأبحاث المحكمة والأوراق العلمية في الحديث وعلومه.",
-  },
-  {
-    icon: Mic2,
-    number: "٠٣",
-    title: "الدروس والمحاضرات",
-    description: "مكتبة مرئية وصوتية قابلة للاستماع والمتابعة بسهولة.",
-  },
-  {
-    icon: ScrollText,
-    number: "٠٤",
-    title: "مجالس السماع",
-    description: "توثيق المجالس العلمية وقراءات الكتب والإجازات.",
-  },
-  {
-    icon: MessageCircleQuestion,
-    number: "٠٥",
-    title: "الفتاوى والأجوبة",
-    description: "أجوبة علمية مفهرسة مع إمكان البحث حسب الموضوع.",
-  },
-  {
-    icon: GraduationCap,
-    number: "٠٦",
-    title: "الإشراف الأكاديمي",
-    description: "الرسائل العلمية والمناقشات والأنشطة الجامعية.",
-  },
-];
+const collectionIcons = { BookOpen, FileText, Mic2, ScrollText, MessageCircleQuestion, GraduationCap } as const;
+const collections = siteContent.collections;
 
 export default function CollectionsSection() {
   return (
@@ -65,7 +30,7 @@ export default function CollectionsSection() {
 
         <div className={styles.grid}>
           {collections.map((item) => {
-            const Icon = item.icon;
+            const Icon = collectionIcons[item.icon as keyof typeof collectionIcons];
             return (
               <article key={item.title} className={styles.card}>
                 <span className={styles.cardNumber}>{item.number}</span>

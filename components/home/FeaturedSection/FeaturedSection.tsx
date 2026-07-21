@@ -9,53 +9,13 @@ import {
   Headphones,
   ScrollText,
 } from "lucide-react";
+import siteContent from "@/data/site-content.json";
 import styles from "./FeaturedSection.module.css";
 
-const tabs = [
-  { id: "all", label: "الكل" },
-  { id: "books", label: "المؤلفات" },
-  { id: "research", label: "البحوث" },
-  { id: "sessions", label: "المجالس" },
-];
+const tabs = siteContent.featuredTabs;
 
-const materials = [
-  {
-    category: "books",
-    icon: BookMarked,
-    type: "كتب ومؤلفات",
-    title: "فهرس المؤلفات العلمية",
-    description:
-      "وصول مرتب إلى كتب الشيخ وإصداراته مع بيانات النشر والنسخ المتاحة.",
-    meta: "تصنيف موضوعي",
-  },
-  {
-    category: "research",
-    icon: FileStack,
-    type: "بحوث ودراسات",
-    title: "الأبحاث العلمية المحكمة",
-    description:
-      "أرشيف للبحوث والأوراق العلمية، مهيأ للباحثين والتوثيق الأكاديمي.",
-    meta: "فهرسة أكاديمية",
-  },
-  {
-    category: "sessions",
-    icon: ScrollText,
-    type: "مجالس علمية",
-    title: "مجالس السماع والإجازات",
-    description:
-      "سجل للمجالس والقراءات العلمية، مع تفاصيل الكتاب والمجلس والتاريخ.",
-    meta: "توثيق زمني",
-  },
-  {
-    category: "sessions",
-    icon: Headphones,
-    type: "مكتبة صوتية",
-    title: "الدروس والمحاضرات المسجلة",
-    description:
-      "مواد صوتية منظمة في سلاسل مع إمكان متابعة الاستماع من آخر موضع.",
-    meta: "استماع ميسّر",
-  },
-];
+const materialIcons = { BookMarked, FileStack, ScrollText, Headphones } as const;
+const materials = siteContent.featuredMaterials;
 
 export default function FeaturedSection() {
   const [activeTab, setActiveTab] = useState("all");
@@ -90,7 +50,7 @@ export default function FeaturedSection() {
 
         <div className={styles.materials} aria-live="polite">
           {visibleMaterials.map((item) => {
-            const Icon = item.icon;
+            const Icon = materialIcons[item.icon as keyof typeof materialIcons];
             return (
               <article key={item.title} className={styles.material}>
                 <div className={styles.materialTop}>

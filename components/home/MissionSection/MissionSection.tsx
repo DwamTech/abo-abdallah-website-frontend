@@ -1,24 +1,10 @@
 import { BookMarked, Feather, LibraryBig } from "lucide-react";
 import { toArabicDigits } from "@/lib/arabicNumbers";
+import siteContent from "@/data/site-content.json";
 import styles from "./MissionSection.module.css";
 
-const principles = [
-  {
-    icon: BookMarked,
-    title: "مرجعية علمية",
-    text: "جمع الإنتاج العلمي والدعوي في مكان موثوق ومنظم.",
-  },
-  {
-    icon: LibraryBig,
-    title: "وصول ميسّر",
-    text: "تجربة هادئة تيسّر البحث والقراءة والاستماع.",
-  },
-  {
-    icon: Feather,
-    title: "أصالة ووضوح",
-    text: "هوية تجمع روح التراث مع التنظيم الأكاديمي الحديث.",
-  },
-];
+const principleIcons = { BookMarked, LibraryBig, Feather } as const;
+const principles = siteContent.missionPrinciples;
 
 export default function MissionSection() {
   return (
@@ -52,7 +38,7 @@ export default function MissionSection() {
 
         <div className={styles.principles}>
           {principles.map((item, index) => {
-            const Icon = item.icon;
+            const Icon = principleIcons[item.icon as keyof typeof principleIcons];
             return (
               <article key={item.title} className={styles.principle}>
                 <span className={styles.number}>

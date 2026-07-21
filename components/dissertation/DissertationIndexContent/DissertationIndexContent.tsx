@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -24,6 +24,7 @@ import {
   type Dissertation,
 } from "@/lib/dissertationData";
 import { toArabicDigits } from "@/lib/arabicNumbers";
+import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
 import styles from "./DissertationIndexContent.module.css";
 
 export default function DissertationIndexContent() {
@@ -55,21 +56,6 @@ export default function DissertationIndexContent() {
       );
     });
   }, [query, year, university, specialization, participation, degree]);
-
-  useEffect(() => {
-    const hash = typeof window !== "undefined" ? window.location.hash : "";
-    if (hash) {
-      const id = hash.replace("#", "");
-      const element = document.getElementById(id);
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: "smooth", block: "center" });
-          element.classList.add(styles.highlight);
-          setTimeout(() => element.classList.remove(styles.highlight), 1800);
-        }, 300);
-      }
-    }
-  }, []);
 
   const activeFiltersCount = [
     year,
@@ -144,6 +130,7 @@ export default function DissertationIndexContent() {
                   <strong>الرسائل العلمية</strong>
                   <i />
                   <small>إشراف ومناقشة</small>
+                  <b className={styles.heroBookBottom} aria-hidden="true" />
                 </div>
                 <span className={styles.heroBookShadow} aria-hidden="true" />
               </div>
@@ -153,92 +140,104 @@ export default function DissertationIndexContent() {
       </section>
 
       <section className={styles.catalog}>
+        <SubpageBackdrop />
         <div className={styles.catalogInner}>
-          <div className={styles.catalogHead}>
-            <div>
+          <div className={styles.controlPanel}>
+            <div className={styles.catalogHead}>
+              <div>
+                <span>
+                  <SlidersHorizontal size={14} />
+                  فهرس الرسائل العلمية
+                </span>
+                <h2>ابحث وحدّد نطاق الدراسة</h2>
+                <p>ابحث في السجل ثم خصّص النتائج بحسب الجهة والتخصص والدور العلمي.</p>
+              </div>
+
+              <label className={styles.searchBox}>
+                <span className={styles.searchIcon}>
+                  <Search size={21} />
+                </span>
+                <span className={styles.searchControl}>
+                  <small>بحث ذكي في السجل</small>
+                  <input
+                    type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="عنوان الرسالة، الباحث، الجامعة أو التخصص..."
+                  />
+                </span>
+                {query && (
+                  <button
+                    type="button"
+                    onClick={() => setQuery("")}
+                    aria-label="مسح البحث"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
+                <span className={styles.resultCount}>
+                  {toArabicDigits(filtered.length)}
+                  <small>نتيجة</small>
+                </span>
+              </label>
+            </div>
+
+            <div className={styles.filtersHeader}>
               <span>
-                <SlidersHorizontal size={14} />
-                فهرس الرسائل العلمية
+                <SlidersHorizontal size={15} />
+                تصفية النتائج
               </span>
-              <h2>تصفّح الرسائل</h2>
+              <small>{toArabicDigits(activeFiltersCount)} فلاتر مفعّلة</small>
             </div>
 
-            <div className={styles.searchBox}>
-              <span className={styles.searchIcon}>
-                <Search size={20} />
-              </span>
-              <span className={styles.searchControl}>
-                <small>البحث في الرسائل</small>
-                <input
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="ابحث بعنوان الرسالة، اسم الباحث، الجامعة..."
-                />
-              </span>
-              {query && (
-                <button
-                  type="button"
-                  onClick={() => setQuery("")}
-                  aria-label="مسح البحث"
-                >
-                  <X size={16} />
+            <div className={styles.filters}>
+              <FilterRow
+                label="السنة"
+                icon={<Calendar size={14} />}
+                options={["الكل", ...dissertationYears.map(String)]}
+                value={year}
+                onChange={setYear}
+              />
+              <FilterRow
+                label="الجامعة"
+                icon={<University size={14} />}
+                options={["الكل", ...dissertationUniversities]}
+                value={university}
+                onChange={setUniversity}
+              />
+              <FilterRow
+                label="التخصص"
+                icon={<BookOpen size={14} />}
+                options={["الكل", ...dissertationSpecializations]}
+                value={specialization}
+                onChange={setSpecialization}
+              />
+              <FilterRow
+                label="نوع المشاركة"
+                icon={<User size={14} />}
+                options={participationTypes}
+                value={participation}
+                onChange={setParticipation}
+              />
+              <FilterRow
+                label="الدرجة العلمية"
+                icon={<GraduationCap size={14} />}
+                options={dissertationDegrees}
+                value={degree}
+                onChange={setDegree}
+              />
+            </div>
+
+            {activeFiltersCount > 0 && (
+              <div className={styles.activeFilters}>
+                <span>تم تطبيق {toArabicDigits(activeFiltersCount)} مرشح</span>
+                <button type="button" onClick={resetFilters}>
+                  إعادة ضبط الفلاتر
+                  <X size={14} />
                 </button>
-              )}
-              <span className={styles.resultCount}>
-                {toArabicDigits(filtered.length)}
-                <small>نتيجة</small>
-              </span>
-            </div>
+              </div>
+            )}
           </div>
-
-          <div className={styles.filters}>
-            <FilterRow
-              label="السنة"
-              icon={<Calendar size={14} />}
-              options={["الكل", ...dissertationYears.map(String)]}
-              value={year}
-              onChange={setYear}
-            />
-            <FilterRow
-              label="الجامعة"
-              icon={<University size={14} />}
-              options={["الكل", ...dissertationUniversities]}
-              value={university}
-              onChange={setUniversity}
-            />
-            <FilterRow
-              label="التخصص"
-              icon={<BookOpen size={14} />}
-              options={["الكل", ...dissertationSpecializations]}
-              value={specialization}
-              onChange={setSpecialization}
-            />
-            <FilterRow
-              label="نوع المشاركة"
-              icon={<User size={14} />}
-              options={participationTypes}
-              value={participation}
-              onChange={setParticipation}
-            />
-            <FilterRow
-              label="الدرجة العلمية"
-              icon={<GraduationCap size={14} />}
-              options={dissertationDegrees}
-              value={degree}
-              onChange={setDegree}
-            />
-          </div>
-
-          {activeFiltersCount > 0 && (
-            <div className={styles.activeFilters}>
-              <span>تم تطبيق {toArabicDigits(activeFiltersCount)} مرشح</span>
-              <button type="button" onClick={resetFilters}>
-                إعادة ضبط الفلاتر
-                <X size={14} />
-              </button>
-            </div>
-          )}
 
           <div className={styles.grid}>
             {filtered.length === 0 ? (
@@ -252,7 +251,11 @@ export default function DissertationIndexContent() {
               </div>
             ) : (
               filtered.map((item) => (
-                <article className={styles.card} key={item.id} id={item.id}>
+                <Link
+                  className={styles.card}
+                  key={item.id}
+                  href={`/dissertations/${item.id}`}
+                >
                   <div className={styles.cardMetaTop}>
                     <span>{item.participation}</span>
                     <small>{item.degree}</small>
@@ -287,27 +290,14 @@ export default function DissertationIndexContent() {
                     <p className={styles.abstract}>{item.abstract}</p>
                   )}
 
-                  {item.link ? (
-                    <a
-                      className={styles.openWork}
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <i>
-                        <BookOpen size={17} />
-                      </i>
-                      عرض الرسالة
-                      <ArrowLeft size={17} />
-                    </a>
-                  ) : (
-                    <span className={styles.noLink}>
-                      {item.abstract
-                        ? "ملخص الرسالة متاح أعلاه"
-                        : "الرسالة غير متاحة للنشر"}
-                    </span>
-                  )}
-                </article>
+                  <span className={styles.openWork}>
+                    <i>
+                      <BookOpen size={17} />
+                    </i>
+                    عرض ملف الرسالة
+                    <ArrowLeft size={17} />
+                  </span>
+                </Link>
               ))
             )}
           </div>

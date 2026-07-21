@@ -6,29 +6,21 @@ import {
   Landmark,
   Sparkles,
 } from "lucide-react";
+import siteContent from "@/data/site-content.json";
 import styles from "./AboutSection.module.css";
 
-const profilePoints = [
-  {
-    icon: GraduationCap,
-    label: "المرتبة العلمية",
-    value: "أستاذ الحديث وعلومه",
-  },
-  {
-    icon: BookOpenCheck,
-    label: "مجال التخصص",
-    value: "الحديث النبوي وعلومه",
-  },
-  {
-    icon: Landmark,
-    label: "الجهة الأكاديمية",
-    value: "جامعة الملك خالد",
-  },
-];
+const profileIcons = { GraduationCap, BookOpenCheck, Landmark } as const;
+const profilePoints = siteContent.aboutProfilePoints;
 
 export default function AboutSection() {
   return (
     <section id="about" className={styles.section}>
+      <div className={styles.backgroundArt} aria-hidden="true">
+        <span className={styles.manuscriptArc} />
+        <span className={styles.scholarSeal}><i/><i/><i/><i/></span>
+        <span className={styles.dotManuscript} />
+        <span className={styles.knowledgeLines}><i/><i/><i/></span>
+      </div>
       <div className={styles.container}>
         <div className={styles.content}>
           <span className={styles.eyebrow}>
@@ -51,7 +43,7 @@ export default function AboutSection() {
 
           <div className={styles.profilePoints}>
             {profilePoints.map((item) => {
-              const Icon = item.icon;
+              const Icon = profileIcons[item.icon as keyof typeof profileIcons];
               return (
                 <div className={styles.profilePoint} key={item.label}>
                   <span className={styles.pointIcon}>

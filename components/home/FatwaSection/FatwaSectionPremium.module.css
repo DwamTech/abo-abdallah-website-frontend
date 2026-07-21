@@ -1,0 +1,157 @@
+.section {
+  background:
+    radial-gradient(circle at 8% 18%, rgba(174, 126, 58, 0.13), transparent 23%),
+    linear-gradient(115deg, rgba(255,255,255,.72), transparent 42%),
+    #f4ead9 !important;
+}
+
+.section::before {
+  position: absolute;
+  top: 0;
+  right: 6%;
+  width: 1px;
+  height: 100%;
+  content: "";
+  background: linear-gradient(transparent, rgba(166,122,53,.15), transparent);
+}
+
+.heading { align-items: center !important; }
+.headingMeta { display: flex; margin-top: 16px; align-items: center; gap: 16px; color: #79685a; font-size: 12px; }
+.headingMeta span { display: inline-flex; align-items: center; gap: 6px; }
+.headingMeta strong { color: #8d632f; font: 600 20px "Noto Kufi Arabic Variable", sans-serif; }
+.headingMeta i { width: 1px; height: 28px; background: rgba(166,122,53,.2); }
+
+.board { grid-template-columns: minmax(0, 1.2fr) minmax(350px, .8fr) !important; gap: 20px !important; }
+
+.featured {
+  position: relative;
+  min-height: 465px !important;
+  padding: 30px 34px 0 !important;
+  border: 1px solid rgba(191, 148, 79, 0.33) !important;
+  border-radius: 24px 24px 24px 7px !important;
+  background:
+    linear-gradient(90deg, rgba(166,122,53,.035) 1px, transparent 1px) 0 0 / 43px 43px,
+    linear-gradient(145deg, rgba(255,255,255,.96), rgba(249,240,223,.88)) !important;
+  box-shadow: 0 30px 75px rgba(73, 47, 34, 0.13) !important;
+}
+
+.featured::before {
+  position: absolute;
+  top: -90px;
+  left: -70px;
+  width: 230px;
+  height: 230px;
+  content: "";
+  border: 1px solid rgba(166,122,53,.11);
+  border-radius: 50%;
+  box-shadow: 0 0 0 35px rgba(166,122,53,.025);
+}
+
+.featured::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 100%;
+  content: "";
+  background: linear-gradient(#d8b46d, #634334, #d8b46d);
+}
+
+.featuredSeal {
+  position: absolute;
+  top: 23px;
+  left: 27px;
+  z-index: 2;
+  display: flex;
+  width: 72px;
+  height: 85px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  color: #e7c782;
+  border-radius: 36px 36px 8px 8px;
+  background: #3d291f;
+  box-shadow: 0 13px 27px rgba(61,41,31,.2);
+}
+
+.featuredSeal small { color: rgba(255,255,255,.55); font-size: 8px; }
+.featuredTop { padding-left: 92px; }
+.questionBox { border: 1px solid rgba(166,122,53,.16) !important; border-right: 4px solid #c79345 !important; border-radius: 10px 10px 10px 3px; background: rgba(236,219,186,.35) !important; }
+.featuredFooter { margin-inline: -34px !important; padding-inline: 34px !important; border-top: 1px solid rgba(166,122,53,.13); }
+
+.sidePanel { gap: 16px !important; }
+.categories { border-color: rgba(166,122,53,.28) !important; border-radius: 18px 18px 18px 5px !important; background: rgba(255,255,255,.66) !important; box-shadow: 0 20px 48px rgba(75,51,40,.08); }
+.categoriesHeader { background: linear-gradient(90deg, rgba(166,122,53,.1), transparent); }
+.categoryLink { transition: .2s; }
+.categoryLink:hover { color: #fff; background: #745039; }
+.categoryLink:hover svg, .categoryLink:hover i { color: #e8ca8f; }
+.categoryIcon { display: grid; width: 26px; height: 26px; place-items: center; color: #a4773a; border: 1px solid rgba(166,122,53,.18); border-radius: 50%; }
+
+.askCard {
+  padding: 21px !important;
+  border: 1px solid rgba(229,198,138,.17);
+  border-radius: 18px 18px 18px 5px !important;
+  box-shadow: 0 24px 50px rgba(52,35,28,.18);
+}
+
+.askLink { min-height: 39px; padding: 0 12px; justify-content: center; border: 1px solid rgba(229,198,138,.2); border-radius: 20px; background: rgba(255,255,255,.04); }
+
+.explore {
+  display: grid;
+  width: min(100%, 480px);
+  min-height: 62px;
+  margin: 20px auto 0;
+  padding: 8px 18px;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 15px;
+  color: #f5e5c4;
+  border-radius: 32px;
+  background: #4b3227;
+  box-shadow: 0 16px 35px rgba(75,50,39,.2);
+  transition: .2s;
+}
+.explore span { color: rgba(255,255,255,.5); font-size: 9px; }
+.explore strong { font: 11px "Noto Kufi Arabic Variable", sans-serif; }
+.explore svg { grid-column: 2; grid-row: 1/3; color: #e3c17e; }
+.explore:hover { transform: translateY(-3px); background: #674530; }
+
+@media (max-width: 899px) {
+  .board { grid-template-columns: 1fr !important; }
+}
+
+@media (min-width: 900px) and (max-width: 1536px) {
+  .section { padding: 10px 0 7px !important; }
+  .heading { margin-bottom: 10px !important; gap: 46px !important; }
+  .heading h2 { font-size: clamp(32px, 3.1vw, 43px) !important; line-height: 1.25 !important; }
+  .heading p { margin: 3px 0 6px !important; font-size: 14px !important; line-height: 1.65 !important; }
+  .headingMeta { min-height: 34px; margin-top: 5px; }
+  .headingMeta strong { font-size: 17px; }
+  .board { gap: 14px !important; }
+  .featured { min-height: 350px !important; padding: 20px 27px 0 !important; }
+  .featuredSeal { top: 14px; left: 20px; width: 62px; height: 66px; }
+  .featuredTop { margin-bottom: 11px !important; padding-left: 72px; }
+  .featured h3 { margin: 5px 0 9px !important; font-size: 23px !important; line-height: 1.38 !important; }
+  .questionBox { margin-bottom: 9px !important; padding: 11px 13px !important; }
+  .questionBox p { font-size: 14px !important; }
+  .featured > p { font-size: 13px !important; line-height: 1.65 !important; -webkit-line-clamp: 2 !important; }
+  .featuredFooter { min-height: 48px !important; margin-inline: -27px !important; padding-inline: 27px !important; }
+  .categoriesHeader { min-height: 46px !important; }
+  .categoryLink { min-height: 48px !important; padding-block: 5px !important; }
+  .categoryLink span { font-size: 11px !important; }
+  .categoryIcon { width: 24px; height: 24px; }
+  .askCard { padding: 11px 15px !important; }
+  .askCard h3 { font-size: 16px !important; }
+  .askCard p { display: -webkit-box; margin: 4px 0 !important; overflow: hidden; font-size: 10px !important; -webkit-box-orient: vertical; -webkit-line-clamp: 1; }
+  .askLink { min-height: 33px; margin-top: 5px !important; }
+  .explore { min-height: 43px; margin-top: 7px; }
+}
+
+@media (max-width: 620px) {
+  .headingMeta { flex-wrap: wrap; }
+  .featured { padding: 23px 18px 0 !important; }
+  .featuredSeal { position: static; width: 100%; height: 48px; margin-bottom: 15px; flex-direction: row; border-radius: 24px; }
+  .featuredTop { padding-left: 0; }
+  .featuredFooter { margin-inline: -18px !important; padding-inline: 18px !important; }
+}

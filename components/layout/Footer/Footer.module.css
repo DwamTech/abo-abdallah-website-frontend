@@ -4,16 +4,6 @@
   background: #251a15;
 }
 
-.topLine {
-  height: 4px;
-  background: linear-gradient(
-    90deg,
-    var(--brown-700),
-    var(--gold-500),
-    var(--brown-700)
-  );
-}
-
 .container {
   width: min(calc(100% - 48px), var(--container));
   margin-inline: auto;

@@ -1,9 +1,14 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
   BookOpen,
   CalendarDays,
   Check,
+  ChevronLeft,
+  ChevronRight,
   Download,
   Expand,
   FileText,
@@ -13,6 +18,7 @@ import {
   Share2,
   Sparkles,
   Tags,
+  X,
 } from "lucide-react";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
 import LibraryWorkIcon from "@/components/library/LibraryWorkIcon/LibraryWorkIcon";
@@ -29,6 +35,73 @@ export default function LibraryItemContent({
   work,
   relatedWorks,
 }: LibraryItemContentProps) {
+  const [readerOpen, setReaderOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageDirection, setPageDirection] = useState<"next" | "previous">(
+    "next",
+  );
+  const readerPages = useMemo(
+    () => [
+      {
+        title: "صفحة العنوان",
+        heading: work.title,
+        paragraphs: [work.description, `${work.contentType} في ${work.field}.`],
+      },
+      {
+        title: "عن المصنَّف",
+        heading: "نبذة علمية",
+        paragraphs: [work.description, work.publication],
+      },
+      {
+        title: "بيانات النشر",
+        heading: "البيانات الببليوجرافية",
+        paragraphs: [
+          `الإصدار: ${work.edition}.`,
+          `عدد الصفحات: ${toArabicDigits(work.pages)} صفحة.`,
+          `التصنيف العلمي: ${work.field}.`,
+          `نوع المحتوى: ${work.contentType}.`,
+        ],
+      },
+      {
+        title: "فهرس المحتويات",
+        heading: "محتويات المصنَّف",
+        paragraphs: work.contents.map(
+          (item, index) => `${toArabicDigits(index + 1)}. ${item}`,
+        ),
+      },
+    ],
+    [work],
+  );
+
+  useEffect(() => {
+    if (!readerOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeyboard = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setReaderOpen(false);
+      if (!work.pdfUrl && event.key === "ArrowLeft") {
+        setPageDirection("next");
+        setCurrentPage((page) => Math.min(page + 1, readerPages.length - 1));
+      }
+      if (!work.pdfUrl && event.key === "ArrowRight") {
+        setPageDirection("previous");
+        setCurrentPage((page) => Math.max(page - 1, 0));
+      }
+    };
+    window.addEventListener("keydown", handleKeyboard);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyboard);
+    };
+  }, [readerOpen, readerPages.length, work.pdfUrl]);
+
+  const goToPage = (page: number) => {
+    setPageDirection(page > currentPage ? "next" : "previous");
+    setCurrentPage(page);
+  };
+
   return (
     <>
       <section className={styles.hero}>
@@ -137,7 +210,11 @@ export default function LibraryItemContent({
                 {work.shortTitle}
               </span>
               <div>
-                <button type="button" aria-label="تكبير القارئ">
+                <button
+                  type="button"
+                  aria-label="العرض الكامل للقارئ"
+                  onClick={() => setReaderOpen(true)}
+                >
                   <Expand size={16} />
                 </button>
                 <button
@@ -247,6 +324,133 @@ export default function LibraryItemContent({
           )}
         </div>
       </section>
+
+      {readerOpen && (
+        <div
+          className={styles.fullReaderOverlay}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`قارئ ${work.title}`}
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setReaderOpen(false);
+          }}
+        >
+          <div
+            className={`${styles.fullReaderModal} ${
+              work.pdfUrl ? styles.pdfModal : ""
+            }`}
+          >
+            <header className={styles.fullReaderHeader}>
+              <span className={styles.fullReaderBrand}>
+                <BookOpen size={21} />
+                <span>
+                  <small>قارئ المكتبة الرقمية</small>
+                  <strong>{work.title}</strong>
+                </span>
+              </span>
+              {!work.pdfUrl && (
+                <span className={styles.fullReaderProgress}>
+                  الصفحة {toArabicDigits(currentPage + 1)} من {toArabicDigits(readerPages.length)}
+                </span>
+              )}
+              <button
+                type="button"
+                onClick={() => setReaderOpen(false)}
+                aria-label="إغلاق العرض الكامل"
+              >
+                <X size={20} />
+              </button>
+            </header>
+
+            {work.pdfUrl ? (
+              <iframe
+                className={styles.fullPdfFrame}
+                src={work.pdfUrl}
+                title={`العرض الكامل: ${work.title}`}
+              />
+            ) : (
+              <div className={styles.fullReaderBody}>
+                <aside className={styles.fullReaderIndex}>
+                  <span>فهرس القراءة</span>
+                  <nav>
+                    {readerPages.map((page, index) => (
+                      <button
+                        type="button"
+                        className={currentPage === index ? styles.current : undefined}
+                        key={page.title}
+                        onClick={() => goToPage(index)}
+                      >
+                        <i>{toArabicDigits(String(index + 1).padStart(2, "0"))}</i>
+                        <span>{page.title}</span>
+                      </button>
+                    ))}
+                  </nav>
+                  <p>
+                    تُستبدل هذه المعاينة تلقائيًا بملف PDF الكامل عند ربط النسخة
+                    الرقمية الرسمية.
+                  </p>
+                </aside>
+
+                <div className={styles.fullPageStage}>
+                  <article
+                    key={`${currentPage}-${pageDirection}`}
+                    className={`${styles.fullReaderPage} ${
+                      pageDirection === "next"
+                        ? styles.turnNext
+                        : styles.turnPrevious
+                    }`}
+                  >
+                    <span className={styles.fullPageEyebrow}>
+                      {readerPages[currentPage].title}
+                    </span>
+                    <h2>{readerPages[currentPage].heading}</h2>
+                    <i className={styles.fullPageRule} />
+                    {readerPages[currentPage].paragraphs.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                    <footer>
+                      <span>{work.shortTitle}</span>
+                      <strong>{toArabicDigits(currentPage + 1)}</strong>
+                    </footer>
+                  </article>
+                </div>
+              </div>
+            )}
+
+            {!work.pdfUrl && (
+              <footer className={styles.fullReaderControls}>
+                <button
+                  type="button"
+                  disabled={currentPage === 0}
+                  onClick={() => goToPage(currentPage - 1)}
+                >
+                  <ChevronRight size={18} />
+                  الصفحة السابقة
+                </button>
+                <span>
+                  {readerPages.map((page, index) => (
+                    <button
+                      type="button"
+                      aria-label={`الانتقال إلى ${page.title}`}
+                      className={currentPage === index ? styles.currentDot : undefined}
+                      key={page.title}
+                      onClick={() => goToPage(index)}
+                    />
+                  ))}
+                </span>
+                <button
+                  type="button"
+                  disabled={currentPage === readerPages.length - 1}
+                  onClick={() => goToPage(currentPage + 1)}
+                >
+                  الصفحة التالية
+                  <ChevronLeft size={18} />
+                </button>
+              </footer>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }

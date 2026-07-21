@@ -1,33 +1,28 @@
 import {
+  BookOpenCheck,
+  Headphones,
   Mail,
   MapPin,
+  MessageCircleQuestion,
   University,
 } from "lucide-react";
 import Image from "next/image";
-import { toArabicDigits } from "@/lib/arabicNumbers";
+import Link from "next/link";
 import styles from "./Footer.module.css";
+import premium from "./FooterPremium.module.css";
+import logoStyles from "./DwamCredit.module.css";
+import siteContent from "@/data/site-content.json";
 
-const quickLinks = [
-  { label: "عن الشيخ", href: "/about" },
-  { label: "مجالس السماع", href: "/listening" },
-  { label: "الكتب والمؤلفات", href: "/library" },
-  { label: "البحوث والدراسات", href: "#featured" },
-];
+const quickLinks = siteContent.footerQuickLinks;
 
-const knowledgeLinks = [
-  { label: "مجالس السماع", href: "/listening" },
-  { label: "المكتبة الرقمية", href: "/library" },
-  { label: "الفتاوى والأجوبة", href: "#library" },
-  { label: "السيرة العلمية", href: "#biography" },
-  { label: "البحث في الموقع", href: "#home" },
-];
+const knowledgeLinks = siteContent.footerKnowledgeLinks;
+const legalLinks = siteContent.footerLegalLinks;
 
 export default function Footer() {
   return (
-    <footer id="footer" className={styles.footer}>
-      <div className={styles.topLine} />
+    <footer id="footer" className={`${styles.footer} ${premium.footer} ${logoStyles.cleanFooter}`}>
       <div className={styles.container}>
-        <div className={styles.main}>
+        <div className={`${styles.main} ${premium.main} ${logoStyles.cleanMain}`}>
           <div className={styles.identity}>
             <a
               className={styles.brand}
@@ -46,6 +41,7 @@ export default function Footer() {
               موقع علمي يجمع الإنتاج الأكاديمي والدعوي، ويخدم الباحثين وطلاب
               العلم في الحديث النبوي وعلومه.
             </p>
+            <div className={premium.identityTags}><span><BookOpenCheck size={15}/>مكتبة علمية</span><span><Headphones size={15}/>مجالس سماع</span><span><MessageCircleQuestion size={15}/>فتاوى حديثية</span></div>
           </div>
 
           <div className={styles.links}>
@@ -66,7 +62,7 @@ export default function Footer() {
             ))}
           </div>
 
-          <div className={styles.contact}>
+          <div className={`${styles.contact} ${premium.contact}`}>
             <h3>بيانات علمية</h3>
             <span>
               <University size={18} />
@@ -83,11 +79,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className={styles.bottom}>
-          <p>
-            © {toArabicDigits(new Date().getFullYear())} الموقع الرسمي للأستاذ الدكتور أبو عبد
-            الله يحيى البكري الشهري
-          </p>
+        <div className={`${styles.bottom} ${premium.bottom}`}>
+          <nav>{legalLinks.map(item=><Link href={item.href} key={item.href}>{item.label}</Link>)}</nav>/
+          <a className={`${premium.dwamCredit} ${logoStyles.credit}`} href="https://dwam-tech.com/" target="_blank" rel="noreferrer"><span>تصميم وتطوير شركة</span><i><Image className={logoStyles.logo} src="/media/images/02.webp" alt="شركة دوام للتقنية" width={72} height={72}/></i></a>
         </div>
       </div>
     </footer>

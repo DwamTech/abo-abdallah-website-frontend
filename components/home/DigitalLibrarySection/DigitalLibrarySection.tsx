@@ -4,6 +4,8 @@ import {
   BookOpen,
   Files,
   Library,
+  Layers3,
+  BookMarked,
   Search,
   Sparkles,
 } from "lucide-react";
@@ -11,17 +13,18 @@ import LibraryWorkIcon from "@/components/library/LibraryWorkIcon/LibraryWorkIco
 import { libraryWorks } from "@/lib/libraryData";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import styles from "./DigitalLibrarySection.module.css";
+import premium from "./DigitalLibraryPremium.module.css";
 
 export default function DigitalLibrarySection() {
   const featured = libraryWorks[0];
 
   return (
-    <section id="digital-library" className={styles.section}>
+    <section id="digital-library" className={`${styles.section} ${premium.section}`}>
       <span className={styles.paperArc} aria-hidden="true" />
       <span className={styles.dotField} aria-hidden="true" />
 
       <div className={styles.container}>
-        <header className={styles.heading}>
+        <header className={`${styles.heading} ${premium.heading}`}>
           <div>
             <span className={styles.eyebrow}>
               <Library size={15} />
@@ -38,20 +41,17 @@ export default function DigitalLibrarySection() {
               مكتبة تجمع الكتب والتحقيقات والأبحاث والمواد المكتوبة، مع قراءة
               ملفات PDF داخل الموقع وتصنيفها بحسب علوم الحديث.
             </p>
-            <Link href="/library">
-              تصفّح المكتبة كاملة
-              <ArrowLeft size={18} />
-            </Link>
+            <div className={premium.headingStats}><span><strong>{toArabicDigits(libraryWorks.length)}</strong> مواد رقمية</span><i/><span><BookOpen size={16}/> قراءة داخل الموقع</span></div>
           </div>
         </header>
 
-        <div className={styles.libraryShowcase}>
+        <div className={`${styles.libraryShowcase} ${premium.libraryShowcase}`}>
           <Link
-            className={styles.featured}
+            className={`${styles.featured} ${premium.featured}`}
             href={`/library/${featured.slug}`}
             style={{ "--work-accent": featured.accent } as React.CSSProperties}
           >
-            <div className={styles.featuredCover}>
+            <div className={`${styles.featuredCover} ${premium.featuredCover}`}>
               <span>المكتبة الرقمية</span>
               <LibraryWorkIcon type={featured.contentType} size={58} />
               <strong>{featured.shortTitle}</strong>
@@ -60,7 +60,7 @@ export default function DigitalLibrarySection() {
               <b className={styles.bookBottom} aria-hidden="true" />
             </div>
 
-            <div className={styles.featuredCopy}>
+            <div className={`${styles.featuredCopy} ${premium.featuredCopy}`}>
               <span className={styles.status}>
                 <i />
                 نموذج مصنَّف رقمي
@@ -69,7 +69,7 @@ export default function DigitalLibrarySection() {
               <h3>{featured.title}</h3>
               <p>{featured.description}</p>
 
-              <div className={styles.meta}>
+              <div className={`${styles.meta} ${premium.meta}`}>
                 <span>
                   <Files size={15} />
                   {toArabicDigits(featured.pages)} صفحة
@@ -90,10 +90,11 @@ export default function DigitalLibrarySection() {
             </div>
           </Link>
 
-          <div className={styles.workList}>
+          <div className={`${styles.workList} ${premium.workList}`}>
+            <header className={premium.shelfHeader}><div><span><Layers3 size={15}/>مختارات المكتبة</span><strong>رفّ القراءة والبحث</strong></div><Link href="/library">عرض الكل <ArrowLeft size={15}/></Link></header>
             {libraryWorks.slice(1, 4).map((work, index) => (
               <Link
-                className={styles.workCard}
+                className={`${styles.workCard} ${premium.workCard}`}
                 href={`/library/${work.slug}`}
                 key={work.slug}
                 style={{ "--work-accent": work.accent } as React.CSSProperties}
@@ -101,10 +102,10 @@ export default function DigitalLibrarySection() {
                 <span className={styles.workNumber}>
                   {toArabicDigits(String(index + 2).padStart(2, "0"))}
                 </span>
-                <span className={styles.workIcon}>
+                <span className={`${styles.workIcon} ${premium.workIcon}`}>
                   <LibraryWorkIcon type={work.contentType} size={24} />
                 </span>
-                <span className={styles.workCopy}>
+                <span className={`${styles.workCopy} ${premium.workCopy}`}>
                   <small>{work.contentType}</small>
                   <strong>{work.shortTitle}</strong>
                   <span>{work.field}</span>
@@ -115,7 +116,7 @@ export default function DigitalLibrarySection() {
               </Link>
             ))}
 
-            <div className={styles.libraryTools}>
+            <div className={`${styles.libraryTools} ${premium.libraryTools}`}>
               <span>
                 <Search size={18} />
                 بحث وتصنيف
@@ -133,6 +134,7 @@ export default function DigitalLibrarySection() {
             </div>
           </div>
         </div>
+        <Link className={premium.libraryCta} href="/library"><i><BookMarked size={21}/></i><span><small>المكتبة العلمية الكاملة</small><strong>استكشف جميع المصنّفات والأبحاث</strong></span><ArrowLeft size={20}/></Link>
       </div>
     </section>
   );

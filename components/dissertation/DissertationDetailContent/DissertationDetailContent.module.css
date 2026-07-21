@@ -1,0 +1,1026 @@
+.hero {
+  position: relative;
+  padding: var(--subpage-hero-space) 0 70px;
+  overflow: hidden;
+  color: var(--cream-50);
+  background:
+    radial-gradient(circle at 12% 36%, rgba(95, 114, 94, 0.23), transparent 30%),
+    linear-gradient(105deg, rgba(29, 20, 15, 0.96), rgba(49, 39, 29, 0.86)),
+    url("/media/images/sub.jpg") center bottom / cover no-repeat;
+}
+
+.hero::before {
+  position: absolute;
+  top: -220px;
+  right: -110px;
+  width: 560px;
+  height: 560px;
+  content: "";
+  border: 1px solid rgba(200, 212, 184, 0.09);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 65px rgba(200, 212, 184, 0.017),
+    0 0 0 125px rgba(200, 212, 184, 0.01);
+}
+
+.heroInner,
+.contentInner {
+  position: relative;
+  z-index: 1;
+  width: min(calc(100% - 48px), var(--container));
+  margin-inline: auto;
+}
+
+.breadcrumb {
+  display: flex;
+  margin-bottom: 35px;
+  align-items: center;
+  gap: 8px;
+  color: rgba(248, 243, 233, 0.46);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+}
+
+.breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.breadcrumb strong {
+  color: var(--gold-300);
+  font-weight: 500;
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(42px, 6vw, 78px);
+}
+
+.recordSeal {
+  display: flex;
+  width: 166px;
+  height: 205px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #e5cf9e;
+  border: 1px solid rgba(221, 194, 142, 0.24);
+  border-radius: 84px 84px 8px 8px;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.1), transparent 30%),
+    #344333;
+  box-shadow:
+    0 28px 55px rgba(5, 3, 2, 0.35),
+    inset 0 0 0 9px rgba(255, 255, 255, 0.027);
+}
+
+.recordSeal small {
+  margin-top: 19px;
+  color: rgba(255, 255, 255, 0.51);
+  font-size: 10px;
+}
+
+.recordSeal strong {
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 15px;
+}
+
+.heroCopy {
+  max-width: 900px;
+}
+
+.heroLabels {
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+  gap: 8px;
+}
+
+.heroLabels span {
+  display: inline-flex;
+  padding: 5px 9px;
+  align-items: center;
+  gap: 6px;
+  color: var(--gold-300);
+  border: 1px solid rgba(221, 194, 142, 0.17);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+}
+
+.heroCopy h1 {
+  max-width: 980px;
+  margin: 0 0 11px;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: clamp(34px, 4.3vw, 57px);
+  font-weight: 570;
+  line-height: 1.4;
+  letter-spacing: -0.045em;
+}
+
+.heroCopy > p {
+  max-width: 820px;
+  margin-bottom: 23px;
+  color: rgba(248, 243, 233, 0.67);
+  font-size: 17px;
+  line-height: 1.85;
+}
+
+.heroMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.heroMeta > span {
+  display: grid;
+  min-width: 170px;
+  padding: 10px 12px;
+  grid-template-columns: 27px minmax(0, 1fr);
+  border: 1px solid rgba(221, 194, 142, 0.14);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.heroMeta svg {
+  grid-row: 1 / 3;
+  align-self: center;
+  color: #c8d4b8;
+}
+
+.heroMeta small {
+  color: rgba(248, 243, 233, 0.43);
+  font-size: 10px;
+}
+
+.heroMeta strong {
+  overflow: hidden;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.content {
+  position: relative;
+  padding: 82px 0 105px;
+  overflow: hidden;
+  background: var(--cream-50);
+}
+
+.sectionHead {
+  display: flex;
+  margin-bottom: 24px;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.sectionHead > div > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #5f725e;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 12px;
+}
+
+.sectionHead h2 {
+  margin: 2px 0 0;
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: clamp(28px, 3.2vw, 42px);
+  font-weight: 620;
+}
+
+.sectionActions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.sectionActions > a,
+.sectionActions > button {
+  display: inline-flex;
+  min-height: 43px;
+  padding-inline: 14px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 5px;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+}
+
+.sectionActions > a {
+  color: #5f725e;
+  border: 1px solid rgba(95, 114, 94, 0.2);
+}
+
+.sectionActions > button {
+  color: var(--cream-50);
+  border: 1px solid #425441;
+  background: #425441;
+  box-shadow: 0 10px 24px rgba(66, 84, 65, 0.18);
+  cursor: pointer;
+}
+
+.studyGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  align-items: stretch;
+  gap: 16px;
+}
+
+.summaryCard,
+.recordCard {
+  border: 1px solid var(--cream-300);
+  border-radius: 10px;
+  background: rgba(255, 253, 248, 0.82);
+  box-shadow: 0 20px 53px rgba(75, 51, 40, 0.08);
+}
+
+.summaryCard {
+  padding: 29px;
+}
+
+.summaryTopline {
+  display: flex;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--cream-300);
+}
+
+.summaryTopline > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--brown-800);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 13px;
+}
+
+.summaryTopline svg {
+  color: #5f725e;
+}
+
+.summaryTopline small {
+  color: #958474;
+  font-size: 11px;
+}
+
+.summaryCard > p {
+  margin-bottom: 25px;
+  color: var(--ink-muted);
+  font-size: 17px;
+  line-height: 2;
+}
+
+.roleCard {
+  display: grid;
+  margin-bottom: 15px;
+  padding: 18px;
+  grid-template-columns: 54px minmax(0, 1fr) 25px;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid rgba(95, 114, 94, 0.2);
+  border-radius: 8px;
+  background: rgba(95, 114, 94, 0.06);
+}
+
+.roleIcon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  color: #e5cf9e;
+  border-radius: 50%;
+  background: #425441;
+}
+
+.roleCard small {
+  color: #71836f;
+  font-size: 10px;
+}
+
+.roleCard h3 {
+  margin: 0;
+  color: var(--brown-900);
+  font-size: 19px;
+}
+
+.roleCard p {
+  margin: 2px 0 0;
+  color: #807064;
+  font-size: 13px;
+}
+
+.roleCard > svg {
+  color: #71836f;
+}
+
+.subjectBand {
+  display: flex;
+  min-height: 54px;
+  padding-inline: 16px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px dashed var(--cream-300);
+  border-radius: 7px;
+}
+
+.subjectBand span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #8b7b6d;
+  font-size: 12px;
+}
+
+.subjectBand strong {
+  color: #5f725e;
+  font-size: 14px;
+}
+
+.recordCard {
+  overflow: hidden;
+}
+
+.recordCard > header {
+  display: grid;
+  min-height: 78px;
+  padding: 14px 18px;
+  grid-template-columns: 43px 1fr auto;
+  align-items: center;
+  gap: 11px;
+  color: var(--cream-50);
+  background: #344333;
+}
+
+.recordCard > header > span {
+  display: grid;
+  width: 41px;
+  height: 41px;
+  place-items: center;
+  color: #e5cf9e;
+  border: 1px solid rgba(229, 207, 158, 0.18);
+  border-radius: 50%;
+}
+
+.recordCard header small {
+  color: rgba(248, 243, 233, 0.45);
+  font-size: 9px;
+}
+
+.recordCard header h3 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.recordCard header > strong {
+  color: #e5cf9e;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 17px;
+}
+
+.recordCard dl {
+  margin: 0;
+  padding: 5px 19px 15px;
+}
+
+.recordCard dl > div {
+  display: grid;
+  min-height: 59px;
+  padding-block: 9px;
+  grid-template-columns: 105px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--cream-300);
+}
+
+.recordCard dt {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #8f7e70;
+  font-size: 11px;
+}
+
+.recordCard dt svg {
+  color: #71836f;
+}
+
+.recordCard dd {
+  margin: 0;
+  color: var(--brown-800);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.related {
+  margin-top: 72px;
+}
+
+.related > header > span {
+  color: #5f725e;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+}
+
+.related h2 {
+  margin: 2px 0 20px;
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 31px;
+  font-weight: 620;
+}
+
+.related > div {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.related a {
+  display: grid;
+  min-height: 120px;
+  padding: 16px;
+  grid-template-columns: 54px minmax(0, 1fr) 24px;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--cream-300);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.58);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.related a:hover {
+  border-color: rgba(95, 114, 94, 0.38);
+  box-shadow: 0 16px 38px rgba(75, 51, 40, 0.09);
+  transform: translateY(-3px);
+}
+
+.relatedIcon {
+  display: grid;
+  width: 52px;
+  height: 68px;
+  place-items: center;
+  color: #e5cf9e;
+  border-radius: 26px 26px 4px 4px;
+  background: #425441;
+}
+
+.related a > span:nth-child(2) {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.related small {
+  color: #71836f;
+  font-size: 10px;
+}
+
+.related strong {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--brown-800);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.related em {
+  color: #948375;
+  font-size: 11px;
+  font-style: normal;
+}
+
+.related a > svg {
+  color: var(--gold-600);
+}
+
+.readerOverlay {
+  position: fixed;
+  z-index: 1200;
+  inset: 0;
+  display: grid;
+  padding: 18px;
+  place-items: center;
+  background: rgba(22, 14, 10, 0.76);
+  backdrop-filter: blur(12px);
+  animation: readerFadeIn 180ms ease both;
+}
+
+.readerModal {
+  display: grid;
+  width: min(1180px, 100%);
+  height: min(880px, calc(100vh - 36px));
+  overflow: hidden;
+  grid-template-rows: 72px minmax(0, 1fr) 67px;
+  border: 1px solid rgba(221, 194, 142, 0.26);
+  border-radius: 14px;
+  background: #e8dfcd;
+  box-shadow: 0 35px 100px rgba(8, 4, 3, 0.48);
+  animation: readerRise 260ms ease both;
+}
+
+.readerHeader {
+  display: grid;
+  padding: 10px 16px 10px 20px;
+  grid-template-columns: minmax(0, 1fr) auto 42px;
+  align-items: center;
+  gap: 15px;
+  color: var(--cream-50);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(221, 194, 142, 0.13), transparent 32%),
+    #293527;
+}
+
+.readerBrand {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+  color: #e5cf9e;
+}
+
+.readerBrand > span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.readerBrand small {
+  color: rgba(248, 243, 233, 0.46);
+  font-size: 9px;
+}
+
+.readerBrand strong {
+  overflow: hidden;
+  color: rgba(248, 243, 233, 0.92);
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.readerProgress {
+  padding: 7px 11px;
+  color: #e5cf9e;
+  border: 1px solid rgba(229, 207, 158, 0.17);
+  border-radius: 18px;
+  font-size: 11px;
+}
+
+.readerHeader > button {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  color: #e5cf9e;
+  border: 1px solid rgba(229, 207, 158, 0.18);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.035);
+  cursor: pointer;
+}
+
+.readerBody {
+  display: grid;
+  min-height: 0;
+  grid-template-columns: 245px minmax(0, 1fr);
+}
+
+.readerIndex {
+  padding: 24px 17px;
+  overflow: hidden;
+  border-left: 1px solid #d1c3a8;
+  background:
+    linear-gradient(rgba(75, 51, 40, 0.03) 1px, transparent 1px),
+    #f5efe3;
+  background-size: 24px 24px;
+}
+
+.readerIndex > span {
+  display: block;
+  margin-bottom: 13px;
+  color: #5f725e;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+}
+
+.readerIndex nav {
+  display: grid;
+  gap: 6px;
+}
+
+.readerIndex nav button {
+  display: grid;
+  min-height: 48px;
+  padding: 7px 9px;
+  grid-template-columns: 31px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  color: #746458;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  text-align: right;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.readerIndex nav button i {
+  display: grid;
+  width: 29px;
+  height: 29px;
+  place-items: center;
+  color: #9b8976;
+  border: 1px solid #d8cbb5;
+  border-radius: 50%;
+  font-size: 8px;
+  font-style: normal;
+}
+
+.readerIndex nav button span {
+  font-size: 12px;
+}
+
+.readerIndex nav .current {
+  color: #344333;
+  border-color: rgba(95, 114, 94, 0.2);
+  background: rgba(95, 114, 94, 0.07);
+}
+
+.readerIndex nav .current i {
+  color: #f5efe3;
+  border-color: #425441;
+  background: #425441;
+}
+
+.readerIndex > p {
+  margin-top: 22px;
+  padding-top: 15px;
+  color: #988675;
+  border-top: 1px solid #d8cbb5;
+  font-size: 11px;
+  line-height: 1.75;
+}
+
+.pageStage {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  padding: 28px;
+  place-items: center;
+  overflow: hidden;
+  perspective: 1500px;
+  background:
+    linear-gradient(rgba(75, 51, 40, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(75, 51, 40, 0.027) 1px, transparent 1px),
+    #e8dfcd;
+  background-size: 27px 27px;
+}
+
+.pageStage::after {
+  position: absolute;
+  right: 14%;
+  bottom: 18px;
+  left: 14%;
+  height: 24px;
+  content: "";
+  border-radius: 50%;
+  background: rgba(75, 51, 40, 0.2);
+  filter: blur(15px);
+}
+
+.readerPage {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 650px);
+  height: min(100%, 690px);
+  min-height: 430px;
+  padding: clamp(40px, 6vh, 67px) clamp(34px, 6vw, 70px);
+  overflow-y: auto;
+  color: #4a3a2f;
+  border: 1px solid #cdbc9e;
+  background:
+    radial-gradient(circle at 82% 8%, rgba(166, 122, 53, 0.07), transparent 25%),
+    #fffdf7;
+  box-shadow:
+    0 26px 55px rgba(75, 51, 40, 0.2),
+    9px 9px 0 rgba(255, 253, 247, 0.52);
+  scrollbar-width: thin;
+  scrollbar-color: #b99a65 transparent;
+}
+
+.readerPage::before {
+  position: absolute;
+  inset: 17px;
+  pointer-events: none;
+  content: "";
+  border: 1px solid rgba(166, 122, 53, 0.15);
+}
+
+.turnNext {
+  transform-origin: right center;
+  animation: turnPageNext 420ms cubic-bezier(0.22, 0.75, 0.26, 1) both;
+}
+
+.turnPrevious {
+  transform-origin: left center;
+  animation: turnPagePrevious 420ms cubic-bezier(0.22, 0.75, 0.26, 1) both;
+}
+
+.pageEyebrow {
+  position: relative;
+  color: #71836f;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+}
+
+.readerPage h2 {
+  position: relative;
+  margin: 8px 0 18px;
+  color: #3f3128;
+  font-size: clamp(25px, 3.2vw, 36px);
+  line-height: 1.55;
+}
+
+.pageRule {
+  position: relative;
+  display: block;
+  width: 84px;
+  height: 1px;
+  margin-bottom: 28px;
+  background: var(--gold-500);
+}
+
+.readerPage p {
+  position: relative;
+  margin-bottom: 15px;
+  font-size: 17px;
+  line-height: 2.05;
+}
+
+.readerPage footer {
+  position: absolute;
+  right: 40px;
+  bottom: 29px;
+  left: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #9c8976;
+  font-size: 10px;
+}
+
+.readerPage footer strong {
+  color: #71836f;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.readerControls {
+  display: grid;
+  padding: 10px 18px;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 15px;
+  border-top: 1px solid #d1c3a8;
+  background: #f7f1e5;
+}
+
+.readerControls > button {
+  display: inline-flex;
+  min-height: 42px;
+  padding-inline: 15px;
+  align-items: center;
+  gap: 7px;
+  color: #f7f1e5;
+  border: 0;
+  border-radius: 5px;
+  background: #425441;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.readerControls > button:last-child {
+  justify-self: end;
+}
+
+.readerControls > button:first-child {
+  justify-self: start;
+}
+
+.readerControls > button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.readerControls > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.readerControls > span button {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #c7b99f;
+  cursor: pointer;
+  transition:
+    width 180ms ease,
+    background 180ms ease;
+}
+
+.readerControls > span .currentDot {
+  width: 22px;
+  border-radius: 5px;
+  background: #5f725e;
+}
+
+@keyframes readerFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes readerRise {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes turnPageNext {
+  from {
+    opacity: 0.3;
+    transform: rotateY(13deg) translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: rotateY(0) translateX(0);
+  }
+}
+
+@keyframes turnPagePrevious {
+  from {
+    opacity: 0.3;
+    transform: rotateY(-13deg) translateX(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: rotateY(0) translateX(0);
+  }
+}
+
+@media (max-width: 920px) {
+  .studyGrid,
+  .related > div {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero {
+    padding: 56px 0 62px;
+  }
+
+  .heroInner,
+  .contentInner {
+    width: min(calc(100% - 32px), var(--container));
+  }
+
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .recordSeal {
+    width: 125px;
+    height: 155px;
+  }
+
+  .heroCopy h1 {
+    font-size: 32px;
+  }
+
+  .content {
+    padding-block: 66px 82px;
+  }
+
+  .sectionHead {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sectionActions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .summaryCard {
+    padding: 21px;
+  }
+
+  .roleCard {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+
+  .roleCard > svg {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .readerOverlay {
+    padding: 0;
+  }
+
+  .readerModal {
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+    grid-template-rows: 65px minmax(0, 1fr) 61px;
+  }
+
+  .readerHeader {
+    grid-template-columns: minmax(0, 1fr) 40px;
+  }
+
+  .readerProgress,
+  .readerIndex {
+    display: none;
+  }
+
+  .readerBody {
+    grid-template-columns: 1fr;
+  }
+
+  .pageStage {
+    padding: 17px;
+  }
+
+  .readerPage {
+    min-height: 0;
+    padding: 42px 31px 62px;
+  }
+
+  .readerPage p {
+    font-size: 15px;
+  }
+
+  .readerControls {
+    padding-inline: 10px;
+  }
+
+  .readerControls > button {
+    padding-inline: 10px;
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .readerOverlay,
+  .readerModal,
+  .turnNext,
+  .turnPrevious {
+    animation: none;
+  }
+}
+
+@media (max-width: 440px) {
+  .heroMeta > span {
+    width: 100%;
+  }
+
+  .subjectBand {
+    align-items: flex-start;
+    flex-direction: column;
+    padding-block: 12px;
+  }
+
+  .recordCard dl > div {
+    grid-template-columns: 92px minmax(0, 1fr);
+  }
+}

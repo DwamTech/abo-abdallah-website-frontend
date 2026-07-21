@@ -434,22 +434,6 @@
   transition: transform 180ms ease;
 }
 
-/* .workIcon::after {
-  position: absolute;
-  top: 4px;
-  bottom: -5px;
-  left: -7px;
-  width: 7px;
-  content: "";
-  border-radius: 1px 0 0 2px;
-  background: repeating-linear-gradient(
-    to bottom,
-    #efe3ca 0 2px,
-    #cab58e 3px
-  );
-  transform: skewY(-32deg);
-} */
-
 .workCard:hover .workIcon {
   transform: perspective(450px) rotateY(3deg) translateY(-2px);
 }

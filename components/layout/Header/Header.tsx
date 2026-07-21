@@ -15,42 +15,11 @@ import {
 import NewsTicker from "@/components/layout/NewsTicker/NewsTicker";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import styles from "./Header.module.css";
+import siteContent from "@/data/site-content.json";
 
-const navigation = [
-  { label: "الرئيسية", href: "/" },
-  { label: "عن الشيخ", href: "/about" },
-  { label: "مجالس السماع", href: "/listening" },
-  { label: "المكتبة الرقمية", href: "/library" },
-  { label: "الإشراف العلمي", href: "/dissertations" },
-];
+const navigation = siteContent.navigation;
 
-const searchLinks = [
-  {
-    label: "المصنَّفات والمكتبة الرقمية",
-    description: "الكتب والتحقيقات والأبحاث مع قارئ PDF مدمج",
-    href: "/library",
-  },
-  {
-    label: "مجالس السماع والمواد الصوتية",
-    description: "السلاسل الحديثية والمجالس المرتبة مع الكتاب المرتبط",
-    href: "/listening",
-  },
-  {
-    label: "الإنتاج الأكاديمي والإشراف العلمي",
-    description: "قاعدة بيانات الرسائل العلمية المشرف عليها أو المناقشة",
-    href: "/dissertations",
-  },
-  {
-    label: "عن الشيخ",
-    description: "التعريف والمسيرة العلمية والأكاديمية",
-    href: "/about",
-  },
-  {
-    label: "الصفحة الرئيسية",
-    description: "مدخل الموقع العلمي الرسمي",
-    href: "/",
-  },
-];
+const searchLinks = siteContent.searchLinks;
 
 export default function Header() {
   const pathname = usePathname();

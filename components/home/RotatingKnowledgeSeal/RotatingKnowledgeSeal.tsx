@@ -9,58 +9,17 @@ import {
   LibraryBig,
   MessageCircleQuestion,
   ScrollText,
-  type LucideIcon,
 } from "lucide-react";
+import siteContent from "@/data/site-content.json";
 import styles from "./RotatingKnowledgeSeal.module.css";
 
-type KnowledgeItem = {
-  label: string;
-  description: string;
-  icon: LucideIcon;
-};
-
-const knowledgeItems: KnowledgeItem[] = [
-  {
-    label: "الحديث",
-    description: "رواية · دراية · تحقيق",
-    icon: BookOpenText,
-  },
-  {
-    label: "الفتاوى",
-    description: "تأصيل · بيان · إجابة",
-    icon: MessageCircleQuestion,
-  },
-  {
-    label: "الكتب",
-    description: "تصنيف · تحقيق · نشر",
-    icon: BookOpen,
-  },
-  {
-    label: "الأبحاث",
-    description: "دراسة · توثيق · تحليل",
-    icon: FileText,
-  },
-  {
-    label: "مجالس السماع",
-    description: "قراءة · إجازة · توثيق",
-    icon: ScrollText,
-  },
-  {
-    label: "الإنتاج الأكاديمي",
-    description: "علم · بحث · إثراء",
-    icon: LibraryBig,
-  },
-  {
-    label: "الإشراف العلمي",
-    description: "توجيه · متابعة · تأهيل",
-    icon: GraduationCap,
-  },
-];
+const knowledgeIcons = { BookOpenText, MessageCircleQuestion, BookOpen, FileText, ScrollText, LibraryBig, GraduationCap } as const;
+const knowledgeItems = siteContent.knowledgeItems;
 
 export default function RotatingKnowledgeSeal() {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeItem = knowledgeItems[activeIndex];
-  const Icon = activeItem.icon;
+  const Icon = knowledgeIcons[activeItem.icon as keyof typeof knowledgeIcons];
 
   useEffect(() => {
     const interval = window.setInterval(() => {
