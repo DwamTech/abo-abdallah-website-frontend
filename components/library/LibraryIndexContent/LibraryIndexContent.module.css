@@ -678,7 +678,7 @@
   position: absolute;
   top: 0px;
   bottom: 0px;
-  right: 145px;
+  right: calc(100% - 5px);
   width: 13px;
   content: "";
   border: 1px solid rgba(105, 78, 49, 0.32);

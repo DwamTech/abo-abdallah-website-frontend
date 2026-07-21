@@ -1,0 +1,25 @@
+@media (max-width: 620px) {
+  .main {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    column-gap: 24px !important;
+    row-gap: 34px !important;
+  }
+
+  .centerBlock {
+    align-items: center !important;
+    text-align: center;
+  }
+
+  .centerBlock > a:first-child {
+    margin-inline: auto;
+  }
+
+  .centerBlock > span {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .centerBlock :global(div) {
+    justify-content: center;
+  }
+}

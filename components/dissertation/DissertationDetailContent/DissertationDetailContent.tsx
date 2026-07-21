@@ -24,6 +24,7 @@ import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop
 import type { Dissertation } from "@/lib/dissertationData";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import styles from "./DissertationDetailContent.module.css";
+import readerStyles from "./ReaderWithoutIndex.module.css";
 
 type DissertationDetailContentProps = {
   dissertation: Dissertation;
@@ -333,8 +334,8 @@ export default function DissertationDetailContent({
               </button>
             </header>
 
-            <div className={styles.readerBody}>
-              <aside className={styles.readerIndex}>
+            <div className={`${styles.readerBody} ${readerStyles.readerBody}`}>
+              <aside className={`${styles.readerIndex} ${readerStyles.hidden}`}>
                 <span>فهرس القراءة</span>
                 <nav>
                   {readerPages.map((page, index) => (

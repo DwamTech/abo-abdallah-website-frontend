@@ -71,7 +71,7 @@ export default function FatwaSection() {
             <div className={`${styles.askCard} ${premium.askCard}`}>
               <span className={styles.askIcon}><Send size={20} /></span>
               <div><small>للباحثين وطلاب العلم</small><h3>لديك سؤال حديثي؟</h3></div>
-              <p>أرسله إلى الفريق العلمي، وتابع انتقاله عبر مراحل المراجعة والاعتماد.</p>
+              <p>أرسله إلى فضيلة الشيخ، وتابع انتقاله عبر مراحل المراجعة والاعتماد.</p>
               <div className={styles.stageDots}>
                 {questionSubmissionStages.map((stage) => <i key={stage} title={stage} />)}
               </div>

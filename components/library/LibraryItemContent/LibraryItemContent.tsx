@@ -14,7 +14,6 @@ import {
   FileText,
   Home,
   Library,
-  ListTree,
   Share2,
   Sparkles,
   Tags,
@@ -25,6 +24,7 @@ import LibraryWorkIcon from "@/components/library/LibraryWorkIcon/LibraryWorkIco
 import type { LibraryWork } from "@/lib/libraryData";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import styles from "./LibraryItemContent.module.css";
+import readerStyles from "./ReaderWithoutIndex.module.css";
 
 type LibraryItemContentProps = {
   work: LibraryWork;
@@ -69,7 +69,7 @@ export default function LibraryItemContent({
           (item, index) => `${toArabicDigits(index + 1)}. ${item}`,
         ),
       },
-    ],
+    ].slice(0, 3),
     [work],
   );
 
@@ -255,23 +255,6 @@ export default function LibraryItemContent({
               </div>
 
               <aside className={styles.sidebar}>
-                <div className={styles.toc}>
-                  <span>
-                    <ListTree size={18} />
-                    فهرس المحتويات
-                  </span>
-                  <ol>
-                    {work.contents.map((item, index) => (
-                      <li key={item}>
-                        <span>
-                          {toArabicDigits(String(index + 1).padStart(2, "0"))}
-                        </span>
-                        {item}
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-
                 <div className={styles.publication}>
                   <small>بيانات النشر</small>
                   <strong>{work.publication}</strong>
@@ -369,27 +352,7 @@ export default function LibraryItemContent({
                 title={`العرض الكامل: ${work.title}`}
               />
             ) : (
-              <div className={styles.fullReaderBody}>
-                <aside className={styles.fullReaderIndex}>
-                  <span>فهرس القراءة</span>
-                  <nav>
-                    {readerPages.map((page, index) => (
-                      <button
-                        type="button"
-                        className={currentPage === index ? styles.current : undefined}
-                        key={page.title}
-                        onClick={() => goToPage(index)}
-                      >
-                        <i>{toArabicDigits(String(index + 1).padStart(2, "0"))}</i>
-                        <span>{page.title}</span>
-                      </button>
-                    ))}
-                  </nav>
-                  <p>
-                    تُستبدل هذه المعاينة تلقائيًا بملف PDF الكامل عند ربط النسخة
-                    الرقمية الرسمية.
-                  </p>
-                </aside>
+              <div className={`${styles.fullReaderBody} ${readerStyles.readerBody}`}>
 
                 <div className={styles.fullPageStage}>
                   <article

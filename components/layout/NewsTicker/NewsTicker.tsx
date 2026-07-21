@@ -33,7 +33,7 @@ export default function NewsTicker() {
         <div className={styles.badge}>
           <span className={styles.liveDot} aria-hidden="true" />
           <Megaphone size={16} strokeWidth={1.6} aria-hidden="true" />
-          <strong>آخر الأخبار</strong>
+          <strong>جديد موقعنا</strong>
         </div>
 
         <div className={styles.viewport}>

@@ -22,16 +22,16 @@ export default function RotatingKnowledgeSeal() {
   const Icon = knowledgeIcons[activeItem.icon as keyof typeof knowledgeIcons];
 
   useEffect(() => {
-    const interval = window.setInterval(() => {
+    const timeout = window.setTimeout(() => {
       setActiveIndex((current) => (current + 1) % knowledgeItems.length);
     }, 1000);
 
-    return () => window.clearInterval(interval);
-  }, []);
+    return () => window.clearTimeout(timeout);
+  }, [activeIndex]);
 
   return (
     <div className={styles.seal}>
-      <div className={styles.content} key={activeItem.label}>
+      <div className={styles.content} key={`${activeIndex}-${activeItem.label}`} aria-live="polite">
         <span className={styles.kicker}>بوابات المعرفة</span>
         <span className={styles.icon}>
           <Icon size={38} strokeWidth={1.15} aria-hidden="true" />
