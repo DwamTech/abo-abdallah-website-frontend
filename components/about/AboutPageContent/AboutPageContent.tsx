@@ -22,6 +22,7 @@ export default function AboutPageContent() {
       <section className={styles.hero}>
         <div className={styles.heroPattern} aria-hidden="true" />
         <div className={styles.heroContainer}>
+          <div className={styles.heroCopy}>
           <nav className={styles.breadcrumb} aria-label="مسار الصفحة">
             <Link href="/">
               <Home size={13} />
@@ -34,7 +35,7 @@ export default function AboutPageContent() {
           <span className={styles.kicker}>السيرة العلمية</span>
           <h1>عن فضيلة الشيخ</h1>
           <p className={styles.name}>
-            الأستاذ الدكتور أبو عبد الله يحيى بن عبد الله البكري ثم الشهري
+           أ.د أبو عبد الله يحيى بن عبد الله البكري الشهري
           </p>
           <p className={styles.role}>
             أستاذ الحديث وعلومه بجامعة الملك خالد في أبها
@@ -50,6 +51,20 @@ export default function AboutPageContent() {
               جامعة الملك خالد · أبها
             </span>
           </div>
+          </div>
+
+          <aside className={styles.heroPortrait} aria-label="صورة فضيلة الشيخ">
+            <span className={styles.heroPortraitGlow} aria-hidden="true" />
+            <Image
+              className={styles.heroImage}
+              src="/media/images/about2.png"
+              alt="الأستاذ الدكتور أبو عبد الله يحيى بن عبد الله البكري الشهري"
+              width={700}
+              height={700}
+              priority
+            />
+            <span className={styles.heroPortraitLabel}>السيرة العلمية</span>
+          </aside>
         </div>
       </section>
 
@@ -88,10 +103,10 @@ export default function AboutPageContent() {
             <span className={styles.imageOrbit} aria-hidden="true" />
             <Image
               className={styles.aboutImage}
-              src="/media/images/about.png"
-              alt="أبو عبد الله يحيى بن عبد الله البكري ثم الشهري"
-              width={500}
-              height={500}
+              src="/media/images/about3.png"
+              alt="أبو عبد الله يحيى بن عبد الله البكري  الشهري"
+              width={700}
+              height={700}
             />
           </aside>
         </div>

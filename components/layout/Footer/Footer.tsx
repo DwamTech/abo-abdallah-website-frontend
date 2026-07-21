@@ -32,8 +32,8 @@ export default function Footer() {
             >
               <Image
                 className={styles.footerLogo}
-                src="/media/images/logo2.png"
-                alt="أبو عبد الله يحيى بن عبد الله البكري ثم الشهري"
+                src="/media/images/logo555.png"
+                alt="أبو عبد الله يحيى بن عبد الله البكري الشهري"
                 width={866}
                 height={288}
               />

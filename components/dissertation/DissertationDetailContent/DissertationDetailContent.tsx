@@ -217,6 +217,9 @@ export default function DissertationDetailContent({
                   "تتناول هذه الرسالة موضوعًا متخصصًا في علوم الحديث، وتعرض مادته وفق منهج أكاديمي يجمع بين التأصيل والتحليل والدراسة التطبيقية."}
               </p>
 
+            </article>
+
+            <div className={styles.detailCards}>
               <div className={styles.roleCard}>
                 <span className={styles.roleIcon}>
                   <UsersRound size={24} />
@@ -229,6 +232,15 @@ export default function DissertationDetailContent({
                 <CheckCircle2 size={20} />
               </div>
 
+              <article className={styles.descriptionCard}>
+                <span className={styles.descriptionIcon}>
+                  <FileText size={23} />
+                </span>
+                <div>
+                  <small>وصف الرسالة</small>
+                  <h3>{dissertation.degree} في {dissertation.specialization}</h3>
+                  <p>رسالة علمية مرتبطة بمجال {dissertation.specialization}، أُنجزت في {dissertation.university} ضمن إطار أكاديمي موثق.</p>
+                </div>
               <div className={styles.subjectBand}>
                 <span>
                   <Library size={16} />
@@ -236,9 +248,10 @@ export default function DissertationDetailContent({
                 </span>
                 <strong>{dissertation.specialization}</strong>
               </div>
-            </article>
+              </article>
+            </div>
 
-            <aside className={styles.recordCard}>
+            {/* <aside className={styles.recordCard}>
               <header>
                 <span>
                   <GraduationCap size={20} />
@@ -276,7 +289,7 @@ export default function DissertationDetailContent({
                   <dd>{toArabicDigits(dissertation.year)}هـ</dd>
                 </div>
               </dl>
-            </aside>
+            </aside> */}
           </div>
 
           <section className={styles.related}>

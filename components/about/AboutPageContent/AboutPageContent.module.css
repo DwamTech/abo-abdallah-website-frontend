@@ -24,13 +24,88 @@
 .heroContainer {
   position: relative;
   z-index: 1;
-  display: flex;
+  display: grid;
   width: min(calc(100% - 48px), var(--container));
   min-height: 465px;
   margin-inline: auto;
   padding-block: 58px;
+  grid-template-columns: minmax(0, 1fr) minmax(270px, 0.42fr);
+  align-items: center;
+  gap: clamp(32px, 7vw, 105px);
+}
+
+.heroCopy {
+  min-width: 0;
+}
+
+.heroPortrait {
+  position: relative;
+  display: flex;
+  width: min(100%, 330px);
+  min-height: 350px;
+  justify-self: end;
+  align-items: flex-end;
   justify-content: center;
-  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(221, 194, 142, 0.42);
+  border-radius: 170px 170px 10px 10px;
+  background:
+    radial-gradient(circle at 50% 23%, rgba(236, 207, 149, 0.22), transparent 36%),
+    linear-gradient(145deg, rgba(84, 54, 37, 0.88), rgba(27, 16, 12, 0.97));
+  box-shadow:
+    0 30px 70px rgba(13, 7, 4, 0.38),
+    inset 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.heroPortrait::before {
+  position: absolute;
+  z-index: 1;
+  inset: 10px;
+  content: "";
+  pointer-events: none;
+  border: 1px solid rgba(238, 214, 169, 0.22);
+  border-radius: 158px 158px 5px 5px;
+}
+
+.heroPortraitGlow {
+  position: absolute;
+  z-index: 0;
+  top: 33px;
+  width: 220px;
+  height: 220px;
+  border: 1px solid rgba(232, 203, 145, 0.2);
+  border-radius: 50%;
+  box-shadow: 0 0 0 24px rgba(232, 203, 145, 0.04);
+}
+
+.heroImage {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 350px;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: saturate(0.82) contrast(1.04) drop-shadow(0 14px 18px rgba(10, 5, 3, 0.42));
+}
+
+.heroPortraitLabel {
+  position: absolute !important;
+  z-index: 3 !important;
+  padding: 7px 12px;
+  color: #f0d8a9;
+  border: 1px solid rgba(234, 207, 157, 0.3);
+  background: rgba(36, 21, 15, 0.72);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(8px);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 10px;
+}
+
+.heroPortraitLabel {
+  right: 16px;
+  bottom: 16px;
+  border-radius: 3px;
 }
 
 .breadcrumb {
@@ -61,18 +136,23 @@
 }
 
 .hero h1 {
-  margin: 6px 0 3px;
+  margin: 8px 0 5px;
   font-family: "Noto Kufi Arabic Variable", sans-serif;
-  font-size: clamp(39px, 5vw, 67px);
+  font-size: clamp(24px, 2.6vw, 25px);
   font-weight: 620;
   line-height: 1.4;
   letter-spacing: -0.04em;
 }
 
 .name {
-  margin-bottom: 6px;
+  max-width: 850px;
+  margin: 0 0 8px;
   color: #ead6af;
-  font-size: clamp(22px, 2.6vw, 33px);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: clamp(32px, 4vw, 34px);
+  font-weight: 620;
+  line-height: 1.5;
+  letter-spacing: -0.045em;
 }
 
 .role {
@@ -510,6 +590,20 @@
 }
 
 @media (max-width: 850px) {
+  .heroContainer {
+    grid-template-columns: minmax(0, 1fr) minmax(230px, 0.38fr);
+    gap: 28px;
+  }
+
+  .heroPortrait {
+    width: min(100%, 265px);
+    min-height: 300px;
+  }
+
+  .heroImage {
+    min-height: 300px;
+  }
+
   .profileContainer,
   .foundationHead {
     grid-template-columns: 1fr;
@@ -547,6 +641,24 @@
 
   .heroContainer {
     padding-block: 48px;
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 28px;
+  }
+
+  .breadcrumb,
+  .heroFacts {
+    margin-inline: auto;
+  }
+
+  .heroPortrait {
+    width: min(100%, 245px);
+    min-height: 280px;
+    justify-self: center;
+  }
+
+  .heroImage {
+    min-height: 280px;
   }
 
   .heroFacts {

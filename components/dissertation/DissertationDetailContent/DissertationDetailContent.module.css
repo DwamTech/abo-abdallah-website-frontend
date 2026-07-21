@@ -229,7 +229,7 @@
 
 .studyGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: stretch;
   gap: 16px;
 }
@@ -283,7 +283,6 @@
 
 .roleCard {
   display: grid;
-  margin-bottom: 15px;
   padding: 18px;
   grid-template-columns: 54px minmax(0, 1fr) 25px;
   align-items: center;
@@ -291,6 +290,57 @@
   border: 1px solid rgba(95, 114, 94, 0.2);
   border-radius: 8px;
   background: rgba(95, 114, 94, 0.06);
+}
+
+.detailCards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.descriptionCard {
+  display: grid;
+  min-height: 145px;
+  padding: 18px;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+  border: 1px solid rgba(166, 122, 53, 0.2);
+  border-radius: 8px;
+  background: rgba(166, 122, 53, 0.055);
+}
+
+.descriptionIcon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  color: #e5cf9e;
+  border-radius: 50%;
+  background: #493127;
+}
+
+.descriptionCard small {
+  color: #9b713c;
+  font-size: 10px;
+}
+
+.descriptionCard h3 {
+  margin: 2px 0 5px;
+  color: var(--brown-900);
+  font-size: 18px;
+}
+
+.descriptionCard p {
+  margin: 0;
+  color: #807064;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.descriptionCard .subjectBand {
+  grid-column: 1 / -1;
+  margin-top: 3px;
 }
 
 .roleIcon {
@@ -897,6 +947,10 @@
 @media (max-width: 920px) {
   .studyGrid,
   .related > div {
+    grid-template-columns: 1fr;
+  }
+
+  .detailCards {
     grid-template-columns: 1fr;
   }
 }

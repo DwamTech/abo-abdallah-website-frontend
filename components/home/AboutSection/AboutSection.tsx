@@ -36,7 +36,7 @@ export default function AboutSection() {
           <div className={styles.intro}>
             <span className={styles.introMark}>“</span>
             <p>
-              فضيلة الأستاذ الدكتور أبو عبد الله يحيى بن عبد الله البكري ثم
+              فضيلة الأستاذ الدكتور أبو عبد الله يحيى بن عبد الله البكري 
               الشهري، أستاذ الحديث وعلومه بجامعة الملك خالد في أبها.
             </p>
           </div>

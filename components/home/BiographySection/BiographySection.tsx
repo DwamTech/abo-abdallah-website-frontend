@@ -14,7 +14,7 @@ export default function BiographySection() {
             <div className={styles.monogram}>
               <span>أبو عبد الله</span>
               <strong>يحيى</strong>
-              <small>البكري ثم الشهري</small>
+              <small>البكري الشهري</small>
             </div>
           </div>
           <span className={styles.caption}>العلم · التحقيق · التعليم</span>

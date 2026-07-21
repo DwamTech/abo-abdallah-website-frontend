@@ -24,7 +24,7 @@ export default function HeroSection() {
           </div>
           <p className={styles.preTitle}>الموقع الرسمي لفضيلة الأستاذ الدكتور</p>
           <h1 className={styles.srOnly}>
-            أبو عبد الله يحيى بن عبد الله البكري ثم الشهري
+            أبو عبد الله يحيى بن عبد الله البكري الشهري
           </h1>
           <div className={styles.nameArtwork} aria-hidden="true">
             <span className={styles.nameOrnament}>
@@ -34,7 +34,7 @@ export default function HeroSection() {
             </span>
             <Image
               className={styles.calligraphy}
-              src="/media/images/logo2.png"
+              src="/media/images/logo555.png"
               alt=""
               width={866}
               height={288}

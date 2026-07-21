@@ -7,7 +7,7 @@ import AboutPageContent from "@/components/about/AboutPageContent/AboutPageConte
 export const metadata: Metadata = {
   title: "عن الشيخ",
   description:
-    "التعريف بفضيلة الأستاذ الدكتور أبو عبد الله يحيى بن عبد الله البكري ثم الشهري ومسيرته العلمية والأكاديمية.",
+    "التعريف بفضيلة الأستاذ الدكتور أبو عبد الله يحيى بن عبد الله البكري الشهري ومسيرته العلمية والأكاديمية.",
 };
 
 export default function AboutPage() {
