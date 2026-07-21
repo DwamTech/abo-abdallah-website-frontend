@@ -73,7 +73,10 @@
     { "label": "مجالس السماع", "href": "/listening" },
     { "label": "المكتبة الرقمية", "href": "/library" },
     { "label": "الإشراف العلمي", "href": "/dissertations" },
-    { "label": "الفتاوى", "href": "/fatwas" }
+    { "label": "الفتاوى", "href": "/fatwas" },
+    { "label": "المرئيات", "href": "/videos" },
+    { "label": "المقالات", "href": "/articles" }
+    
   ],
   "searchLinks": [
     { "label": "الفتاوى والمسائل الحديثية", "description": "أجوبة علمية مفهرسة في الحديث وعلومه مع استقبال الأسئلة الجديدة", "href": "/fatwas" },
@@ -87,7 +90,9 @@
     { "label": "عن الشيخ", "href": "/about" },
     { "label": "مجالس السماع", "href": "/listening" },
     { "label": "الكتب والمؤلفات", "href": "/library" },
-    { "label": "البحوث والدراسات", "href": "#featured" }
+    { "label": "البحوث والدراسات", "href": "#featured" },
+    { "label": "المقالات", "href": "/articles" },
+    { "label": "المرئيات", "href": "/videos" }
   ],
   "footerKnowledgeLinks": [
     { "label": "مجالس السماع", "href": "/listening" },

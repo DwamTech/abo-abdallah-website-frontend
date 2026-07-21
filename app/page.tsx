@@ -7,6 +7,8 @@ import ListeningSection from "@/components/home/ListeningSection/ListeningSectio
 import DigitalLibrarySection from "@/components/home/DigitalLibrarySection/DigitalLibrarySection";
 import DissertationSection from "@/components/home/DissertationSection/DissertationSection";
 import FatwaSection from "@/components/home/FatwaSection/FatwaSection";
+import ArticlesSection from "@/components/home/ArticlesSection/ArticlesSection";
+import VideosSection from "@/components/home/VideosSection/VideosSection";
 
 export default function HomePage() {
   return (
@@ -22,6 +24,10 @@ export default function HomePage() {
         <DissertationSection />
         <SectionDivider variant="fatwa" />
         <FatwaSection />
+        <SectionDivider variant="manuscript" />
+        <VideosSection />
+        <SectionDivider variant="audioBook" />
+        <ArticlesSection />
         <SectionDivider variant="manuscript" />
       </main>
       <Footer />
