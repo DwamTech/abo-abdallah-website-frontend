@@ -22,5 +22,5 @@ export default async function VideoPage({ params }: Props) {
   const { videoSlug } = await params;
   const video = getVideo(videoSlug);
   if (!video) notFound();
-  return <><Header /><main><VideoDetailContent video={video} related={getRelatedVideos(video)} /><SectionDivider variant="audioBook" /></main><Footer /></>;
+  return <><Header /><main><VideoDetailContent video={video} related={getRelatedVideos(video)} /><SectionDivider variant="manuscript" /></main><Footer /></>;
 }

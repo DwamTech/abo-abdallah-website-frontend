@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
+import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import ContentIndex from "@/components/content/ContentIndex/ContentIndex";
 import articles from "@/data/articles.json";
 export const metadata: Metadata={title:"المقالات والدراسات"};
-export default function ArticlesPage(){return <><Header/><main><ContentIndex type="articles" items={articles}/></main><Footer/></>}
+export default function ArticlesPage(){return <><Header/><main><ContentIndex type="articles" items={articles}/><SectionDivider variant="manuscript"/></main><Footer/></>}
