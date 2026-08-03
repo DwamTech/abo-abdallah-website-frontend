@@ -16,7 +16,7 @@ export default function HomePage() {
       <Header />
       <main>
         <HeroSection />
-        <AboutSection />
+        {/* <AboutSection /> */}
         <ListeningSection />
         <SectionDivider variant="audioBook" />
         <DigitalLibrarySection />

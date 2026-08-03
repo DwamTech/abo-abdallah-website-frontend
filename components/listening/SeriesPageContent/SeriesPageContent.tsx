@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 import {
   AudioLines,
   ArrowLeft,
@@ -13,20 +13,18 @@ import {
   Play,
   Radio,
   Share2,
-} from "lucide-react";
-import type { ListeningSeries } from "@/lib/listeningData";
-import { toArabicDigits } from "@/lib/arabicNumbers";
-import SeriesIcon from "@/components/listening/SeriesIcon/SeriesIcon";
-import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
-import styles from "./SeriesPageContent.module.css";
+} from 'lucide-react';
+import type { ListeningSeries } from '@/lib/listeningData';
+import { toArabicDigits } from '@/lib/arabicNumbers';
+import SeriesIcon from '@/components/listening/SeriesIcon/SeriesIcon';
+import SubpageBackdrop from '@/components/layout/SubpageBackdrop/SubpageBackdrop';
+import styles from './SeriesPageContent.module.css';
 
 type SeriesPageContentProps = {
   series: ListeningSeries;
 };
 
-export default function SeriesPageContent({
-  series,
-}: SeriesPageContentProps) {
+export default function SeriesPageContent({ series }: SeriesPageContentProps) {
   return (
     <>
       <section className={styles.hero}>
@@ -50,16 +48,10 @@ export default function SeriesPageContent({
           <div className={styles.heroGrid}>
             <div
               className={styles.cover}
-              style={
-                { "--series-accent": series.accent } as React.CSSProperties
-              }
+              style={{ '--series-accent': series.accent } as React.CSSProperties}
             >
-              <span>السَّمّاعات العالية</span>
-              <SeriesIcon
-                className={styles.coverIcon}
-                slug={series.slug}
-                size={68}
-              />
+              <span>أقراء وتدبر</span>
+              <SeriesIcon className={styles.coverIcon} slug={series.slug} size={68} />
               <small>{series.shortTitle}</small>
               <i />
               <em>قراءة · سماع · إسناد</em>
@@ -81,9 +73,7 @@ export default function SeriesPageContent({
                 <span>
                   <ListMusic size={17} />
                   <small>عدد المجالس</small>
-                  <strong>
-                    {toArabicDigits(series.sessions.length)} مجالس
-                  </strong>
+                  <strong>{toArabicDigits(series.sessions.length)} مجالس</strong>
                 </span>
                 <span>
                   <CalendarDays size={17} />
@@ -152,11 +142,7 @@ export default function SeriesPageContent({
                 >
                   <span className={styles.pathStep}>
                     <small>المجلس</small>
-                    <strong>
-                      {toArabicDigits(
-                        String(session.number).padStart(2, "0"),
-                      )}
-                    </strong>
+                    <strong>{toArabicDigits(String(session.number).padStart(2, '0'))}</strong>
                     <i />
                   </span>
 
@@ -164,10 +150,10 @@ export default function SeriesPageContent({
                     <span className={styles.sessionTopline}>
                       <small>
                         {index === 0
-                          ? "نقطة البداية"
+                          ? 'نقطة البداية'
                           : index === series.sessions.length - 1
-                            ? "ختام السلسلة"
-                            : "ضمن مسار السلسلة"}
+                            ? 'ختام السلسلة'
+                            : 'ضمن مسار السلسلة'}
                       </small>
                     </span>
                     <strong>{session.title}</strong>
@@ -203,9 +189,7 @@ export default function SeriesPageContent({
               </span>
               <small>متابعة السلسلة</small>
               <strong>ابدأ رحلتك العلمية</strong>
-              <p>
-                يحفظ ترتيب المجالس مسارك من المجلس الأول حتى نهاية السلسلة.
-              </p>
+              <p>يحفظ ترتيب المجالس مسارك من المجلس الأول حتى نهاية السلسلة.</p>
               <div className={styles.progressTrack}>
                 <i />
               </div>

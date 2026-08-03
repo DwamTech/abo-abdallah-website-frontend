@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useState } from "react";
+import Link from 'next/link';
+import { useState } from 'react';
 import {
   ArrowLeft,
   BookOpen,
@@ -13,25 +13,21 @@ import {
   Search,
   Sparkles,
   X,
-} from "lucide-react";
-import {
-  listeningSeries,
-  totalListeningSessions,
-} from "@/lib/listeningData";
-import { toArabicDigits } from "@/lib/arabicNumbers";
-import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
-import SeriesIcon from "@/components/listening/SeriesIcon/SeriesIcon";
-import siteContent from "@/data/site-content.json";
-import styles from "./ListeningIndexContent.module.css";
+} from 'lucide-react';
+import { listeningSeries, totalListeningSessions } from '@/lib/listeningData';
+import { toArabicDigits } from '@/lib/arabicNumbers';
+import SubpageBackdrop from '@/components/layout/SubpageBackdrop/SubpageBackdrop';
+import SeriesIcon from '@/components/listening/SeriesIcon/SeriesIcon';
+import siteContent from '@/data/site-content.json';
+import styles from './ListeningIndexContent.module.css';
 
 export default function ListeningIndexContent() {
   const categories = siteContent.listeningCategories;
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [query, setQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [query, setQuery] = useState('');
   const normalizedQuery = query.trim();
   const filteredSeries = listeningSeries.filter((series) => {
-    const matchesCategory =
-      activeCategory === "all" || series.category === activeCategory;
+    const matchesCategory = activeCategory === 'all' || series.category === activeCategory;
     const matchesQuery =
       !normalizedQuery ||
       series.title.includes(normalizedQuery) ||
@@ -62,15 +58,15 @@ export default function ListeningIndexContent() {
 
           <span className={styles.eyebrow}>
             <Headphones size={14} />
-            السَّمّاعات العالية
+            أقراء وتدبر
           </span>
           <h1>
             مجالس السماع
             <span>والمواد الصوتية</span>
           </h1>
           <p>
-            مكتبة صوتية علمية مرتبة في سلاسل متصلة، تجمع التسجيل والكتاب
-            وتساعد طالب العلم على المتابعة من أول مجلس إلى آخره.
+            مكتبة صوتية علمية مرتبة في سلاسل متصلة، تجمع التسجيل والكتاب وتساعد طالب العلم على
+            المتابعة من أول مجلس إلى آخره.
           </p>
 
           <div className={styles.heroStats}>
@@ -98,7 +94,7 @@ export default function ListeningIndexContent() {
           <header className={styles.libraryHead}>
             <div>
               <span>
-               <BookOpen size={15} />
+                <BookOpen size={15} />
                 فهرس السلاسل
               </span>
               <h2>اختر الكتاب وابدأ السماع</h2>
@@ -117,11 +113,7 @@ export default function ListeningIndexContent() {
                 />
               </span>
               {query && (
-                <button
-                  type="button"
-                  onClick={() => setQuery("")}
-                  aria-label="مسح البحث"
-                >
+                <button type="button" onClick={() => setQuery('')} aria-label="مسح البحث">
                   <X size={15} />
                 </button>
               )}
@@ -135,11 +127,7 @@ export default function ListeningIndexContent() {
           <div className={styles.categoryRail}>
             {categories.map((category) => (
               <button
-                className={
-                  activeCategory === category.value
-                    ? styles.activeCategory
-                    : undefined
-                }
+                className={activeCategory === category.value ? styles.activeCategory : undefined}
                 key={category.value}
                 onClick={() => setActiveCategory(category.value)}
                 type="button"
@@ -151,73 +139,63 @@ export default function ListeningIndexContent() {
 
           <div className={styles.grid}>
             {filteredSeries.map((series) => {
-              const index = listeningSeries.findIndex(
-                (item) => item.slug === series.slug,
-              );
+              const index = listeningSeries.findIndex((item) => item.slug === series.slug);
 
               return (
-              <Link
-                className={styles.card}
-                href={`/listening/${series.slug}`}
-                key={series.slug}
-                style={
-                  { "--series-accent": series.accent } as React.CSSProperties
-                }
-              >
-                <div
-                  className={styles.cover}
+                <Link
+                  className={styles.card}
+                  href={`/listening/${series.slug}`}
+                  key={series.slug}
+                  style={{ '--series-accent': series.accent } as React.CSSProperties}
                 >
-                  <span className={styles.coverIndex}>
-                    {toArabicDigits(String(index + 1).padStart(2, "0"))}
-                  </span>
-                  <span>مجالس السماع</span>
-                  <SeriesIcon
-                    className={styles.coverIcon}
-                    slug={series.slug}
-                    size={49}
-                  />
-                  <small>{series.shortTitle}</small>
-                  <i />
-                </div>
-
-                <div className={styles.cardCopy}>
-                  <div className={styles.cardTopline}>
-                    <small>{series.category}</small>
-                    <span>
-                      <i />
-                      سلسلة صوتية مرتبة
+                  <div className={styles.cover}>
+                    <span className={styles.coverIndex}>
+                      {toArabicDigits(String(index + 1).padStart(2, '0'))}
                     </span>
-                  </div>
-                  <h3>{series.title}</h3>
-                  <p>{series.description}</p>
-
-                  <div className={styles.cardWave} aria-hidden="true">
-                    {Array.from({ length: 21 }).map((_, waveIndex) => (
-                      <i key={waveIndex} />
-                    ))}
+                    <span>مجالس السماع</span>
+                    <SeriesIcon className={styles.coverIcon} slug={series.slug} size={49} />
+                    <small>{series.shortTitle}</small>
+                    <i />
                   </div>
 
-                  <div className={styles.cardFooter}>
-                    <div className={styles.meta}>
+                  <div className={styles.cardCopy}>
+                    <div className={styles.cardTopline}>
+                      <small>{series.category}</small>
                       <span>
-                        <ListMusic size={14} />
-                        {toArabicDigits(series.sessions.length)} مجالس
-                      </span>
-                      <span>
-                        <CalendarDays size={14} />
-                        {series.date}
+                        <i />
+                        سلسلة صوتية مرتبة
                       </span>
                     </div>
-                    <span className={styles.openSeries}>
-                      <i>
-                        <Play size={14} fill="currentColor" />
-                      </i>
-                      عرض السلسلة
-                      <ArrowLeft size={16} />
-                    </span>
+                    <h3>{series.title}</h3>
+                    <p>{series.description}</p>
+
+                    <div className={styles.cardWave} aria-hidden="true">
+                      {Array.from({ length: 21 }).map((_, waveIndex) => (
+                        <i key={waveIndex} />
+                      ))}
+                    </div>
+
+                    <div className={styles.cardFooter}>
+                      <div className={styles.meta}>
+                        <span>
+                          <ListMusic size={14} />
+                          {toArabicDigits(series.sessions.length)} مجالس
+                        </span>
+                        <span>
+                          <CalendarDays size={14} />
+                          {series.date}
+                        </span>
+                      </div>
+                      <span className={styles.openSeries}>
+                        <i>
+                          <Play size={14} fill="currentColor" />
+                        </i>
+                        عرض السلسلة
+                        <ArrowLeft size={16} />
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
               );
             })}
             {filteredSeries.length === 0 && (
@@ -228,8 +206,8 @@ export default function ListeningIndexContent() {
                 <button
                   type="button"
                   onClick={() => {
-                    setQuery("");
-                    setActiveCategory("all");
+                    setQuery('');
+                    setActiveCategory('all');
                   }}
                 >
                   عرض جميع السلاسل

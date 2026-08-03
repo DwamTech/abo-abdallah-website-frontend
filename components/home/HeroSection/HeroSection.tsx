@@ -1,15 +1,8 @@
-import {
-  ArrowLeft,
-  ArrowDown,
-  BookOpen,
-  Feather,
-  ScrollText,
-  Sparkles,
-} from "lucide-react";
-import Image from "next/image";
-import HeroSearchTrigger from "@/components/home/HeroSearchTrigger/HeroSearchTrigger";
-import RotatingKnowledgeSeal from "@/components/home/RotatingKnowledgeSeal/RotatingKnowledgeSeal";
-import styles from "./HeroSection.module.css";
+import { ArrowLeft, ArrowDown, BookOpen, Feather, ScrollText, Sparkles } from 'lucide-react';
+import Image from 'next/image';
+import HeroSearchTrigger from '@/components/home/HeroSearchTrigger/HeroSearchTrigger';
+import RotatingKnowledgeSeal from '@/components/home/RotatingKnowledgeSeal/RotatingKnowledgeSeal';
+import styles from './HeroSection.module.css';
 
 export default function HeroSection() {
   return (
@@ -19,13 +12,10 @@ export default function HeroSection() {
         <div className={styles.content}>
           <div className={styles.eyebrow}>
             {/* <Sparkles size={15} strokeWidth={1.5} /> */}
-            <span>
- ۞ العلم ميراث النبوة</span>
+            <span>۞ العلم ميراث النبوة</span>
           </div>
           <p className={styles.preTitle}>الموقع الرسمي لفضيلة الأستاذ الدكتور</p>
-          <h1 className={styles.srOnly}>
-            أبو عبد الله يحيى بن عبد الله البكري الشهري
-          </h1>
+          <h1 className={styles.srOnly}>أبو عبد الله يحيى بن عبد الله البكري الشهري</h1>
           <div className={styles.nameArtwork} aria-hidden="true">
             <span className={styles.nameOrnament}>
               <i />
@@ -49,24 +39,19 @@ export default function HeroSection() {
             <i />
             <span />
           </div>
-          <p className={styles.subtitle}>
-            أستاذ الحديث وعلومه بجامعة الملك خالد في أبها
-          </p>
+          <p className={styles.subtitle}>أستاذ الحديث وعلومه بجامعة الملك خالد في أبها</p>
           <p className={styles.intro}>
-            منصة علمية تجمع الإنتاج الأكاديمي والدعوي، وتيسّر للباحثين وطلاب
-            العلم الوصول إلى المؤلفات والبحوث والدروس ومجالس السماع.
+            منصة علمية تجمع الإنتاج الأكاديمي والدعوي، وتيسّر للباحثين وطلاب العلم الوصول إلى
+            المؤلفات والبحوث والدروس ومجالس السماع.
           </p>
           <HeroSearchTrigger />
           <div className={styles.ctas}>
             <a className={styles.primaryCta} href="/about">
               <BookOpen size={19} strokeWidth={1.6} />
-              السيرة العلمية
+              المسيرة العلمية
               <ArrowLeft size={17} />
             </a>
-            <a className={styles.secondaryCta} href="#about">
-              <ArrowDown size={20} strokeWidth={1.5} />
-              نبذة عن الشيخ
-            </a>
+            
           </div>
         </div>
 
@@ -116,17 +101,10 @@ export default function HeroSection() {
           <span className={`${styles.particle} ${styles.particleTwo}`} />
           <span className={`${styles.particle} ${styles.particleThree}`} />
 
-          <p className={styles.visualNote}>
-            <span>الموقع العلمي الرسمي</span>
-            <i />
-            <span>١٤٤٨ هـ</span>
-          </p>
+
         </div>
       </div>
-      <a className={styles.scrollCue} href="#about" aria-label="انتقل إلى نبذة الموقع">
-        <span>اكتشف الموقع</span>
-        <i />
-      </a>
+
     </section>
   );
 }

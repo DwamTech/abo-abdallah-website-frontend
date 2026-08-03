@@ -1,6 +1,6 @@
-import { ArrowLeft, Award, BookOpenCheck, Landmark } from "lucide-react";
-import siteContent from "@/data/site-content.json";
-import styles from "./BiographySection.module.css";
+import { ArrowLeft, Award, BookOpenCheck, Landmark } from 'lucide-react';
+import siteContent from '@/data/site-content.json';
+import styles from './BiographySection.module.css';
 
 const highlightIcons = { Landmark, BookOpenCheck, Award } as const;
 const highlights = siteContent.biographyHighlights;
@@ -21,11 +21,11 @@ export default function BiographySection() {
         </div>
 
         <div className={styles.content}>
-          <span className={styles.kicker}>السيرة العلمية</span>
+          <span className={styles.kicker}>المسيرة العلمية</span>
           <h2>مسيرة أكاديمية في خدمة السنة النبوية</h2>
           <p className={styles.intro}>
-            صفحة تعريفية موثقة تعرض المؤهلات والخبرات والإنتاج العلمي والمشاركة
-            في خدمة الحديث وعلومه، بأسلوب زمني يسهل على الباحث الرجوع إليه.
+            صفحة تعريفية موثقة تعرض المؤهلات والخبرات والإنتاج العلمي والمشاركة في خدمة الحديث
+            وعلومه، بأسلوب زمني يسهل على الباحث الرجوع إليه.
           </p>
 
           <div className={styles.highlights}>
@@ -46,7 +46,7 @@ export default function BiographySection() {
           </div>
 
           <a className={styles.link} href="#footer">
-            عرض السيرة العلمية الكاملة
+            عرض المسيرة العلمية الكاملة
             <ArrowLeft size={18} />
           </a>
         </div>

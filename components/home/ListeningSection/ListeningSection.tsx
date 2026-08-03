@@ -1,20 +1,10 @@
-import Link from "next/link";
-import {
-  ArrowLeft,
-  BookOpen,
-  CalendarDays,
-  Headphones,
-  ListMusic,
-  Play,
-} from "lucide-react";
-import SeriesIcon from "@/components/listening/SeriesIcon/SeriesIcon";
-import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
-import {
-  listeningSeries,
-  totalListeningSessions,
-} from "@/lib/listeningData";
-import { toArabicDigits } from "@/lib/arabicNumbers";
-import styles from "./ListeningSection.module.css";
+import Link from 'next/link';
+import { ArrowLeft, BookOpen, CalendarDays, Headphones, ListMusic, Play } from 'lucide-react';
+import SeriesIcon from '@/components/listening/SeriesIcon/SeriesIcon';
+import SectionDivider from '@/components/layout/SectionDivider/SectionDivider';
+import { listeningSeries, totalListeningSessions } from '@/lib/listeningData';
+import { toArabicDigits } from '@/lib/arabicNumbers';
+import styles from './ListeningSection.module.css';
 
 export default function ListeningSection() {
   const featured = listeningSeries[0];
@@ -36,7 +26,7 @@ export default function ListeningSection() {
           <div>
             <span className={styles.eyebrow}>
               <Headphones size={14} strokeWidth={1.5} />
-              السَّمّاعات العالية
+              أقراء وتدبر
             </span>
             <h2>
               مجالس السماع
@@ -45,8 +35,8 @@ export default function ListeningSection() {
           </div>
           <div className={styles.headingCopy}>
             <p>
-              تجربة علمية تجمع المجلس المسموع بنسخة الكتاب، ليقرأ الطالب
-              ويستمع ويتابع تسلسل السلسلة في مكان واحد.
+              تجربة علمية تجمع المجلس المسموع بنسخة الكتاب، ليقرأ الطالب ويستمع ويتابع تسلسل السلسلة
+              في مكان واحد.
             </p>
             <Link href="/listening">
               استكشف جميع السلاسل
@@ -56,17 +46,10 @@ export default function ListeningSection() {
         </header>
 
         <div className={styles.showcase}>
-          <Link
-            className={styles.featured}
-            href={`/listening/${featured.slug}`}
-          >
+          <Link className={styles.featured} href={`/listening/${featured.slug}`}>
             <div className={styles.cover}>
               <span className={styles.coverTop}>مجالس السماع</span>
-              <SeriesIcon
-                className={styles.coverIcon}
-                slug={featured.slug}
-                size={59}
-              />
+              <SeriesIcon className={styles.coverIcon} slug={featured.slug} size={59} />
               <span className={styles.coverTitle}>{featured.shortTitle}</span>
               <i />
             </div>
@@ -113,20 +96,18 @@ export default function ListeningSection() {
                 href={`/listening/${series.slug}`}
               >
                 <span className={styles.seriesIndex}>
-                  {toArabicDigits(String(index + 2).padStart(2, "0"))}
+                  {toArabicDigits(String(index + 2).padStart(2, '0'))}
                 </span>
                 <span
                   className={styles.miniCover}
-                  style={{ "--series-accent": series.accent } as React.CSSProperties}
+                  style={{ '--series-accent': series.accent } as React.CSSProperties}
                 >
                   <SeriesIcon slug={series.slug} size={25} />
                 </span>
                 <span className={styles.seriesCopy}>
                   <small>{series.category}</small>
                   <strong>{series.shortTitle}</strong>
-                  <span>
-                    {toArabicDigits(series.sessions.length)} مجالس مرتبة
-                  </span>
+                  <span>{toArabicDigits(series.sessions.length)} مجالس مرتبة</span>
                 </span>
                 <span className={styles.cardArrow}>
                   <ArrowLeft size={17} />
