@@ -280,10 +280,11 @@ export default function AboutPageContent() {
             <span className={styles.heroPortraitGlow} aria-hidden="true" />
             <Image
               className={styles.heroImage}
-              src="/media/images/about2.png"
+              src="/media/images/about-hero-portrait.jpeg"
               alt="الأستاذ الدكتور يحيى بن عبد الله بن يحيى البكري الشهري"
-              width={700}
-              height={700}
+              width={440}
+              height={500}
+              sizes="(max-width: 620px) 260px, (max-width: 1000px) 310px, 360px"
               priority
             />
             <span className={styles.heroPortraitLabel}>المسيرة العلمية</span>

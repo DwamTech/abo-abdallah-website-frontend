@@ -1,0 +1,465 @@
+.section {
+  position: relative;
+  padding: clamp(76px, 8vw, 116px) 0;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 8% 15%, rgba(215, 129, 88, 0.09), transparent 24%),
+    radial-gradient(circle at 92% 86%, rgba(122, 133, 83, 0.08), transparent 25%),
+    linear-gradient(135deg, #fffdf8 0%, #f8f0e3 100%);
+}
+
+.section::before,
+.section::after {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  pointer-events: none;
+}
+
+.section::before {
+  top: 0;
+  right: clamp(24px, 6vw, 92px);
+  width: min(34vw, 420px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(166, 122, 53, 0.52));
+}
+
+.section::after {
+  right: 0;
+  bottom: 0;
+  width: 250px;
+  height: 250px;
+  opacity: 0.22;
+  border: 1px solid rgba(166, 122, 53, 0.16);
+  border-radius: 50% 0 0;
+  box-shadow:
+    0 0 0 34px rgba(166, 122, 53, 0.035),
+    0 0 0 68px rgba(166, 122, 53, 0.018);
+  transform: translate(36%, 40%);
+}
+
+.backgroundArt {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sunWash,
+.leafWash {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.sunWash {
+  top: 4%;
+  left: -90px;
+  width: 310px;
+  height: 310px;
+  opacity: 0.16;
+  background: radial-gradient(circle, rgba(224, 132, 91, 0.4), transparent 68%);
+}
+
+.leafWash {
+  right: 14%;
+  bottom: -140px;
+  width: 360px;
+  height: 360px;
+  opacity: 0.13;
+  background: radial-gradient(circle, rgba(112, 127, 78, 0.48), transparent 67%);
+}
+
+.dottedPattern {
+  position: absolute;
+  top: 11%;
+  right: 2.5%;
+  width: 112px;
+  height: 205px;
+  opacity: 0.2;
+  background-image: radial-gradient(circle, rgba(166, 122, 53, 0.62) 1px, transparent 1.5px);
+  background-size: 13px 13px;
+  mask-image: linear-gradient(180deg, transparent, #000 18%, #000 76%, transparent);
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: min(calc(100% - 48px), var(--container));
+  margin-inline: auto;
+  grid-template-columns: minmax(350px, 0.74fr) minmax(0, 1.26fr);
+  align-items: center;
+  gap: clamp(48px, 6.5vw, 88px);
+}
+
+.copy {
+  position: relative;
+  max-width: 470px;
+  padding-block: 14px;
+}
+
+.copy::before {
+  display: block;
+  width: 104px;
+  height: 1px;
+  margin-bottom: 24px;
+  content: "";
+  background: linear-gradient(90deg, var(--gold-500), transparent);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 12px;
+  color: var(--gold-600);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 9px;
+}
+
+.eyebrow svg {
+  color: var(--gold-500);
+}
+
+.copy h2 {
+  margin: 0 0 20px;
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: clamp(34px, 4.2vw, 53px);
+  font-weight: 620;
+  line-height: 1.42;
+  letter-spacing: -0.045em;
+}
+
+.copy h2 span {
+  display: block;
+  color: var(--brown-700);
+}
+
+.intro {
+  max-width: 450px;
+  margin-bottom: 25px;
+  color: #66584e;
+  font-size: 17px;
+  line-height: 2;
+}
+
+.quote {
+  position: relative;
+  margin: 0 0 28px;
+  padding: 21px 23px 18px 58px;
+  overflow: hidden;
+  border: 1px solid rgba(166, 122, 53, 0.19);
+  border-right: 3px solid var(--gold-500);
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.7), transparent),
+    rgba(239, 225, 201, 0.34);
+}
+
+.quote::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 64px;
+  height: 64px;
+  content: "";
+  border-bottom: 1px solid rgba(166, 122, 53, 0.11);
+  border-left: 1px solid rgba(166, 122, 53, 0.11);
+}
+
+.quoteMark {
+  position: absolute;
+  top: 1px;
+  left: 17px;
+  color: rgba(166, 122, 53, 0.25);
+  font-family: Georgia, serif;
+  font-size: 68px;
+  line-height: 1;
+}
+
+.quote p {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 8px;
+  color: var(--brown-900);
+  font-size: 23px;
+  font-weight: 650;
+  line-height: 1.72;
+}
+
+.quote p span {
+  display: block;
+}
+
+.quote footer {
+  color: #9a8168;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 7px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.cta {
+  display: inline-flex;
+  min-height: 50px;
+  align-items: center;
+  gap: 18px;
+  padding-inline: 20px;
+  color: var(--cream-50);
+  border: 1px solid var(--brown-800);
+  border-radius: 3px;
+  background: var(--brown-800);
+  box-shadow: 0 12px 28px rgba(75, 51, 40, 0.14);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 9px;
+  transition:
+    background 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.cta:hover {
+  background: var(--brown-700);
+  box-shadow: 0 16px 34px rgba(75, 51, 40, 0.21);
+  transform: translateY(-2px);
+}
+
+.cta svg {
+  color: var(--gold-300);
+  transition: transform 220ms ease;
+}
+
+.cta:hover svg {
+  transform: translateX(-4px);
+}
+
+.note {
+  color: #9b8976;
+  font-size: 13px;
+}
+
+.artwork {
+  position: relative;
+  width: min(100%, 655px);
+  margin: 0;
+  justify-self: end;
+}
+
+.artwork::before {
+  position: absolute;
+  z-index: -1;
+  top: -24px;
+  right: -24px;
+  width: 115px;
+  height: 115px;
+  content: "";
+  border-top: 1px solid rgba(166, 122, 53, 0.45);
+  border-right: 1px solid rgba(166, 122, 53, 0.45);
+}
+
+.artworkFrame {
+  position: relative;
+  padding: 11px;
+  border: 1px solid rgba(166, 122, 53, 0.31);
+  background: rgba(255, 252, 245, 0.84);
+  box-shadow:
+    0 28px 70px rgba(75, 51, 40, 0.17),
+    0 3px 12px rgba(75, 51, 40, 0.08);
+  transition:
+    border-color 350ms ease,
+    box-shadow 350ms ease,
+    transform 350ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.artworkFrame::before {
+  position: absolute;
+  inset: 5px;
+  content: "";
+  border: 1px solid rgba(166, 122, 53, 0.16);
+  pointer-events: none;
+}
+
+.artwork:hover .artworkFrame {
+  border-color: rgba(166, 122, 53, 0.5);
+  box-shadow:
+    0 34px 78px rgba(75, 51, 40, 0.21),
+    0 4px 14px rgba(75, 51, 40, 0.09);
+  transform: translateY(-4px);
+}
+
+.artworkImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.caption {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 13px 4px 0;
+  color: #806c59;
+  font-size: 12px;
+}
+
+.caption > span,
+.caption a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.caption > span i {
+  width: 23px;
+  height: 1px;
+  background: var(--gold-500);
+}
+
+.caption a {
+  color: var(--gold-600);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 7px;
+  transition: color 180ms ease;
+}
+
+.caption a:hover {
+  color: var(--brown-700);
+}
+
+@media (max-width: 980px) {
+  .section {
+    padding-block: 78px 90px;
+  }
+
+  .container {
+    grid-template-columns: 1fr;
+    gap: 54px;
+  }
+
+  .copy {
+    max-width: 720px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .copy::before {
+    margin-inline: auto;
+  }
+
+  .intro {
+    max-width: 650px;
+    margin-inline: auto;
+    margin-bottom: 25px;
+  }
+
+  .quote {
+    max-width: 610px;
+    margin-inline: auto;
+    margin-bottom: 28px;
+    text-align: right;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+
+  .artwork {
+    width: min(100%, 720px);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 620px) {
+  .section {
+    padding-block: 58px 70px;
+  }
+
+  .container {
+    width: min(calc(100% - 28px), var(--container));
+    gap: 40px;
+  }
+
+  .copy {
+    padding-block: 0;
+  }
+
+  .copy::before {
+    margin-bottom: 19px;
+  }
+
+  .copy h2 {
+    margin-bottom: 16px;
+    font-size: clamp(30px, 10vw, 40px);
+  }
+
+  .intro {
+    font-size: 16px;
+    line-height: 1.9;
+  }
+
+  .quote {
+    padding: 18px 18px 16px 42px;
+  }
+
+  .quoteMark {
+    left: 10px;
+    font-size: 55px;
+  }
+
+  .quote p {
+    font-size: 20px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .cta {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .artwork::before {
+    top: -13px;
+    right: -4px;
+    width: 70px;
+    height: 70px;
+  }
+
+  .artworkFrame {
+    padding: 6px;
+  }
+
+  .artworkFrame::before {
+    inset: 2px;
+  }
+
+  .caption {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 7px;
+    padding-inline: 2px;
+  }
+
+  .dottedPattern {
+    opacity: 0.12;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .artworkFrame,
+  .cta,
+  .cta svg {
+    transition: none;
+  }
+}

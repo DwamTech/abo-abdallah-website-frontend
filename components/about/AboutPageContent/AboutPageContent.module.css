@@ -188,7 +188,7 @@
 
 .heroPortrait::before {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   inset: 10px;
   content: '';
   pointer-events: none;
@@ -210,16 +210,16 @@
 }
 
 .heroImage {
-  position: relative;
+  position: absolute;
   z-index: 1;
-  width: calc(110% + 70px);
+  inset: 0;
+  width: 100%;
   max-width: none;
-  height: auto;
+  height: 100%;
   min-height: 0;
   flex: 0 0 auto;
-  aspect-ratio: 1531 / 1027;
-  object-fit: contain;
-  object-position: center bottom;
+  object-fit: cover;
+  object-position: center center;
   mix-blend-mode: normal;
   filter: none;
 }
@@ -1710,12 +1710,6 @@
     min-height: 350px;
   }
 
-  .heroImage {
-    width: calc(110% + 70px);
-    height: auto;
-    min-height: 0;
-  }
-
   .identityContainer {
     grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
     gap: 40px;
@@ -1822,12 +1816,6 @@
     width: min(100%, 260px);
     min-height: 300px;
     justify-self: center;
-  }
-
-  .heroImage {
-    width: calc(110% + 70px);
-    height: auto;
-    min-height: 0;
   }
 
   .heroFacts {
