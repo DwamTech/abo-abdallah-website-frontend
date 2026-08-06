@@ -4,7 +4,11 @@
   overflow: hidden;
   color: var(--cream-50);
   background:
-    radial-gradient(circle at 10% 40%, rgba(191, 150, 80, 0.13), transparent 25%),
+    radial-gradient(
+      circle at 10% 40%,
+      rgba(191, 150, 80, 0.13),
+      transparent 25%
+    ),
     linear-gradient(135deg, #39261e, #211510 78%);
 }
 
@@ -169,7 +173,8 @@
   gap: 7px;
 }
 
-.introActions button {
+.introActions button,
+.introActions a {
   display: grid;
   width: 43px;
   height: 43px;
@@ -188,7 +193,11 @@
   padding: 67px 0 94px;
   overflow: hidden;
   background:
-    radial-gradient(circle at 95% 15%, rgba(191, 150, 80, 0.07), transparent 25%),
+    radial-gradient(
+      circle at 95% 15%,
+      rgba(191, 150, 80, 0.07),
+      transparent 25%
+    ),
     var(--cream-50);
 }
 
@@ -278,7 +287,8 @@
   gap: 5px;
 }
 
-.panelHead button {
+.panelHead button,
+.panelHead a {
   display: grid;
   width: 31px;
   height: 31px;
@@ -543,7 +553,11 @@
   color: #4b3b30;
   border: 1px solid #d1c2a7;
   background:
-    radial-gradient(circle at 75% 12%, rgba(166, 122, 53, 0.07), transparent 24%),
+    radial-gradient(
+      circle at 75% 12%,
+      rgba(166, 122, 53, 0.07),
+      transparent 24%
+    ),
     #fffdf7;
   box-shadow: 0 18px 43px rgba(75, 51, 40, 0.14);
 }
@@ -854,7 +868,11 @@
 /* Refined single-session study experience. */
 .intro {
   background:
-    radial-gradient(circle at 12% 36%, rgba(191, 150, 80, 0.2), transparent 29%),
+    radial-gradient(
+      circle at 12% 36%,
+      rgba(191, 150, 80, 0.2),
+      transparent 29%
+    ),
     linear-gradient(108deg, rgba(30, 19, 15, 0.96), rgba(54, 33, 24, 0.86)),
     url("/media/images/sub.jpg") center bottom / cover no-repeat;
 }
@@ -890,7 +908,11 @@
   border: 1px solid #e5c98f;
   border-radius: 39px 39px 7px 7px;
   background:
-    radial-gradient(circle at 50% 27%, rgba(255, 255, 255, 0.5), transparent 33%),
+    radial-gradient(
+      circle at 50% 27%,
+      rgba(255, 255, 255, 0.5),
+      transparent 33%
+    ),
     linear-gradient(150deg, #ecd39f, #cfa964);
   box-shadow:
     0 12px 30px rgba(12, 7, 4, 0.22),
@@ -936,7 +958,8 @@
   margin-block: 2px 7px;
 }
 
-.introActions button {
+.introActions button,
+.introActions a {
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.045);
   transition:
@@ -946,7 +969,8 @@
     transform 180ms ease;
 }
 
-.introActions button:not(:disabled):hover {
+.introActions button:not(:disabled):hover,
+.introActions a:hover {
   color: var(--brown-900);
   border-color: var(--gold-300);
   background: var(--gold-300);
@@ -974,7 +998,11 @@
   color: rgba(248, 243, 233, 0.7);
   border-radius: 5px 5px 0 0;
   background:
-    radial-gradient(circle at 85% 0%, rgba(221, 194, 142, 0.13), transparent 32%),
+    radial-gradient(
+      circle at 85% 0%,
+      rgba(221, 194, 142, 0.13),
+      transparent 32%
+    ),
     var(--brown-900);
 }
 
@@ -1067,7 +1095,10 @@
     linear-gradient(rgba(75, 51, 40, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(75, 51, 40, 0.025) 1px, transparent 1px),
     linear-gradient(145deg, #eee5d5, #e4d7c1);
-  background-size: 25px 25px, 25px 25px, auto;
+  background-size:
+    25px 25px,
+    25px 25px,
+    auto;
 }
 
 .paper {

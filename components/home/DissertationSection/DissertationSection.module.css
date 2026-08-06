@@ -5,9 +5,12 @@
   overflow: hidden;
   background:
     radial-gradient(circle at 90% 8%, rgba(130, 68, 1, 0.41), transparent 27%),
-    radial-gradient(circle at 7% 88%, rgba(166, 123, 53, 0.534), transparent 25%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.46), transparent 48%),
-    #f5ede2;
+    radial-gradient(
+      circle at 7% 88%,
+      rgba(166, 123, 53, 0.534),
+      transparent 25%
+    ),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.46), transparent 48%), #f5ede2;
 }
 
 .orbit {
@@ -110,6 +113,41 @@
   gap: 18px;
 }
 
+.sectionState {
+  display: grid;
+  min-height: 395px;
+  padding: 42px;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  text-align: center;
+  color: var(--brown-900);
+  border: 1px solid #d9cfbd;
+  border-radius: 13px 4px 4px;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 24px 58px rgba(75, 51, 40, 0.09);
+}
+
+.sectionState svg {
+  color: #8b684a;
+}
+
+.sectionState strong {
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 20px;
+}
+
+.sectionState p {
+  margin: 0;
+  color: var(--ink-muted);
+}
+
+.sectionState a {
+  color: #8b684a;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 13px;
+}
+
 .featuredFile {
   position: relative;
   display: flex;
@@ -123,9 +161,12 @@
   background:
     linear-gradient(rgba(127, 98, 72, 0.025) 1px, transparent 1px),
     linear-gradient(90deg, rgba(127, 98, 72, 0.02) 1px, transparent 1px),
-    linear-gradient(115deg, rgba(255, 255, 255, 0.82), transparent),
-    #f6f1e6;
-  background-size: 24px 24px, 24px 24px, auto, auto;
+    linear-gradient(115deg, rgba(255, 255, 255, 0.82), transparent), #f6f1e6;
+  background-size:
+    24px 24px,
+    24px 24px,
+    auto,
+    auto;
   box-shadow:
     0 24px 58px rgba(75, 51, 40, 0.1),
     inset 0 1px rgba(255, 255, 255, 0.85);
@@ -200,7 +241,11 @@
   border: 1px solid rgba(221, 194, 142, 0.25);
   border-radius: 58px 58px 6px 6px;
   background:
-    radial-gradient(circle at 50% 23%, rgba(255, 255, 255, 0.1), transparent 32%),
+    radial-gradient(
+      circle at 50% 23%,
+      rgba(255, 255, 255, 0.1),
+      transparent 32%
+    ),
     #493127;
   box-shadow:
     0 16px 32px rgba(73, 49, 39, 0.2),
@@ -314,7 +359,11 @@
   border: 1px solid rgba(221, 194, 142, 0.14);
   border-radius: 13px 4px 4px 4px;
   background:
-    radial-gradient(circle at 90% 0%, rgba(221, 194, 142, 0.1), transparent 32%),
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(221, 194, 142, 0.1),
+      transparent 32%
+    ),
     #35231a;
   box-shadow: 0 24px 58px rgba(53, 35, 26, 0.17);
 }

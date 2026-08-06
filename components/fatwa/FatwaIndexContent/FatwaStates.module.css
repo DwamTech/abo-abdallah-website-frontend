@@ -1,0 +1,77 @@
+.catalogState {
+  display: grid;
+  min-height: 300px;
+  padding: 42px;
+  grid-column: 1 / -1;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  color: #7b6859;
+  border: 1px dashed var(--cream-300);
+  border-radius: 16px;
+  background: rgba(255, 253, 248, 0.72);
+  text-align: center;
+}
+
+.catalogState strong {
+  color: var(--brown-900);
+  font:
+    600 18px "Noto Kufi Arabic Variable",
+    sans-serif;
+}
+
+.catalogState p {
+  margin: 0;
+}
+
+.catalogState button {
+  padding: 8px 15px;
+  color: #fff;
+  border: 0;
+  border-radius: 20px;
+  background: #735035;
+  cursor: pointer;
+  font:
+    10px "Noto Kufi Arabic Variable",
+    sans-serif;
+}
+
+.spinner {
+  animation: fatwa-spin 1s linear infinite;
+}
+
+.form > button:disabled {
+  opacity: 0.62;
+  cursor: wait;
+}
+
+.formError {
+  display: flex;
+  padding: 10px;
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 9px;
+  color: #8a3f35;
+  border: 1px solid rgba(138, 63, 53, 0.2);
+  background: rgba(138, 63, 53, 0.06);
+}
+
+.formError span {
+  display: flex;
+  flex-direction: column;
+}
+.formError small {
+  font-size: 10px;
+}
+
+@keyframes fatwa-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}

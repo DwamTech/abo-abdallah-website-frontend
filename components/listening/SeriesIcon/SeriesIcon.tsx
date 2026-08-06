@@ -5,28 +5,28 @@ import {
   LibraryBig,
   ScrollText,
 } from "lucide-react";
+import { getListeningVisual } from "@/lib/listeningVisuals";
 
 type SeriesIconProps = {
-  slug: string;
+  visualVariant?: string | null;
   size?: number;
   className?: string;
 };
 
-const iconBySeries = {
-  "sahih-al-bukhari": BookOpenCheck,
-  "sahih-muslim": BookMarked,
-  "sunan-and-masanid": LibraryBig,
-  "hadith-terminology": ScrollText,
-  "hadith-lessons": GraduationCap,
+const iconByVariant = {
+  "book-check": BookOpenCheck,
+  "book-marked": BookMarked,
+  library: LibraryBig,
+  scroll: ScrollText,
+  graduation: GraduationCap,
 };
 
 export default function SeriesIcon({
-  slug,
+  visualVariant,
   size = 48,
   className,
 }: SeriesIconProps) {
-  const Icon =
-    iconBySeries[slug as keyof typeof iconBySeries] ?? BookOpenCheck;
+  const Icon = iconByVariant[getListeningVisual(visualVariant).icon];
 
   return <Icon className={className} size={size} strokeWidth={1.15} />;
 }

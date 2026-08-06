@@ -1,32 +1,37 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import DissertationDetailContent from "@/components/dissertation/DissertationDetailContent/DissertationDetailContent";
-import {
-  dissertations,
-  getDissertation,
-  getRelatedDissertations,
-} from "@/lib/dissertationData";
+import { ApiError, getDissertation } from "@/lib/api";
 
 type DissertationPageProps = {
   params: Promise<{ dissertationId: string }>;
 };
 
-export function generateStaticParams() {
-  return dissertations.map((item) => ({ dissertationId: item.id }));
-}
+const loadDissertation = cache(async (identifier: string) => {
+  try {
+    return await getDissertation(identifier);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) notFound();
+    throw error;
+  }
+});
 
 export async function generateMetadata({
   params,
 }: DissertationPageProps): Promise<Metadata> {
   const { dissertationId } = await params;
-  const dissertation = getDissertation(dissertationId);
+  const { data: dissertation } = await loadDissertation(dissertationId);
 
   return {
-    title: dissertation?.title ?? "الرسائل العلمية",
-    description: dissertation?.abstract ?? dissertation?.title,
+    title: dissertation.title,
+    description:
+      dissertation.abstract ||
+      `عرض بيانات رسالة ${dissertation.title} وملفها العلمي.`,
+    keywords: dissertation.keywords,
   };
 }
 
@@ -34,23 +39,13 @@ export default async function DissertationPage({
   params,
 }: DissertationPageProps) {
   const { dissertationId } = await params;
-  const dissertation = getDissertation(dissertationId);
-
-  if (!dissertation) notFound();
-
-  const recordNumber = dissertations.findIndex(
-    (item) => item.id === dissertation.id,
-  ) + 1;
+  const initialData = await loadDissertation(dissertationId);
 
   return (
     <>
       <Header />
       <main>
-        <DissertationDetailContent
-          dissertation={dissertation}
-          recordNumber={recordNumber}
-          related={getRelatedDissertations(dissertation)}
-        />
+        <DissertationDetailContent initialData={initialData} />
         <SectionDivider variant="manuscript" />
       </main>
       <Footer />

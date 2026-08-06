@@ -1,0 +1,72 @@
+.state {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 285px;
+  padding: 40px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  color: #72533f;
+  border: 1px solid #dfcbae;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+.state svg {
+  margin-bottom: 15px;
+  color: #a87335;
+}
+.state strong {
+  color: #432d21;
+  font:
+    600 20px "Noto Kufi Arabic Variable",
+    sans-serif;
+}
+.state p {
+  margin: 8px 0 17px;
+}
+.state button {
+  padding: 9px 18px;
+  color: #fff8ed;
+  border: 0;
+  border-radius: 22px;
+  background: #513526;
+  font:
+    11px "Noto Kufi Arabic Variable",
+    sans-serif;
+}
+.skeleton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.skeleton > span {
+  display: block;
+  width: 82%;
+  height: 9px;
+  margin-top: 13px;
+  border-radius: 8px;
+  background: rgba(255, 248, 237, 0.1);
+}
+.skeleton > span:nth-of-type(2) {
+  width: 65%;
+}
+.skeleton > span:nth-of-type(3) {
+  width: 44%;
+}
+.spinner {
+  color: #e2b874;
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}

@@ -6,6 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test:listening": "node --test lib/listeningAudioUrl.test.mjs",
+    "test:scientific-videos": "node --test lib/scientificVideosApi.test.mjs",
+    "test:scientific-library-proxy": "node --test lib/scientificLibraryCookies.test.mjs lib/scientificLibraryMarkup.test.mjs lib/scientificLibraryProxy.test.mjs",
+    "test:scientific-fatwas": "node --test lib/scientificFatwaMarkup.test.mjs",
+    "test:dissertations": "node --test lib/dissertationProxy.test.mjs",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
@@ -14,7 +19,8 @@
     "lucide-react": "1.25.0",
     "next": "16.2.10",
     "react": "19.2.7",
-    "react-dom": "19.2.7"
+    "react-dom": "19.2.7",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "26.1.1",

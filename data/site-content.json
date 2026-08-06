@@ -1,10 +1,30 @@
 {
   "announcements": [
-    { "category": "الفتاوى", "title": "أحدث الفتاوى والمسائل الحديثية", "href": "/fatwas" },
-    { "category": "المجالس العلمية", "title": "مواعيد مجالس السماع القادمة", "href": "/listening" },
-    { "category": "جديد المكتبة", "title": "الكتب والبحوث العلمية الجديدة", "href": "/library" },
-    { "category": "البرامج العلمية", "title": "المحاضرات والدورات", "href": "#media" },
-    { "category": "إعلان", "title": "الإعلانات والفعاليات العلمية", "href": "#featured" }
+    {
+      "category": "الفتاوى",
+      "title": "أحدث الفتاوى والمسائل الحديثة",
+      "href": "/fatwas"
+    },
+    {
+      "category": "المجالس العلمية",
+      "title": "مواعيد مجالس السماع القادمة",
+      "href": "/listening"
+    },
+    {
+      "category": "جديد المكتبة",
+      "title": "الكتب والبحوث العلمية الجديدة",
+      "href": "/library"
+    },
+    {
+      "category": "البرامج العلمية",
+      "title": "المحاضرات والدورات",
+      "href": "#media"
+    },
+    {
+      "category": "إعلان",
+      "title": "الإعلانات والفعاليات العلمية",
+      "href": "#featured"
+    }
   ],
   "aboutFoundations": [
     {
@@ -24,9 +44,21 @@
     }
   ],
   "aboutProfilePoints": [
-    { "icon": "GraduationCap", "label": "المرتبة العلمية", "value": "أستاذ الحديث وعلومه" },
-    { "icon": "BookOpenCheck", "label": "مجال التخصص", "value": "الحديث النبوي وعلومه" },
-    { "icon": "Landmark", "label": "الجهة الأكاديمية", "value": "جامعة الملك خالد" }
+    {
+      "icon": "GraduationCap",
+      "label": "المرتبة العلمية",
+      "value": "أستاذ الحديث وعلومه"
+    },
+    {
+      "icon": "BookOpenCheck",
+      "label": "مجال التخصص",
+      "value": "الحديث النبوي وعلومه"
+    },
+    {
+      "icon": "Landmark",
+      "label": "الجهة الأكاديمية",
+      "value": "جامعة الملك خالد"
+    }
   ],
   "collections": [
     {
@@ -164,13 +196,41 @@
     }
   ],
   "knowledgeItems": [
-    { "icon": "BookOpenText", "label": "الحديث", "description": "رواية · دراية · تحقيق" },
-    { "icon": "MessageCircleQuestion", "label": "الفتاوى", "description": "تأصيل · بيان · إجابة" },
-    { "icon": "BookOpen", "label": "الكتب", "description": "تصنيف · تحقيق · نشر" },
-    { "icon": "FileText", "label": "الأبحاث", "description": "دراسة · توثيق · تحليل" },
-    { "icon": "ScrollText", "label": "مجالس السماع", "description": "قراءة · إجازة · توثيق" },
-    { "icon": "LibraryBig", "label": "الإنتاج الأكاديمي", "description": "علم · بحث · إثراء" },
-    { "icon": "GraduationCap", "label": "الإشراف العلمي", "description": "توجيه · متابعة · تأهيل" }
+    {
+      "icon": "BookOpenText",
+      "label": "الحديث",
+      "description": "رواية · دراية · تحقيق"
+    },
+    {
+      "icon": "MessageCircleQuestion",
+      "label": "الفتاوى",
+      "description": "تأصيل · بيان · إجابة"
+    },
+    {
+      "icon": "BookOpen",
+      "label": "الكتب",
+      "description": "تصنيف · تحقيق · نشر"
+    },
+    {
+      "icon": "FileText",
+      "label": "الأبحاث",
+      "description": "دراسة · توثيق · تحليل"
+    },
+    {
+      "icon": "ScrollText",
+      "label": "مجالس السماع",
+      "description": "قراءة · إجازة · توثيق"
+    },
+    {
+      "icon": "LibraryBig",
+      "label": "الإنتاج الأكاديمي",
+      "description": "علم · بحث · إثراء"
+    },
+    {
+      "icon": "GraduationCap",
+      "label": "الإشراف العلمي",
+      "description": "توجيه · متابعة · تأهيل"
+    }
   ],
   "listeningCategories": [
     { "label": "جميع السلاسل", "value": "all" },
@@ -191,7 +251,7 @@
   ],
   "searchLinks": [
     {
-      "label": "الفتاوى والمسائل الحديثية",
+      "label": "الفتاوى والمسائل الحديثة",
       "description": "أجوبة علمية مفهرسة في الحديث وعلومه مع استقبال الأسئلة الجديدة",
       "href": "/fatwas"
     },
@@ -215,7 +275,11 @@
       "description": "المسيرة العلمية والأكاديمية والتعريف بفضيلته",
       "href": "/about"
     },
-    { "label": "الصفحة الرئيسية", "description": "مدخل الموقع العلمي الرسمي", "href": "/" }
+    {
+      "label": "الصفحة الرئيسية",
+      "description": "مدخل الموقع العلمي الرسمي",
+      "href": "/"
+    }
   ],
   "footerQuickLinks": [
     { "label": "عن الشيخ", "href": "/about" },

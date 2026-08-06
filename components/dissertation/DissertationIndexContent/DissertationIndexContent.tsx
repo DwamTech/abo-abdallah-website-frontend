@@ -1,13 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
   BookOpen,
   Calendar,
   GraduationCap,
   Home,
+  LoaderCircle,
+  RefreshCcw,
   Search,
   SlidersHorizontal,
   University,
@@ -15,47 +17,161 @@ import {
   X,
 } from "lucide-react";
 import {
-  dissertations,
-  dissertationDegrees,
-  dissertationSpecializations,
-  dissertationUniversities,
-  dissertationYears,
-  participationTypes,
-  type Dissertation,
-} from "@/lib/dissertationData";
+  apiErrorMessage,
+  getDissertationFilterOptions,
+  getDissertations,
+  getDissertationStats,
+  optionValues,
+  statValue,
+  type DissertationCard,
+  type DissertationOptions,
+  type DissertationStats,
+  type PageMeta,
+} from "@/lib/api";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
 import styles from "./DissertationIndexContent.module.css";
 
+function visiblePages(current: number, last: number) {
+  const start = Math.max(1, Math.min(current - 2, last - 4));
+  const end = Math.min(last, Math.max(current + 2, 5));
+  return Array.from(
+    { length: Math.max(0, end - start + 1) },
+    (_, index) => start + index,
+  );
+}
+
+function hasValues(record: Record<string, unknown>) {
+  return Object.keys(record).length > 0;
+}
+
 export default function DissertationIndexContent() {
   const [query, setQuery] = useState("");
-  const [year, setYear] = useState<string>("الكل");
-  const [university, setUniversity] = useState<string>("الكل");
-  const [specialization, setSpecialization] = useState<string>("الكل");
-  const [participation, setParticipation] = useState<string>("الكل");
-  const [degree, setDegree] = useState<string>("الكل");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [year, setYear] = useState("");
+  const [university, setUniversity] = useState("");
+  const [specialization, setSpecialization] = useState("");
+  const [participation, setParticipation] = useState("");
+  const [degree, setDegree] = useState("");
+  const [page, setPage] = useState(1);
+  const [items, setItems] = useState<DissertationCard[]>([]);
+  const [meta, setMeta] = useState<PageMeta | null>(null);
+  const [options, setOptions] = useState<DissertationOptions>({});
+  const [stats, setStats] = useState<DissertationStats>({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [retryKey, setRetryKey] = useState(0);
 
-  const filtered = useMemo(() => {
-    const q = query.trim();
-    return dissertations.filter((item: Dissertation) => {
-      const matchesQuery =
-        !q ||
-        item.title.includes(q) ||
-        item.researcher.includes(q) ||
-        item.university.includes(q) ||
-        item.college.includes(q) ||
-        item.specialization.includes(q);
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      setPage(1);
+      setDebouncedQuery(query.trim());
+    }, 350);
+    return () => window.clearTimeout(timeout);
+  }, [query]);
 
-      return (
-        matchesQuery &&
-        (year === "الكل" || String(item.year) === year) &&
-        (university === "الكل" || item.university === university) &&
-        (specialization === "الكل" || item.specialization === specialization) &&
-        (participation === "الكل" || item.participation === participation) &&
-        (degree === "الكل" || item.degree === degree)
-      );
+  useEffect(() => {
+    const controller = new AbortController();
+    Promise.allSettled([
+      getDissertationFilterOptions(controller.signal),
+      getDissertationStats(controller.signal),
+    ]).then(([optionsResult, statsResult]) => {
+      if (controller.signal.aborted) return;
+      if (optionsResult.status === "fulfilled") setOptions(optionsResult.value);
+      if (statsResult.status === "fulfilled") setStats(statsResult.value);
     });
-  }, [query, year, university, specialization, participation, degree]);
+    return () => controller.abort();
+  }, [retryKey]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setLoading(true);
+    setError(null);
+
+    getDissertations(
+      {
+        search: debouncedQuery || undefined,
+        year: year || undefined,
+        university: university || undefined,
+        specialization: specialization || undefined,
+        participation_type: participation || undefined,
+        degree: degree || undefined,
+        page,
+        per_page: 12,
+      },
+      controller.signal,
+    )
+      .then((result) => {
+        setItems(result.data);
+        setMeta(result.meta);
+        if (hasValues(result.filterOptions)) setOptions(result.filterOptions);
+        if (hasValues(result.stats)) setStats(result.stats);
+      })
+      .catch((requestError: unknown) => {
+        if (
+          requestError instanceof DOMException &&
+          requestError.name === "AbortError"
+        )
+          return;
+        setItems([]);
+        setMeta(null);
+        setError(apiErrorMessage(requestError));
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [
+    debouncedQuery,
+    year,
+    university,
+    specialization,
+    participation,
+    degree,
+    page,
+    retryKey,
+  ]);
+
+  const years = optionValues(options, "years", "available_years");
+  const universities = optionValues(
+    options,
+    "universities",
+    "available_universities",
+  );
+  const specializations = optionValues(
+    options,
+    "specializations",
+    "available_specializations",
+  );
+  const participationTypes = optionValues(
+    options,
+    "participation_types",
+    "participations",
+    "participation_type",
+  );
+  const degrees = optionValues(options, "degrees", "academic_degrees");
+
+  const totalDissertations =
+    statValue(
+      stats,
+      "dissertations_count",
+      "total_dissertations",
+      "total",
+      "count",
+    ) ?? meta?.total;
+  const universitiesCount = statValue(
+    stats,
+    "universities_count",
+    "university_count",
+    "total_universities",
+  );
+  const specializationsCount = statValue(
+    stats,
+    "specializations_count",
+    "specialization_count",
+    "total_specializations",
+  );
 
   const activeFiltersCount = [
     year,
@@ -63,22 +179,27 @@ export default function DissertationIndexContent() {
     specialization,
     participation,
     degree,
-  ].filter((v) => v !== "الكل").length;
+  ].filter(Boolean).length;
+  const pages = useMemo(
+    () => (meta ? visiblePages(meta.currentPage, meta.lastPage) : []),
+    [meta],
+  );
 
   const resetFilters = () => {
-    setYear("الكل");
-    setUniversity("الكل");
-    setSpecialization("الكل");
-    setParticipation("الكل");
-    setDegree("الكل");
+    setYear("");
+    setUniversity("");
+    setSpecialization("");
+    setParticipation("");
+    setDegree("");
     setQuery("");
+    setPage(1);
   };
 
   return (
     <>
       <section className={styles.hero}>
         <div className={styles.heroInner}>
-          <nav className={styles.breadcrumb}>
+          <nav className={styles.breadcrumb} aria-label="مسار الصفحة">
             <Link href="/">
               <Home size={13} />
               الرئيسية
@@ -102,27 +223,39 @@ export default function DissertationIndexContent() {
                 أو شارك في لجانها، مفهرسة للباحثين في علوم الحديث والسنة.
               </p>
 
-              <div className={styles.heroStats}>
+              <div className={styles.heroStats} aria-live="polite">
                 <span>
-                  <strong>{toArabicDigits(dissertations.length)}</strong>
+                  <strong>
+                    {totalDissertations === undefined
+                      ? "—"
+                      : toArabicDigits(totalDissertations)}
+                  </strong>
                   رسالة علمية
                 </span>
                 <i />
                 <span>
-                  <strong>{toArabicDigits(dissertationUniversities.length)}</strong>
+                  <strong>
+                    {universitiesCount === undefined
+                      ? "—"
+                      : toArabicDigits(universitiesCount)}
+                  </strong>
                   جامعة
                 </span>
                 <i />
                 <span>
-                  <strong>{toArabicDigits(dissertationSpecializations.length)}</strong>
+                  <strong>
+                    {specializationsCount === undefined
+                      ? "—"
+                      : toArabicDigits(specializationsCount)}
+                  </strong>
                   تخصص
                 </span>
               </div>
             </div>
 
-            <div className={styles.heroScene}>
-              <span className={styles.heroOrbit} aria-hidden="true" />
-              <span className={styles.heroSpark} aria-hidden="true" />
+            <div className={styles.heroScene} aria-hidden="true">
+              <span className={styles.heroOrbit} />
+              <span className={styles.heroSpark} />
               <div className={styles.heroBook}>
                 <div className={styles.heroBookCover}>
                   <span>قاعدة بيانات</span>
@@ -130,9 +263,9 @@ export default function DissertationIndexContent() {
                   <strong>الرسائل العلمية</strong>
                   <i />
                   <small>إشراف ومناقشة</small>
-                  <b className={styles.heroBookBottom} aria-hidden="true" />
+                  <b className={styles.heroBookBottom} />
                 </div>
-                <span className={styles.heroBookShadow} aria-hidden="true" />
+                <span className={styles.heroBookShadow} />
               </div>
             </div>
           </div>
@@ -150,7 +283,10 @@ export default function DissertationIndexContent() {
                   فهرس الرسائل العلمية
                 </span>
                 <h2>ابحث وحدّد نطاق الدراسة</h2>
-                <p>ابحث في السجل ثم خصّص النتائج بحسب الجهة والتخصص والدور العلمي.</p>
+                <p>
+                  ابحث في السجل ثم خصّص النتائج بحسب الجهة والتخصص والدور
+                  العلمي.
+                </p>
               </div>
 
               <label className={styles.searchBox}>
@@ -158,11 +294,11 @@ export default function DissertationIndexContent() {
                   <Search size={21} />
                 </span>
                 <span className={styles.searchControl}>
-                  <small>بحث ذكي في السجل</small>
+                  <small>بحث في السجل</small>
                   <input
                     type="text"
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(event) => setQuery(event.target.value)}
                     placeholder="عنوان الرسالة، الباحث، الجامعة أو التخصص..."
                   />
                 </span>
@@ -176,7 +312,7 @@ export default function DissertationIndexContent() {
                   </button>
                 )}
                 <span className={styles.resultCount}>
-                  {toArabicDigits(filtered.length)}
+                  {meta ? toArabicDigits(meta.total) : "—"}
                   <small>نتيجة</small>
                 </span>
               </label>
@@ -194,37 +330,52 @@ export default function DissertationIndexContent() {
               <FilterRow
                 label="السنة"
                 icon={<Calendar size={14} />}
-                options={["الكل", ...dissertationYears.map(String)]}
+                options={years}
                 value={year}
-                onChange={setYear}
+                onChange={(value) => {
+                  setYear(value);
+                  setPage(1);
+                }}
               />
               <FilterRow
                 label="الجامعة"
                 icon={<University size={14} />}
-                options={["الكل", ...dissertationUniversities]}
+                options={universities}
                 value={university}
-                onChange={setUniversity}
+                onChange={(value) => {
+                  setUniversity(value);
+                  setPage(1);
+                }}
               />
               <FilterRow
                 label="التخصص"
                 icon={<BookOpen size={14} />}
-                options={["الكل", ...dissertationSpecializations]}
+                options={specializations}
                 value={specialization}
-                onChange={setSpecialization}
+                onChange={(value) => {
+                  setSpecialization(value);
+                  setPage(1);
+                }}
               />
               <FilterRow
                 label="نوع المشاركة"
                 icon={<User size={14} />}
                 options={participationTypes}
                 value={participation}
-                onChange={setParticipation}
+                onChange={(value) => {
+                  setParticipation(value);
+                  setPage(1);
+                }}
               />
               <FilterRow
                 label="الدرجة العلمية"
                 icon={<GraduationCap size={14} />}
-                options={dissertationDegrees}
+                options={degrees}
                 value={degree}
-                onChange={setDegree}
+                onChange={(value) => {
+                  setDegree(value);
+                  setPage(1);
+                }}
               />
             </div>
 
@@ -232,58 +383,89 @@ export default function DissertationIndexContent() {
               <div className={styles.activeFilters}>
                 <span>تم تطبيق {toArabicDigits(activeFiltersCount)} مرشح</span>
                 <button type="button" onClick={resetFilters}>
-                  إعادة ضبط الفلاتر
-                  <X size={14} />
+                  إعادة ضبط الفلاتر <X size={14} />
                 </button>
               </div>
             )}
           </div>
 
-          <div className={styles.grid}>
-            {filtered.length === 0 ? (
+          <div className={styles.grid} aria-busy={loading}>
+            {loading ? (
+              <div className={styles.state}>
+                <LoaderCircle size={31} className={styles.spinner} />
+                <strong>جارٍ تحميل الرسائل العلمية</strong>
+                <p>نستدعي السجل الأكاديمي من الخادم.</p>
+              </div>
+            ) : error ? (
+              <div className={styles.state} role="alert">
+                <RefreshCcw size={29} />
+                <strong>تعذّر تحميل السجل</strong>
+                <p>{error}</p>
+                <button
+                  type="button"
+                  onClick={() => setRetryKey((value) => value + 1)}
+                >
+                  إعادة المحاولة
+                </button>
+              </div>
+            ) : items.length === 0 ? (
               <div className={styles.emptyState}>
                 <Search size={48} />
                 <strong>لا توجد نتائج مطابقة</strong>
                 <p>جرّب تعديل كلمات البحث أو إعادة ضبط الفلاتر.</p>
-                <button type="button" onClick={resetFilters}>
-                  إعادة ضبط
-                </button>
+                {(query || activeFiltersCount > 0) && (
+                  <button type="button" onClick={resetFilters}>
+                    إعادة ضبط
+                  </button>
+                )}
               </div>
             ) : (
-              filtered.map((item) => (
+              items.map((item) => (
                 <Link
                   className={styles.card}
-                  key={item.id}
-                  href={`/dissertations/${item.id}`}
+                  key={String(item.id)}
+                  href={`/dissertations/${item.slug || item.id}`}
                 >
                   <div className={styles.cardMetaTop}>
-                    <span>{item.participation}</span>
-                    <small>{item.degree}</small>
+                    {item.participation_type && (
+                      <span>{item.participation_type}</span>
+                    )}
+                    {item.degree && <small>{item.degree}</small>}
                   </div>
 
                   <h3>{item.title}</h3>
 
                   <div className={styles.cardMeta}>
-                    <span>
-                      <User size={14} />
-                      {item.researcher}
-                    </span>
-                    <span>
-                      <University size={14} />
-                      {item.university}
-                    </span>
-                    <span>
-                      <BookOpen size={14} />
-                      {item.college}
-                    </span>
-                    <span>
-                      <Calendar size={14} />
-                      {toArabicDigits(item.year)}هـ
-                    </span>
-                    <span>
-                      <GraduationCap size={14} />
-                      {item.specialization}
-                    </span>
+                    {item.researcher_name && (
+                      <span>
+                        <User size={14} />
+                        {item.researcher_name}
+                      </span>
+                    )}
+                    {item.university && (
+                      <span>
+                        <University size={14} />
+                        {item.university}
+                      </span>
+                    )}
+                    {item.college && (
+                      <span>
+                        <BookOpen size={14} />
+                        {item.college}
+                      </span>
+                    )}
+                    {item.year !== undefined && (
+                      <span>
+                        <Calendar size={14} />
+                        {toArabicDigits(item.year)}هـ
+                      </span>
+                    )}
+                    {item.specialization && (
+                      <span>
+                        <GraduationCap size={14} />
+                        {item.specialization}
+                      </span>
+                    )}
                   </div>
 
                   {item.abstract && (
@@ -301,6 +483,47 @@ export default function DissertationIndexContent() {
               ))
             )}
           </div>
+
+          {!loading && !error && meta && meta.lastPage > 1 && (
+            <nav
+              className={styles.pagination}
+              aria-label="صفحات الرسائل العلمية"
+            >
+              <button
+                type="button"
+                disabled={meta.currentPage === 1}
+                onClick={() => setPage((value) => Math.max(1, value - 1))}
+              >
+                السابق
+              </button>
+              {pages.map((pageNumber) => (
+                <button
+                  type="button"
+                  aria-current={
+                    pageNumber === meta.currentPage ? "page" : undefined
+                  }
+                  className={
+                    pageNumber === meta.currentPage
+                      ? styles.currentPage
+                      : undefined
+                  }
+                  key={pageNumber}
+                  onClick={() => setPage(pageNumber)}
+                >
+                  {toArabicDigits(pageNumber)}
+                </button>
+              ))}
+              <button
+                type="button"
+                disabled={meta.currentPage === meta.lastPage}
+                onClick={() =>
+                  setPage((value) => Math.min(meta.lastPage, value + 1))
+                }
+              >
+                التالي
+              </button>
+            </nav>
+          )}
         </div>
       </section>
     </>
@@ -327,6 +550,13 @@ function FilterRow({
         {label}
       </span>
       <div>
+        <button
+          type="button"
+          className={!value ? styles.active : undefined}
+          onClick={() => onChange("")}
+        >
+          الكل
+        </button>
         {options.map((option) => (
           <button
             key={option}

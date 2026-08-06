@@ -1,0 +1,77 @@
+.hero {
+  min-height: 64vh;
+  padding: var(--subpage-hero-space) 24px 72px;
+  color: var(--cream-50);
+  background:
+    radial-gradient(
+      circle at 15% 35%,
+      rgba(166, 122, 53, 0.22),
+      transparent 30%
+    ),
+    linear-gradient(104deg, rgba(31, 20, 15, 0.95), rgba(62, 39, 27, 0.86)),
+    url("/media/images/sub.jpg") center bottom / cover;
+}
+
+.state {
+  display: grid;
+  width: min(100%, 620px);
+  min-height: 320px;
+  margin: 0 auto;
+  padding: 40px;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  border: 1px solid rgba(221, 194, 142, 0.22);
+  border-radius: 18px 18px 18px 5px;
+  background: rgba(36, 22, 16, 0.58);
+  text-align: center;
+  box-shadow: 0 25px 65px rgba(0, 0, 0, 0.2);
+}
+
+.state svg {
+  color: var(--gold-300);
+}
+.state strong {
+  font:
+    600 24px "Noto Kufi Arabic Variable",
+    sans-serif;
+}
+.state p {
+  margin: 0;
+  color: rgba(248, 243, 233, 0.7);
+}
+
+.state a,
+.state button {
+  min-height: 42px;
+  margin-top: 8px;
+  padding: 0 18px;
+  color: #3d291f;
+  border: 0;
+  border-radius: 22px;
+  background: #e3c17e;
+  cursor: pointer;
+  font:
+    11px "Noto Kufi Arabic Variable",
+    sans-serif;
+}
+
+.state a {
+  display: inline-flex;
+  align-items: center;
+}
+.spinner {
+  animation: fatwa-route-spin 1s linear infinite;
+}
+
+@keyframes fatwa-route-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}

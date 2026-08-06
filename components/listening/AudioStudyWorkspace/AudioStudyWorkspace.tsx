@@ -20,14 +20,17 @@ import {
   RotateCcw,
   RotateCw,
   Share2,
-  Sparkles,
   Volume2,
 } from "lucide-react";
-import type {
-  ListeningSeries,
-  ListeningSession,
-} from "@/lib/listeningData";
+import {
+  resolveMediaUrl,
+  resolveReaderSource,
+  type ListeningSeries,
+  type ListeningSession,
+} from "@/lib/api";
 import { toArabicDigits } from "@/lib/arabicNumbers";
+import { getListeningVisual } from "@/lib/listeningVisuals";
+import { isDirectPlayableAudioUrl } from "@/lib/listeningAudioUrl";
 import SeriesIcon from "@/components/listening/SeriesIcon/SeriesIcon";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
 import styles from "./AudioStudyWorkspace.module.css";
@@ -35,8 +38,8 @@ import styles from "./AudioStudyWorkspace.module.css";
 type AudioStudyWorkspaceProps = {
   series: ListeningSeries;
   session: ListeningSession;
-  previousSession?: ListeningSession;
-  nextSession?: ListeningSession;
+  previousSession?: Pick<ListeningSession, "slug" | "title"> | null;
+  nextSession?: Pick<ListeningSession, "slug" | "title"> | null;
 };
 
 function formatTime(seconds: number) {
@@ -59,12 +62,31 @@ export default function AudioStudyWorkspace({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [speed, setSpeed] = useState(1);
-  const hasAudio = Boolean(session.audioUrl);
+  const [audioError, setAudioError] = useState(false);
+  const resolvedAudioUrl = resolveMediaUrl(session.audio_url);
+  const audioUrl = isDirectPlayableAudioUrl(resolvedAudioUrl, {
+    httpsOnly: session.audio_source_type === "link",
+  })
+    ? resolvedAudioUrl
+    : null;
+  const hasAudio = Boolean(audioUrl);
+  const durationLabel =
+    session.duration_label ||
+    (session.duration_minutes
+      ? `${toArabicDigits(session.duration_minutes)} دقيقة`
+      : "—");
+  const visual = getListeningVisual(series.visual_variant);
+  const bookSource = resolveReaderSource({
+    source_type: series.book_source_type,
+    file_url: series.book_url,
+    source_link: series.book_url,
+  });
 
   useEffect(() => {
     setIsPlaying(false);
     setCurrentTime(0);
     setDuration(0);
+    setAudioError(false);
   }, [session.slug]);
 
   const togglePlayback = async () => {
@@ -72,8 +94,14 @@ export default function AudioStudyWorkspace({
     if (!audio || !hasAudio) return;
 
     if (audio.paused) {
-      await audio.play();
-      setIsPlaying(true);
+      try {
+        await audio.play();
+        setAudioError(false);
+        setIsPlaying(true);
+      } catch {
+        setAudioError(true);
+        setIsPlaying(false);
+      }
     } else {
       audio.pause();
       setIsPlaying(false);
@@ -111,15 +139,13 @@ export default function AudioStudyWorkspace({
             <span>/</span>
             <Link href="/listening">مجالس السماع</Link>
             <span>/</span>
-            <Link href={`/listening/${series.slug}`}>
-              {series.shortTitle}
-            </Link>
+            <Link href={`/listening/${series.slug}`}>{series.short_title}</Link>
           </nav>
 
           <div className={styles.introGrid}>
             <span className={styles.sessionBadge}>
               <small>المجلس</small>
-              {toArabicDigits(String(session.number).padStart(2, "0"))}
+              {toArabicDigits(String(session.sequence_number).padStart(2, "0"))}
             </span>
             <div className={styles.introCopy}>
               <div className={styles.introLabels}>
@@ -133,14 +159,16 @@ export default function AudioStudyWorkspace({
                 </span>
               </div>
               <h1>{session.title}</h1>
-              <p>{session.description}</p>
+              <p>
+                {session.description || "مجلس صوتي ضمن هذه السلسلة العلمية."}
+              </p>
               <div className={styles.introMeta}>
                 <span>
                   <Clock3 size={15} />
-                  {session.duration}
+                  {durationLabel}
                 </span>
                 <i />
-                <span>{session.date}</span>
+                <span>{session.date_label || "—"}</span>
                 <i />
                 <span>مادة صوتية مرتبطة بالكتاب</span>
               </div>
@@ -149,13 +177,21 @@ export default function AudioStudyWorkspace({
               <button type="button" aria-label="مشاركة المجلس">
                 <Share2 size={17} />
               </button>
-              <button
-                type="button"
-                aria-label="تحميل المجلس"
-                disabled={!hasAudio}
-              >
-                <Download size={17} />
-              </button>
+              {audioUrl && session.audio_download_allowed ? (
+                <a
+                  href={audioUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  download
+                  aria-label="تحميل المجلس"
+                >
+                  <Download size={17} />
+                </a>
+              ) : (
+                <button type="button" aria-label="تحميل المجلس" disabled>
+                  <Download size={17} />
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -196,211 +232,259 @@ export default function AudioStudyWorkspace({
 
             <div className={styles.studyGrid}>
               <div className={styles.audioPanel}>
-              <header className={styles.panelHead}>
-                <span>
-                  <Headphones size={18} />
-                  مشغل المجلس
-                </span>
-                <small>{session.duration}</small>
-              </header>
-
-              <div className={styles.nowPlaying}>
-                <div
-                  className={styles.miniCover}
-                  style={
-                    { "--series-accent": series.accent } as React.CSSProperties
-                  }
-                >
-                  <SeriesIcon slug={series.slug} size={27} />
-                </div>
-                <div>
-                  <small>يُشغّل الآن</small>
-                  <strong>{session.title}</strong>
-                  <span>{series.shortTitle}</span>
-                </div>
-              </div>
-
-              <div className={styles.waveform} aria-hidden="true">
-                {Array.from({ length: 44 }).map((_, index) => (
-                  <i
-                    className={index < 10 ? styles.wavePlayed : undefined}
-                    key={index}
-                  />
-                ))}
-              </div>
-
-              <div className={styles.progressRow}>
-                <span>{formatTime(currentTime)}</span>
-                <input
-                  aria-label="موضع تشغيل الصوت"
-                  disabled={!hasAudio}
-                  max={duration || 100}
-                  min="0"
-                  onChange={(event) => {
-                    if (audioRef.current) {
-                      audioRef.current.currentTime = Number(event.target.value);
-                    }
-                  }}
-                  type="range"
-                  value={currentTime}
-                />
-                <span>{hasAudio ? formatTime(duration) : session.duration}</span>
-              </div>
-
-              <div className={styles.controls}>
-                <button
-                  type="button"
-                  onClick={() => seekBy(-15)}
-                  disabled={!hasAudio}
-                  aria-label="الرجوع 15 ثانية"
-                >
-                  <RotateCcw size={20} />
-                  <small>١٥</small>
-                </button>
-                <button
-                  className={styles.playButton}
-                  type="button"
-                  onClick={togglePlayback}
-                  disabled={!hasAudio}
-                  aria-label={isPlaying ? "إيقاف مؤقت" : "تشغيل المجلس"}
-                >
-                  {isPlaying ? (
-                    <Pause size={22} fill="currentColor" />
-                  ) : (
-                    <Play size={22} fill="currentColor" />
-                  )}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => seekBy(15)}
-                  disabled={!hasAudio}
-                  aria-label="التقديم 15 ثانية"
-                >
-                  <RotateCw size={20} />
-                  <small>١٥</small>
-                </button>
-              </div>
-
-              <div className={styles.audioOptions}>
-                <label>
-                  <Gauge size={16} />
-                  سرعة التشغيل
-                  <select
-                    value={speed}
-                    onChange={(event) => updateSpeed(Number(event.target.value))}
-                    disabled={!hasAudio}
-                  >
-                    <option value="0.75">٠٫٧٥×</option>
-                    <option value="1">عادي</option>
-                    <option value="1.25">١٫٢٥×</option>
-                    <option value="1.5">١٫٥×</option>
-                    <option value="2">٢×</option>
-                  </select>
-                </label>
-                <span>
-                  <Volume2 size={17} />
-                  مستوى الصوت
-                </span>
-              </div>
-
-              {!hasAudio && (
-                <div className={styles.fileNotice}>
+                <header className={styles.panelHead}>
                   <span>
-                    <Check size={14} />
+                    <Headphones size={18} />
+                    مشغل المجلس
                   </span>
-                  <p>
-                    <strong>المشغل جاهز للربط</strong>
-                    يفعّل الاستماع والتحميل فور إضافة ملف التسجيل إلى بيانات
-                    المجلس.
-                  </p>
+                  <small>{durationLabel}</small>
+                </header>
+
+                <div className={styles.nowPlaying}>
+                  <div
+                    className={styles.miniCover}
+                    style={
+                      {
+                        "--series-accent": visual.accent,
+                      } as React.CSSProperties
+                    }
+                  >
+                    <SeriesIcon
+                      visualVariant={series.visual_variant}
+                      size={27}
+                    />
+                  </div>
+                  <div>
+                    <small>يُشغّل الآن</small>
+                    <strong>{session.title}</strong>
+                    <span>{series.short_title}</span>
+                  </div>
                 </div>
-              )}
 
-              <audio
-                ref={audioRef}
-                src={session.audioUrl}
-                onTimeUpdate={(event) =>
-                  setCurrentTime(event.currentTarget.currentTime)
-                }
-                onLoadedMetadata={(event) =>
-                  setDuration(event.currentTarget.duration)
-                }
-                onEnded={() => setIsPlaying(false)}
-              />
-              </div>
+                <div className={styles.waveform} aria-hidden="true">
+                  {Array.from({ length: 44 }).map((_, index) => (
+                    <i
+                      className={index < 10 ? styles.wavePlayed : undefined}
+                      key={index}
+                    />
+                  ))}
+                </div>
 
-              <div className={styles.bookPanel}>
-              <header className={styles.panelHead}>
-                <span>
-                  <BookOpen size={18} />
-                  نسخة الكتاب
-                </span>
-                <div>
-                  <button type="button" aria-label="تكبير قارئ الكتاب">
-                    <Maximize2 size={16} />
+                <div className={styles.progressRow}>
+                  <span>{formatTime(currentTime)}</span>
+                  <input
+                    aria-label="موضع تشغيل الصوت"
+                    disabled={!hasAudio}
+                    max={duration || 100}
+                    min="0"
+                    onChange={(event) => {
+                      if (audioRef.current) {
+                        audioRef.current.currentTime = Number(
+                          event.target.value,
+                        );
+                      }
+                    }}
+                    type="range"
+                    value={currentTime}
+                  />
+                  <span>
+                    {hasAudio && duration
+                      ? formatTime(duration)
+                      : durationLabel}
+                  </span>
+                </div>
+
+                <div className={styles.controls}>
+                  <button
+                    type="button"
+                    onClick={() => seekBy(-15)}
+                    disabled={!hasAudio}
+                    aria-label="الرجوع 15 ثانية"
+                  >
+                    <RotateCcw size={20} />
+                    <small>١٥</small>
+                  </button>
+                  <button
+                    className={styles.playButton}
+                    type="button"
+                    onClick={togglePlayback}
+                    disabled={!hasAudio}
+                    aria-label={isPlaying ? "إيقاف مؤقت" : "تشغيل المجلس"}
+                  >
+                    {isPlaying ? (
+                      <Pause size={22} fill="currentColor" />
+                    ) : (
+                      <Play size={22} fill="currentColor" />
+                    )}
                   </button>
                   <button
                     type="button"
-                    aria-label="تحميل الكتاب"
-                    disabled={!series.pdfUrl}
+                    onClick={() => seekBy(15)}
+                    disabled={!hasAudio}
+                    aria-label="التقديم 15 ثانية"
                   >
-                    <Download size={16} />
+                    <RotateCw size={20} />
+                    <small>١٥</small>
                   </button>
                 </div>
-              </header>
 
-              {series.pdfUrl ? (
-                <iframe
-                  className={styles.pdfFrame}
-                  src={series.pdfUrl}
-                  title={`كتاب ${series.shortTitle}`}
-                />
-              ) : (
-                <div className={styles.bookPreview}>
-                  <div className={styles.paper}>
-                    <span className={styles.paperKicker}>
-                      بسم الله الرحمن الرحيم
-                    </span>
-                    <h3>{series.shortTitle}</h3>
-                    <i />
-                    <p>
-                      هذه المساحة مخصصة لعرض ملف الكتاب أو المذكرة العلمية
-                      المرتبطة بالمجلس، ليتمكن الطالب من متابعة موضع القراءة
-                      أثناء الاستماع.
-                    </p>
-                    <p>
-                      عند إضافة ملف PDF سيظهر هنا مباشرة داخل قارئ مدمج، مع
-                      إمكان التكبير والتنقل بين الصفحات والتحميل عند السماح.
-                    </p>
-                    <span className={styles.paperNumber}>١</span>
-                  </div>
-                  <span className={styles.pdfNotice}>
-                    <BookOpen size={14} />
-                    ملف الكتاب جاهز للإضافة
+                <div className={styles.audioOptions}>
+                  <label>
+                    <Gauge size={16} />
+                    سرعة التشغيل
+                    <select
+                      value={speed}
+                      onChange={(event) =>
+                        updateSpeed(Number(event.target.value))
+                      }
+                      disabled={!hasAudio}
+                    >
+                      <option value="0.75">٠٫٧٥×</option>
+                      <option value="1">عادي</option>
+                      <option value="1.25">١٫٢٥×</option>
+                      <option value="1.5">١٫٥×</option>
+                      <option value="2">٢×</option>
+                    </select>
+                  </label>
+                  <span>
+                    <Volume2 size={17} />
+                    مستوى الصوت
                   </span>
                 </div>
-              )}
 
-              <footer className={styles.bookNavigation}>
-                <button type="button" disabled>
-                  <ChevronRight size={17} />
-                  الصفحة السابقة
-                </button>
-                <span>صفحة ١ من —</span>
-                <button type="button" disabled>
-                  الصفحة التالية
-                  <ChevronLeft size={17} />
-                </button>
-              </footer>
+                {(!hasAudio || audioError) && (
+                  <div className={styles.fileNotice}>
+                    <span>
+                      <Check size={14} />
+                    </span>
+                    <p>
+                      <strong>
+                        {audioError
+                          ? "تعذّر تشغيل التسجيل"
+                          : "المشغل جاهز للربط"}
+                      </strong>
+                      {audioError
+                        ? "تحقق من صلاحية رابط التسجيل أو حاول مرة أخرى لاحقًا."
+                        : "يفعّل الاستماع والتحميل فور إضافة ملف التسجيل إلى بيانات المجلس."}
+                    </p>
+                  </div>
+                )}
+
+                <audio
+                  ref={audioRef}
+                  src={audioUrl || undefined}
+                  onTimeUpdate={(event) =>
+                    setCurrentTime(event.currentTarget.currentTime)
+                  }
+                  onLoadedMetadata={(event) =>
+                    setDuration(event.currentTarget.duration)
+                  }
+                  onCanPlay={() => setAudioError(false)}
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  onEnded={() => setIsPlaying(false)}
+                  onError={() => {
+                    setAudioError(true);
+                    setIsPlaying(false);
+                  }}
+                />
+              </div>
+
+              <div className={styles.bookPanel}>
+                <header className={styles.panelHead}>
+                  <span>
+                    <BookOpen size={18} />
+                    نسخة الكتاب
+                  </span>
+                  <div>
+                    {bookSource ? (
+                      <a
+                        href={bookSource.actionUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label="فتح قارئ الكتاب في نافذة جديدة"
+                      >
+                        <Maximize2 size={16} />
+                      </a>
+                    ) : (
+                      <button
+                        type="button"
+                        aria-label="تكبير قارئ الكتاب"
+                        disabled
+                      >
+                        <Maximize2 size={16} />
+                      </button>
+                    )}
+                    {bookSource && series.book_download_allowed ? (
+                      <a
+                        href={bookSource.actionUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        download
+                        aria-label="تحميل الكتاب"
+                      >
+                        <Download size={16} />
+                      </a>
+                    ) : (
+                      <button type="button" aria-label="تحميل الكتاب" disabled>
+                        <Download size={16} />
+                      </button>
+                    )}
+                  </div>
+                </header>
+
+                {bookSource?.embedUrl ? (
+                  <iframe
+                    className={styles.pdfFrame}
+                    src={bookSource.embedUrl}
+                    title={`كتاب ${series.short_title}`}
+                  />
+                ) : (
+                  <div className={styles.bookPreview}>
+                    <div className={styles.paper}>
+                      <span className={styles.paperKicker}>
+                        بسم الله الرحمن الرحيم
+                      </span>
+                      <h3>{series.short_title}</h3>
+                      <i />
+                      <p>
+                        هذه المساحة مخصصة لعرض ملف الكتاب أو المذكرة العلمية
+                        المرتبطة بالمجلس، ليتمكن الطالب من متابعة موضع القراءة
+                        أثناء الاستماع.
+                      </p>
+                      <p>
+                        عند إضافة ملف PDF سيظهر هنا مباشرة داخل قارئ مدمج، مع
+                        إمكان التكبير والتنقل بين الصفحات والتحميل عند السماح.
+                      </p>
+                      <span className={styles.paperNumber}>١</span>
+                    </div>
+                    <span className={styles.pdfNotice}>
+                      <BookOpen size={14} />
+                      {bookSource
+                        ? "افتح ملف الكتاب في نافذة جديدة"
+                        : "ملف الكتاب جاهز للإضافة"}
+                    </span>
+                  </div>
+                )}
+
+                <footer className={styles.bookNavigation}>
+                  <button type="button" disabled>
+                    <ChevronRight size={17} />
+                    الصفحة السابقة
+                  </button>
+                  <span>صفحة ١ من —</span>
+                  <button type="button" disabled>
+                    الصفحة التالية
+                    <ChevronLeft size={17} />
+                  </button>
+                </footer>
               </div>
             </div>
           </div>
 
           <nav className={styles.sessionNavigation} aria-label="تنقل المجالس">
             {previousSession ? (
-              <Link
-                href={`/listening/${series.slug}/${previousSession.slug}`}
-              >
+              <Link href={`/listening/${series.slug}/${previousSession.slug}`}>
                 <ArrowRight size={18} />
                 <span>
                   <small>المجلس السابق</small>
@@ -411,7 +495,10 @@ export default function AudioStudyWorkspace({
               <span className={styles.emptyNavigation} />
             )}
 
-            <Link className={styles.allSessions} href={`/listening/${series.slug}`}>
+            <Link
+              className={styles.allSessions}
+              href={`/listening/${series.slug}`}
+            >
               جميع المجالس
             </Link>
 

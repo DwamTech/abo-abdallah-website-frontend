@@ -4,7 +4,11 @@
   overflow: hidden;
   color: var(--cream-50);
   background:
-    radial-gradient(circle at 13% 34%, rgba(191, 150, 80, 0.19), transparent 29%),
+    radial-gradient(
+      circle at 13% 34%,
+      rgba(191, 150, 80, 0.19),
+      transparent 29%
+    ),
     linear-gradient(105deg, rgba(31, 20, 15, 0.95), rgba(56, 35, 26, 0.85)),
     url("/media/images/sub.jpg") center bottom / cover no-repeat;
 }
@@ -76,7 +80,11 @@
       rgba(255, 255, 255, 0.1) 45%,
       transparent 54%
     ),
-    radial-gradient(circle at 50% 27%, rgba(255, 255, 255, 0.17), transparent 34%),
+    radial-gradient(
+      circle at 50% 27%,
+      rgba(255, 255, 255, 0.17),
+      transparent 34%
+    ),
     color-mix(in srgb, var(--work-accent), #21150f 48%);
   box-shadow:
     0 38px 56px -17px rgba(7, 4, 3, 0.68),
@@ -108,13 +116,12 @@
   border: 1px solid rgba(119, 88, 53, 0.42);
   border-right: 0;
   border-radius: 3px 0 0 4px;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      #f5ead3 0,
-      #f5ead3 2px,
-      #d2bd94 3px
-    );
+  background: repeating-linear-gradient(
+    to bottom,
+    #f5ead3 0,
+    #f5ead3 2px,
+    #d2bd94 3px
+  );
   box-shadow:
     -6px 8px 13px rgba(7, 4, 3, 0.42),
     inset -4px 0 4px rgba(106, 79, 48, 0.2);
@@ -157,6 +164,15 @@
 .cover > * {
   position: relative;
   z-index: 1;
+}
+
+.coverImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
 }
 
 .cover span,
@@ -288,6 +304,19 @@
   font-size: 12px;
 }
 
+.sourceButton {
+  display: inline-flex;
+  min-height: 50px;
+  padding-inline: 18px;
+  align-items: center;
+  gap: 9px;
+  color: var(--cream-50);
+  border: 1px solid rgba(221, 194, 142, 0.25);
+  background: var(--brown-800);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+}
+
 .actions button {
   display: grid;
   width: 50px;
@@ -367,7 +396,11 @@
   color: rgba(248, 243, 233, 0.72);
   border-radius: 5px 5px 0 0;
   background:
-    radial-gradient(circle at 85% 0%, rgba(221, 194, 142, 0.13), transparent 32%),
+    radial-gradient(
+      circle at 85% 0%,
+      rgba(221, 194, 142, 0.13),
+      transparent 32%
+    ),
     var(--brown-900);
 }
 
@@ -399,12 +432,26 @@
   opacity: 0.4;
 }
 
+.toolbarAction {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: var(--gold-300);
+  border: 1px solid rgba(221, 194, 142, 0.17);
+  background: rgba(255, 255, 255, 0.035);
+}
+
 .readerLayout {
   display: grid;
   padding-top: 9px;
   grid-template-columns: minmax(0, 1fr) 315px;
   align-items: stretch;
   gap: 9px;
+}
+
+.readerLayoutFull {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .documentArea,
@@ -423,6 +470,87 @@
   width: 100%;
   min-height: 650px;
   border: 0;
+}
+
+.readerUnavailable {
+  display: flex;
+  min-height: 650px;
+  padding: 35px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  color: #8c7b6c;
+  background: #f3ecdf;
+  text-align: center;
+}
+
+.readerUnavailable svg {
+  color: var(--gold-600);
+}
+
+.readerUnavailable strong {
+  color: var(--brown-800);
+  font-size: 17px;
+}
+
+.readerUnavailable a {
+  display: inline-flex;
+  margin-top: 7px;
+  padding: 10px 16px;
+  align-items: center;
+  gap: 7px;
+  color: var(--cream-50);
+  background: var(--brown-800);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 10px;
+}
+
+.pageState {
+  display: flex;
+  min-height: 330px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: rgba(248, 243, 233, 0.66);
+  text-align: center;
+}
+
+.pageState svg {
+  color: var(--gold-300);
+}
+
+.pageState strong {
+  margin-top: 12px;
+  color: var(--cream-50);
+  font-size: 21px;
+}
+
+.pageState p {
+  margin: 5px 0 15px;
+}
+
+.pageState button,
+.pageStateLink {
+  display: inline-flex;
+  padding: 10px 16px;
+  align-items: center;
+  justify-content: center;
+  color: var(--brown-900);
+  border: 0;
+  background: var(--gold-300);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  cursor: pointer;
+}
+
+.spinner {
+  animation: itemSpin 900ms linear infinite;
+}
+
+@keyframes itemSpin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .documentPreview {
@@ -446,7 +574,11 @@
   color: #4b3b30;
   border: 1px solid #d1c2a7;
   background:
-    radial-gradient(circle at 75% 12%, rgba(166, 122, 53, 0.07), transparent 24%),
+    radial-gradient(
+      circle at 75% 12%,
+      rgba(166, 122, 53, 0.07),
+      transparent 24%
+    ),
     #fffdf7;
   box-shadow:
     0 22px 50px rgba(75, 51, 40, 0.15),
@@ -607,6 +739,62 @@
   font-size: 10px;
 }
 
+.sidebarDownload {
+  display: flex;
+  min-height: 70px;
+  padding: 13px 15px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--cream-50);
+  border: 1px solid rgba(221, 194, 142, 0.22);
+  border-radius: 5px;
+  background:
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(221, 194, 142, 0.15),
+      transparent 43%
+    ),
+    var(--brown-900);
+  box-shadow: 0 12px 25px rgba(55, 34, 25, 0.12);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.sidebarDownload:hover {
+  border-color: rgba(221, 194, 142, 0.48);
+  box-shadow: 0 16px 32px rgba(55, 34, 25, 0.2);
+  transform: translateY(-2px);
+}
+
+.sidebarDownload > span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebarDownload > span > svg,
+.sidebarDownload > svg {
+  color: var(--gold-300);
+}
+
+.sidebarDownload > span > span {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarDownload small {
+  color: rgba(248, 243, 233, 0.55);
+  font-size: 9px;
+}
+
+.sidebarDownload strong {
+  color: var(--cream-50);
+  font-size: 13px;
+}
+
 .related {
   margin-top: 75px;
 }
@@ -761,12 +949,16 @@
 .fullReaderHeader {
   display: grid;
   padding: 10px 16px 10px 20px;
-  grid-template-columns: minmax(0, 1fr) auto 42px;
+  grid-template-columns: minmax(0, 1fr) 42px;
   align-items: center;
   gap: 15px;
   color: var(--cream-50);
   background:
-    radial-gradient(circle at 85% 0%, rgba(221, 194, 142, 0.14), transparent 32%),
+    radial-gradient(
+      circle at 85% 0%,
+      rgba(221, 194, 142, 0.14),
+      transparent 32%
+    ),
     var(--brown-900);
 }
 
@@ -835,8 +1027,7 @@
   overflow: hidden;
   border-left: 1px solid #d1c3a8;
   background:
-    linear-gradient(rgba(75, 51, 40, 0.03) 1px, transparent 1px),
-    #f5efe3;
+    linear-gradient(rgba(75, 51, 40, 0.03) 1px, transparent 1px), #f5efe3;
   background-size: 24px 24px;
 }
 
@@ -944,7 +1135,11 @@
   color: #4a3a2f;
   border: 1px solid #cdbc9e;
   background:
-    radial-gradient(circle at 82% 8%, rgba(166, 122, 53, 0.07), transparent 25%),
+    radial-gradient(
+      circle at 82% 8%,
+      rgba(166, 122, 53, 0.07),
+      transparent 25%
+    ),
     #fffdf7;
   box-shadow:
     0 26px 55px rgba(75, 51, 40, 0.2),
@@ -1080,23 +1275,45 @@
 }
 
 @keyframes fullReaderFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fullReaderRise {
-  from { opacity: 0; transform: translateY(18px) scale(0.985); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @keyframes fullTurnNext {
-  from { opacity: 0.3; transform: rotateY(13deg) translateX(18px); }
-  to { opacity: 1; transform: rotateY(0) translateX(0); }
+  from {
+    opacity: 0.3;
+    transform: rotateY(13deg) translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: rotateY(0) translateX(0);
+  }
 }
 
 @keyframes fullTurnPrevious {
-  from { opacity: 0.3; transform: rotateY(-13deg) translateX(-18px); }
-  to { opacity: 1; transform: rotateY(0) translateX(0); }
+  from {
+    opacity: 0.3;
+    transform: rotateY(-13deg) translateX(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: rotateY(0) translateX(0);
+  }
 }
 
 @media (max-width: 960px) {
@@ -1142,6 +1359,11 @@
   .meta,
   .actions {
     justify-content: center;
+  }
+
+  .actions {
+    max-width: 100%;
+    flex-wrap: wrap;
   }
 
   .meta {

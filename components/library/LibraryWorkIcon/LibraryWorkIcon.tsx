@@ -7,15 +7,13 @@ import {
   Newspaper,
   Sparkles,
 } from "lucide-react";
-import type { LibraryContentType } from "@/lib/libraryData";
-
 type LibraryWorkIconProps = {
-  type: LibraryContentType;
+  type: string;
   size?: number;
   className?: string;
 };
 
-const iconByType = {
+const iconByType: Record<string, typeof LibraryBig> = {
   "الكتب والمؤلفات": LibraryBig,
   "التحقيقات العلمية": FileCheck2,
   "الأبحاث المحكمة": BookOpenCheck,

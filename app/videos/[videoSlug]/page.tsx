@@ -4,23 +4,46 @@ import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import VideoDetailContent from "@/components/video/VideoDetailContent/VideoDetailContent";
-import { getRelatedVideos, getVideo, videos } from "@/lib/videoData";
+import {
+  getScientificVideoDetail,
+  ScientificVideosApiError,
+} from "@/lib/scientificVideosApi";
 
 type Props = { params: Promise<{ videoSlug: string }> };
 
-export function generateStaticParams() {
-  return videos.map((video) => ({ videoSlug: video.slug }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { videoSlug } = await params;
-  const video = getVideo(videoSlug);
-  return { title: video?.title ?? "المرئيات", description: video?.description };
+  try {
+    const { item } = await getScientificVideoDetail(videoSlug);
+    return { title: item.title, description: item.description };
+  } catch (error) {
+    if (error instanceof ScientificVideosApiError && error.status === 404)
+      notFound();
+    return { title: "المرئيات" };
+  }
 }
 
 export default async function VideoPage({ params }: Props) {
   const { videoSlug } = await params;
-  const video = getVideo(videoSlug);
-  if (!video) notFound();
-  return <><Header /><main><VideoDetailContent video={video} related={getRelatedVideos(video)} /><SectionDivider variant="manuscript" /></main><Footer /></>;
+  let detail: Awaited<ReturnType<typeof getScientificVideoDetail>>;
+  try {
+    detail = await getScientificVideoDetail(videoSlug);
+  } catch (error) {
+    if (error instanceof ScientificVideosApiError && error.status === 404)
+      notFound();
+    throw error;
+  }
+  return (
+    <>
+      <Header />
+      <main>
+        <VideoDetailContent
+          video={detail.item}
+          related={detail.related_items}
+        />
+        <SectionDivider variant="manuscript" />
+      </main>
+      <Footer />
+    </>
+  );
 }

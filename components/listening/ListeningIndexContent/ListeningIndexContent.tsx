@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import {
   ArrowLeft,
   BookOpen,
@@ -9,33 +9,94 @@ import {
   Headphones,
   Home,
   ListMusic,
+  LoaderCircle,
   Play,
+  RefreshCcw,
   Search,
-  Sparkles,
   X,
-} from 'lucide-react';
-import { listeningSeries, totalListeningSessions } from '@/lib/listeningData';
-import { toArabicDigits } from '@/lib/arabicNumbers';
-import SubpageBackdrop from '@/components/layout/SubpageBackdrop/SubpageBackdrop';
-import SeriesIcon from '@/components/listening/SeriesIcon/SeriesIcon';
-import siteContent from '@/data/site-content.json';
-import styles from './ListeningIndexContent.module.css';
+} from "lucide-react";
+import {
+  apiErrorMessage,
+  getListeningSeries,
+  type ListeningSeriesCard,
+  type ListeningStats,
+  type PageMeta,
+} from "@/lib/api";
+import { toArabicDigits } from "@/lib/arabicNumbers";
+import { getListeningVisual } from "@/lib/listeningVisuals";
+import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
+import SeriesIcon from "@/components/listening/SeriesIcon/SeriesIcon";
+import styles from "./ListeningIndexContent.module.css";
+
+function visiblePages(current: number, last: number) {
+  const start = Math.max(1, Math.min(current - 2, last - 4));
+  const end = Math.min(last, Math.max(current + 2, 5));
+  return Array.from(
+    { length: Math.max(0, end - start + 1) },
+    (_, index) => start + index,
+  );
+}
 
 export default function ListeningIndexContent() {
-  const categories = siteContent.listeningCategories;
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [query, setQuery] = useState('');
-  const normalizedQuery = query.trim();
-  const filteredSeries = listeningSeries.filter((series) => {
-    const matchesCategory = activeCategory === 'all' || series.category === activeCategory;
-    const matchesQuery =
-      !normalizedQuery ||
-      series.title.includes(normalizedQuery) ||
-      series.description.includes(normalizedQuery) ||
-      series.category.includes(normalizedQuery);
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const [seriesItems, setSeriesItems] = useState<ListeningSeriesCard[]>([]);
+  const [meta, setMeta] = useState<PageMeta | null>(null);
+  const [stats, setStats] = useState<ListeningStats | null>(null);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [retryKey, setRetryKey] = useState(0);
 
-    return matchesCategory && matchesQuery;
-  });
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      setPage(1);
+      setDebouncedQuery(query.trim());
+    }, 350);
+    return () => window.clearTimeout(timeout);
+  }, [query]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setLoading(true);
+    setError(null);
+
+    getListeningSeries(
+      {
+        search: debouncedQuery || undefined,
+        category: activeCategory === "all" ? undefined : activeCategory,
+        page,
+        per_page: 12,
+      },
+      controller.signal,
+    )
+      .then((result) => {
+        setSeriesItems(result.data);
+        setMeta(result.meta);
+        setStats(result.stats);
+        setCategories(result.filterOptions.categories);
+      })
+      .catch((requestError: unknown) => {
+        if (
+          requestError instanceof DOMException &&
+          requestError.name === "AbortError"
+        )
+          return;
+        setSeriesItems([]);
+        setMeta(null);
+        setStats(null);
+        setError(apiErrorMessage(requestError));
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [activeCategory, debouncedQuery, page, retryKey]);
+
+  const pages = meta ? visiblePages(meta.currentPage, meta.lastPage) : [];
 
   return (
     <>
@@ -65,18 +126,22 @@ export default function ListeningIndexContent() {
             <span>والمواد الصوتية</span>
           </h1>
           <p>
-            مكتبة صوتية علمية مرتبة في سلاسل متصلة، تجمع التسجيل والكتاب وتساعد طالب العلم على
-            المتابعة من أول مجلس إلى آخره.
+            مكتبة صوتية علمية مرتبة في سلاسل متصلة، تجمع التسجيل والكتاب وتساعد
+            طالب العلم على المتابعة من أول مجلس إلى آخره.
           </p>
 
           <div className={styles.heroStats}>
             <span>
-              <strong>{toArabicDigits(listeningSeries.length)}</strong>
+              <strong>
+                {stats ? toArabicDigits(stats.series_count) : "—"}
+              </strong>
               سلاسل علمية
             </span>
             <i />
             <span>
-              <strong>{toArabicDigits(totalListeningSessions)}</strong>
+              <strong>
+                {stats ? toArabicDigits(stats.sessions_count) : "—"}
+              </strong>
               مجلسًا مرتبًا
             </span>
             <i />
@@ -113,23 +178,40 @@ export default function ListeningIndexContent() {
                 />
               </span>
               {query && (
-                <button type="button" onClick={() => setQuery('')} aria-label="مسح البحث">
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  aria-label="مسح البحث"
+                >
                   <X size={15} />
                 </button>
               )}
               <span className={styles.searchCount}>
-                {toArabicDigits(filteredSeries.length)}
+                {meta ? toArabicDigits(meta.total) : "—"}
                 <small>نتيجة</small>
               </span>
             </label>
           </header>
 
           <div className={styles.categoryRail}>
-            {categories.map((category) => (
+            {[
+              { label: "جميع السلاسل", value: "all" },
+              ...categories.map((category) => ({
+                label: category,
+                value: category,
+              })),
+            ].map((category) => (
               <button
-                className={activeCategory === category.value ? styles.activeCategory : undefined}
+                className={
+                  activeCategory === category.value
+                    ? styles.activeCategory
+                    : undefined
+                }
                 key={category.value}
-                onClick={() => setActiveCategory(category.value)}
+                onClick={() => {
+                  setPage(1);
+                  setActiveCategory(category.value);
+                }}
                 type="button"
               >
                 {category.label}
@@ -137,68 +219,97 @@ export default function ListeningIndexContent() {
             ))}
           </div>
 
-          <div className={styles.grid}>
-            {filteredSeries.map((series) => {
-              const index = listeningSeries.findIndex((item) => item.slug === series.slug);
-
-              return (
-                <Link
-                  className={styles.card}
-                  href={`/listening/${series.slug}`}
-                  key={series.slug}
-                  style={{ '--series-accent': series.accent } as React.CSSProperties}
+          <div className={styles.grid} aria-busy={loading}>
+            {loading ? (
+              <div className={styles.emptyState}>
+                <LoaderCircle size={25} className={styles.spinner} />
+                <strong>جارٍ تحميل مجالس السماع</strong>
+                <p>نستدعي السلاسل المنشورة من الخادم.</p>
+              </div>
+            ) : error ? (
+              <div className={styles.emptyState} role="alert">
+                <RefreshCcw size={25} />
+                <strong>تعذّر تحميل مجالس السماع</strong>
+                <p>{error}</p>
+                <button
+                  type="button"
+                  onClick={() => setRetryKey((value) => value + 1)}
                 >
-                  <div className={styles.cover}>
-                    <span className={styles.coverIndex}>
-                      {toArabicDigits(String(index + 1).padStart(2, '0'))}
-                    </span>
-                    <span>مجالس السماع</span>
-                    <SeriesIcon className={styles.coverIcon} slug={series.slug} size={49} />
-                    <small>{series.shortTitle}</small>
-                    <i />
-                  </div>
+                  إعادة المحاولة
+                </button>
+              </div>
+            ) : seriesItems.length > 0 ? (
+              seriesItems.map((series, index) => {
+                const visual = getListeningVisual(series.visual_variant);
 
-                  <div className={styles.cardCopy}>
-                    <div className={styles.cardTopline}>
-                      <small>{series.category}</small>
-                      <span>
-                        <i />
-                        سلسلة صوتية مرتبة
+                return (
+                  <Link
+                    className={styles.card}
+                    href={`/listening/${series.slug}`}
+                    key={series.slug}
+                    style={
+                      {
+                        "--series-accent": visual.accent,
+                      } as React.CSSProperties
+                    }
+                  >
+                    <div className={styles.cover}>
+                      <span className={styles.coverIndex}>
+                        {toArabicDigits(
+                          String((meta?.from ?? 1) + index).padStart(2, "0"),
+                        )}
                       </span>
+                      <span>مجالس السماع</span>
+                      <SeriesIcon
+                        className={styles.coverIcon}
+                        visualVariant={series.visual_variant}
+                        size={49}
+                      />
+                      <small>{series.short_title}</small>
+                      <i />
                     </div>
-                    <h3>{series.title}</h3>
-                    <p>{series.description}</p>
 
-                    <div className={styles.cardWave} aria-hidden="true">
-                      {Array.from({ length: 21 }).map((_, waveIndex) => (
-                        <i key={waveIndex} />
-                      ))}
-                    </div>
-
-                    <div className={styles.cardFooter}>
-                      <div className={styles.meta}>
+                    <div className={styles.cardCopy}>
+                      <div className={styles.cardTopline}>
+                        <small>{series.category}</small>
                         <span>
-                          <ListMusic size={14} />
-                          {toArabicDigits(series.sessions.length)} مجالس
-                        </span>
-                        <span>
-                          <CalendarDays size={14} />
-                          {series.date}
+                          <i />
+                          سلسلة صوتية مرتبة
                         </span>
                       </div>
-                      <span className={styles.openSeries}>
-                        <i>
-                          <Play size={14} fill="currentColor" />
-                        </i>
-                        عرض السلسلة
-                        <ArrowLeft size={16} />
-                      </span>
+                      <h3>{series.title}</h3>
+                      <p>{series.description || "سلسلة علمية صوتية مرتبة."}</p>
+
+                      <div className={styles.cardWave} aria-hidden="true">
+                        {Array.from({ length: 21 }).map((_, waveIndex) => (
+                          <i key={waveIndex} />
+                        ))}
+                      </div>
+
+                      <div className={styles.cardFooter}>
+                        <div className={styles.meta}>
+                          <span>
+                            <ListMusic size={14} />
+                            {toArabicDigits(series.sessions_count)} مجالس
+                          </span>
+                          <span>
+                            <CalendarDays size={14} />
+                            {series.period_label || "—"}
+                          </span>
+                        </div>
+                        <span className={styles.openSeries}>
+                          <i>
+                            <Play size={14} fill="currentColor" />
+                          </i>
+                          عرض السلسلة
+                          <ArrowLeft size={16} />
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              );
-            })}
-            {filteredSeries.length === 0 && (
+                  </Link>
+                );
+              })
+            ) : (
               <div className={styles.emptyState}>
                 <Search size={24} />
                 <strong>لا توجد سلسلة مطابقة</strong>
@@ -206,8 +317,9 @@ export default function ListeningIndexContent() {
                 <button
                   type="button"
                   onClick={() => {
-                    setQuery('');
-                    setActiveCategory('all');
+                    setPage(1);
+                    setQuery("");
+                    setActiveCategory("all");
                   }}
                 >
                   عرض جميع السلاسل
@@ -215,6 +327,47 @@ export default function ListeningIndexContent() {
               </div>
             )}
           </div>
+
+          {!loading && !error && meta && meta.lastPage > 1 && (
+            <nav
+              className={styles.pagination}
+              aria-label="صفحات مجالس السماع والمواد الصوتية"
+            >
+              <button
+                type="button"
+                disabled={meta.currentPage === 1}
+                onClick={() => setPage((value) => Math.max(1, value - 1))}
+              >
+                السابق
+              </button>
+              {pages.map((pageNumber) => (
+                <button
+                  type="button"
+                  aria-current={
+                    pageNumber === meta.currentPage ? "page" : undefined
+                  }
+                  className={
+                    pageNumber === meta.currentPage
+                      ? styles.currentPage
+                      : undefined
+                  }
+                  key={pageNumber}
+                  onClick={() => setPage(pageNumber)}
+                >
+                  {toArabicDigits(pageNumber)}
+                </button>
+              ))}
+              <button
+                type="button"
+                disabled={meta.currentPage === meta.lastPage}
+                onClick={() =>
+                  setPage((value) => Math.min(meta.lastPage, value + 1))
+                }
+              >
+                التالي
+              </button>
+            </nav>
+          )}
         </div>
       </section>
     </>

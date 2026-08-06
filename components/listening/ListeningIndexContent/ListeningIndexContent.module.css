@@ -5,7 +5,11 @@
   overflow: hidden;
   color: var(--cream-50);
   background:
-    radial-gradient(circle at 20% 20%, rgba(191, 150, 80, 0.16), transparent 28%),
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(191, 150, 80, 0.16),
+      transparent 28%
+    ),
     linear-gradient(105deg, rgba(31, 20, 15, 0.94), rgba(50, 31, 23, 0.84)),
     url("/media/images/sub.jpg") center bottom / cover no-repeat;
 }
@@ -190,7 +194,11 @@
   padding: 91px 0 112px;
   overflow: hidden;
   background:
-    radial-gradient(circle at 6% 22%, rgba(191, 150, 80, 0.08), transparent 25%),
+    radial-gradient(
+      circle at 6% 22%,
+      rgba(191, 150, 80, 0.08),
+      transparent 25%
+    ),
     var(--cream-50);
 }
 
@@ -255,7 +263,11 @@
   color: var(--gold-300);
   border-radius: 50%;
   background:
-    radial-gradient(circle at 35% 28%, rgba(221, 194, 142, 0.18), transparent 35%),
+    radial-gradient(
+      circle at 35% 28%,
+      rgba(221, 194, 142, 0.18),
+      transparent 35%
+    ),
     var(--brown-800);
   box-shadow: 0 8px 20px rgba(75, 51, 40, 0.17);
 }
@@ -362,6 +374,48 @@
   background: var(--brown-800);
 }
 
+.pagination {
+  display: flex;
+  margin-top: 35px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.pagination button {
+  min-width: 38px;
+  padding: 9px 15px;
+  color: var(--brown-800);
+  border: 1px solid var(--cream-300);
+  border-radius: 5px;
+  background: #fffdf8;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 10px;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  border-color: var(--brown-800);
+  transform: translateY(-2px);
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.pagination .currentPage {
+  color: var(--cream-50);
+  border-color: var(--brown-800);
+  background: var(--brown-800);
+}
+
 .grid {
   position: relative;
   display: grid;
@@ -381,7 +435,11 @@
   border: 1px solid var(--cream-300);
   border-radius: 8px;
   background:
-    linear-gradient(112deg, rgba(255, 255, 255, 0.9), rgba(248, 243, 233, 0.55)),
+    linear-gradient(
+      112deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(248, 243, 233, 0.55)
+    ),
     var(--cream-50);
   box-shadow:
     0 16px 44px rgba(75, 51, 40, 0.065),
@@ -443,7 +501,11 @@
   border: 1px solid color-mix(in srgb, var(--series-accent), #fff 30%);
   border-radius: 78px 78px 5px 5px;
   background:
-    radial-gradient(circle at 50% 27%, rgba(255, 255, 255, 0.16), transparent 33%),
+    radial-gradient(
+      circle at 50% 27%,
+      rgba(255, 255, 255, 0.16),
+      transparent 33%
+    ),
     color-mix(in srgb, var(--series-accent), #241710 47%);
   box-shadow:
     0 22px 43px rgba(57, 39, 31, 0.24),
@@ -710,6 +772,32 @@
   background: var(--brown-800);
   font-family: "Noto Kufi Arabic Variable", sans-serif;
   font-size: 7px;
+  cursor: pointer;
+}
+
+.spinner {
+  animation: listening-spin 900ms linear infinite;
+}
+
+@keyframes listening-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.routeAction {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 42px;
+  margin-top: 13px;
+  padding-inline: 17px;
+  align-items: center;
+  gap: 8px;
+  color: var(--brown-900);
+  border: 0;
+  background: var(--gold-300);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 8px;
   cursor: pointer;
 }
 

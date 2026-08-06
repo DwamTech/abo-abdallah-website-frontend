@@ -1,16 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
   BookOpen,
   CalendarDays,
-  Check,
-  ChevronLeft,
-  ChevronRight,
   Download,
   Expand,
+  ExternalLink,
   FileText,
   Home,
   Library,
@@ -21,85 +19,86 @@ import {
 } from "lucide-react";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
 import LibraryWorkIcon from "@/components/library/LibraryWorkIcon/LibraryWorkIcon";
-import type { LibraryWork } from "@/lib/libraryData";
 import { toArabicDigits } from "@/lib/arabicNumbers";
+import {
+  recordScientificLibraryView,
+  resolveScientificLibraryReader,
+  resolveScientificLibraryUrl,
+  type ScientificLibraryDetail,
+} from "@/lib/scientificLibraryApi";
 import styles from "./LibraryItemContent.module.css";
-import readerStyles from "./ReaderWithoutIndex.module.css";
 
-type LibraryItemContentProps = {
-  work: LibraryWork;
-  relatedWorks: LibraryWork[];
-};
+type LibraryItemContentProps = { initialData: ScientificLibraryDetail };
+
+const WORK_ACCENTS = ["#795238", "#556a5c", "#786449", "#6d4c45", "#596873"];
+
+function workAccent(item: { id: string | number }) {
+  const seed = String(item.id)
+    .split("")
+    .reduce((sum, character) => sum + character.charCodeAt(0), 0);
+  return WORK_ACCENTS[seed % WORK_ACCENTS.length];
+}
 
 export default function LibraryItemContent({
-  work,
-  relatedWorks,
+  initialData,
 }: LibraryItemContentProps) {
+  const { item, related_items: relatedItems } = initialData;
   const [readerOpen, setReaderOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pageDirection, setPageDirection] = useState<"next" | "previous">(
-    "next",
-  );
-  const readerPages = useMemo(
-    () => [
-      {
-        title: "صفحة العنوان",
-        heading: work.title,
-        paragraphs: [work.description, `${work.contentType} في ${work.field}.`],
-      },
-      {
-        title: "عن المصنَّف",
-        heading: "نبذة علمية",
-        paragraphs: [work.description, work.publication],
-      },
-      {
-        title: "بيانات النشر",
-        heading: "البيانات الببليوجرافية",
-        paragraphs: [
-          `الإصدار: ${work.edition}.`,
-          `عدد الصفحات: ${toArabicDigits(work.pages)} صفحة.`,
-          `التصنيف العلمي: ${work.field}.`,
-          `نوع المحتوى: ${work.contentType}.`,
-        ],
-      },
-      {
-        title: "فهرس المحتويات",
-        heading: "محتويات المصنَّف",
-        paragraphs: work.contents.map(
-          (item, index) => `${toArabicDigits(index + 1)}. ${item}`,
-        ),
-      },
-    ].slice(0, 3),
-    [work],
-  );
+  const readerTriggerRef = useRef<HTMLButtonElement>(null);
+  const closeReaderRef = useRef<HTMLButtonElement>(null);
+  const fullReaderFrameRef = useRef<HTMLIFrameElement>(null);
+  const viewedSlugsRef = useRef(new Set<string>());
+
+  useEffect(() => {
+    const slug = item.slug;
+    if (viewedSlugsRef.current.has(slug)) return;
+
+    viewedSlugsRef.current.add(slug);
+    void recordScientificLibraryView(slug).catch(() => {
+      // Reading the page must stay available when analytics are unavailable.
+    });
+  }, [item.slug]);
 
   useEffect(() => {
     if (!readerOpen) return;
-
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const handleKeyboard = (event: KeyboardEvent) => {
+    closeReaderRef.current?.focus();
+
+    const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") setReaderOpen(false);
-      if (!work.pdfUrl && event.key === "ArrowLeft") {
-        setPageDirection("next");
-        setCurrentPage((page) => Math.min(page + 1, readerPages.length - 1));
-      }
-      if (!work.pdfUrl && event.key === "ArrowRight") {
-        setPageDirection("previous");
-        setCurrentPage((page) => Math.max(page - 1, 0));
-      }
     };
-    window.addEventListener("keydown", handleKeyboard);
+    window.addEventListener("keydown", closeOnEscape);
 
     return () => {
       document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", handleKeyboard);
+      window.removeEventListener("keydown", closeOnEscape);
+      readerTriggerRef.current?.focus();
     };
-  }, [readerOpen, readerPages.length, work.pdfUrl]);
+  }, [readerOpen]);
 
-  const goToPage = (page: number) => {
-    setPageDirection(page > currentPage ? "next" : "previous");
-    setCurrentPage(page);
+  const shortTitle = item.short_title || item.title;
+  const accent = workAccent(item);
+  const reader = resolveScientificLibraryReader(item);
+  const coverUrl = resolveScientificLibraryUrl(item.cover_url);
+  const hasSidebar = Boolean(
+    item.author_name ||
+    item.publication_info ||
+    item.edition ||
+    item.keywords.length > 0 ||
+    reader.downloadUrl,
+  );
+
+  const share = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: item.title, url: window.location.href });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+      }
+    } catch {
+      // The user may cancel the native share dialog.
+    }
   };
 
   return (
@@ -114,19 +113,29 @@ export default function LibraryItemContent({
             <span>/</span>
             <Link href="/library">المكتبة الرقمية</Link>
             <span>/</span>
-            <strong>{work.shortTitle}</strong>
+            <strong>{shortTitle}</strong>
           </nav>
 
           <div className={styles.heroGrid}>
             <div
               className={styles.cover}
-              style={{ "--work-accent": work.accent } as React.CSSProperties}
+              style={{ "--work-accent": accent } as React.CSSProperties}
             >
-              <span>المكتبة الرقمية</span>
-              <LibraryWorkIcon type={work.contentType} size={66} />
-              <strong>{work.shortTitle}</strong>
-              <i />
-              <small>{work.field}</small>
+              {coverUrl ? (
+                <img
+                  className={styles.coverImage}
+                  src={coverUrl}
+                  alt={`غلاف ${item.title}`}
+                />
+              ) : (
+                <>
+                  <span>المكتبة الرقمية</span>
+                  <LibraryWorkIcon type={item.content_type} size={66} />
+                  <strong>{shortTitle}</strong>
+                  <i />
+                  <small>{item.scientific_field}</small>
+                </>
+              )}
               <b className={styles.bookBottom} aria-hidden="true" />
             </div>
 
@@ -134,51 +143,71 @@ export default function LibraryItemContent({
               <div className={styles.heroLabels}>
                 <span>
                   <Library size={14} />
-                  {work.contentType}
+                  {item.content_type}
                 </span>
-                {work.isPlaceholder && (
-                  <span className={styles.placeholderLabel}>
-                    <i />
-                    بيانات نموذجية قيد التوثيق
-                  </span>
-                )}
+                {item.author_name && <span>{item.author_name}</span>}
               </div>
-              <h1>{work.title}</h1>
-              <p>{work.description}</p>
+              <h1>{item.title}</h1>
+              <p>{item.description}</p>
 
               <div className={styles.meta}>
-                <span>
-                  <FileText size={17} />
-                  <small>عدد الصفحات</small>
-                  <strong>{toArabicDigits(work.pages)} صفحة</strong>
-                </span>
-                <span>
-                  <CalendarDays size={17} />
-                  <small>بيانات الإصدار</small>
-                  <strong>{work.edition}</strong>
-                </span>
+                {item.pages_count !== undefined && (
+                  <span>
+                    <FileText size={17} />
+                    <small>عدد الصفحات</small>
+                    <strong>{toArabicDigits(item.pages_count)} صفحة</strong>
+                  </span>
+                )}
+                {item.edition && (
+                  <span>
+                    <CalendarDays size={17} />
+                    <small>بيانات الإصدار</small>
+                    <strong>{item.edition}</strong>
+                  </span>
+                )}
                 <span>
                   <Tags size={17} />
                   <small>التصنيف العلمي</small>
-                  <strong>{work.field}</strong>
+                  <strong>{item.scientific_field}</strong>
                 </span>
               </div>
 
               <div className={styles.actions}>
-                <a className={styles.readButton} href="#reader">
-                  <BookOpen size={17} />
-                  ابدأ القراءة
-                  <ArrowLeft size={17} />
-                </a>
-                <button type="button" aria-label="مشاركة المصنف">
-                  <Share2 size={17} />
-                </button>
+                {reader.readerUrl && (
+                  <a className={styles.readButton} href="#reader">
+                    <BookOpen size={17} />
+                    ابدأ القراءة
+                    <ArrowLeft size={17} />
+                  </a>
+                )}
+                {reader.sourceUrl && (
+                  <a
+                    className={styles.sourceButton}
+                    href={reader.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <ExternalLink size={17} />
+                    فتح المصدر
+                  </a>
+                )}
+                {reader.downloadUrl && (
+                  <a
+                    className={styles.sourceButton}
+                    href={reader.downloadUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Download size={17} />
+                    تحميل المصنَّف
+                  </a>
+                )}
                 <button
                   type="button"
-                  aria-label="تحميل المصنف"
-                  disabled={!work.downloadAllowed || !work.pdfUrl}
+                  aria-label="مشاركة المصنف"
+                  onClick={share}
                 >
-                  <Download size={17} />
+                  <Share2 size={17} />
                 </button>
               </div>
             </div>
@@ -193,111 +222,186 @@ export default function LibraryItemContent({
             <div>
               <span>
                 <Sparkles size={14} />
-                القراءة داخل الموقع
+                ملف المصنَّف
               </span>
-              <h2>قارئ المصنَّف الرقمي</h2>
+              <h2>
+                {reader.readerUrl
+                  ? "قارئ المصنَّف الرقمي"
+                  : "مصدر المصنَّف الرقمي"}
+              </h2>
             </div>
-            <span className={styles.readerState}>
-              <i />
-              تصفح دون تحميل
-            </span>
+            {reader.readerUrl && (
+              <span className={styles.readerState}>
+                <i />
+                تصفح دون تحميل
+              </span>
+            )}
           </header>
 
           <div className={styles.readerShell}>
             <div className={styles.readerToolbar}>
               <span>
                 <BookOpen size={17} />
-                {work.shortTitle}
+                {shortTitle}
               </span>
               <div>
-                <button
-                  type="button"
-                  aria-label="العرض الكامل للقارئ"
-                  onClick={() => setReaderOpen(true)}
-                >
-                  <Expand size={16} />
-                </button>
-                <button
-                  type="button"
-                  aria-label="تحميل الملف"
-                  disabled={!work.downloadAllowed || !work.pdfUrl}
-                >
-                  <Download size={16} />
-                </button>
+                {reader.readerUrl && (
+                  <button
+                    ref={readerTriggerRef}
+                    type="button"
+                    aria-label="العرض الكامل للقارئ"
+                    onClick={() => setReaderOpen(true)}
+                  >
+                    <Expand size={16} />
+                  </button>
+                )}
+                {reader.sourceUrl && (
+                  <a
+                    className={styles.toolbarAction}
+                    href={reader.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="فتح المصدر"
+                  >
+                    <ExternalLink size={16} />
+                  </a>
+                )}
+                {reader.downloadUrl && (
+                  <a
+                    className={styles.toolbarAction}
+                    href={reader.downloadUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="تحميل الملف"
+                  >
+                    <Download size={16} />
+                  </a>
+                )}
               </div>
             </div>
 
-            <div className={styles.readerLayout}>
+            <div
+              className={`${styles.readerLayout} ${!hasSidebar ? styles.readerLayoutFull : ""}`}
+            >
               <div className={styles.documentArea}>
-                {work.pdfUrl ? (
+                {reader.readerUrl ? (
                   <iframe
                     className={styles.pdfFrame}
-                    src={work.pdfUrl}
-                    title={work.title}
+                    src={reader.readerUrl}
+                    title={item.title}
+                    referrerPolicy="strict-origin-when-cross-origin"
                   />
                 ) : (
-                  <div className={styles.documentPreview}>
-                    <article className={styles.paper}>
-                      <span>بسم الله الرحمن الرحيم</span>
-                      <LibraryWorkIcon type={work.contentType} size={35} />
-                      <h3>{work.title}</h3>
-                      <i />
-                      <p>{work.description}</p>
-                      <small>صفحة تجريبية لمعاينة تصميم القارئ المدمج</small>
-                      <b>١</b>
-                    </article>
-                    <span className={styles.fileNotice}>
-                      <Check size={14} />
-                      القارئ جاهز عند إضافة ملف PDF الرسمي
-                    </span>
+                  <div className={styles.readerUnavailable}>
+                    <FileText size={35} />
+                    <strong>
+                      {reader.sourceUrl || reader.downloadUrl
+                        ? "هذا المصنَّف متاح من خلال مصدره الرقمي"
+                        : "لا يتوفر ملف رقمي لهذا المصنَّف"}
+                    </strong>
+                    {reader.sourceUrl && (
+                      <a
+                        href={reader.sourceUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <ExternalLink size={16} />
+                        فتح المصدر
+                      </a>
+                    )}
+                    {reader.downloadUrl && (
+                      <a
+                        href={reader.downloadUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <Download size={16} />
+                        تحميل المصنَّف
+                      </a>
+                    )}
                   </div>
                 )}
               </div>
 
-              <aside className={styles.sidebar}>
-                <div className={styles.publication}>
-                  <small>بيانات النشر</small>
-                  <strong>{work.publication}</strong>
-                  <span>{work.edition}</span>
-                </div>
-
-                <div className={styles.keywords}>
-                  <span>
-                    <Tags size={16} />
-                    الكلمات المفتاحية
-                  </span>
-                  <div>
-                    {work.keywords.map((keyword) => (
-                      <small key={keyword}>{keyword}</small>
-                    ))}
-                  </div>
-                </div>
-              </aside>
+              {hasSidebar && (
+                <aside className={styles.sidebar}>
+                  {(item.author_name ||
+                    item.publication_info ||
+                    item.edition) && (
+                    <div className={styles.publication}>
+                      <small>بيانات النشر</small>
+                      {item.publication_info && (
+                        <strong>{item.publication_info}</strong>
+                      )}
+                      {item.author_name && (
+                        <span>المؤلف: {item.author_name}</span>
+                      )}
+                      {item.edition && <span>{item.edition}</span>}
+                    </div>
+                  )}
+                  {item.keywords.length > 0 && (
+                    <div className={styles.keywords}>
+                      <span>
+                        <Tags size={16} />
+                        الكلمات المفتاحية
+                      </span>
+                      <div>
+                        {item.keywords.map((keyword) => (
+                          <small key={keyword}>{keyword}</small>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {reader.downloadUrl && (
+                    <a
+                      className={styles.sidebarDownload}
+                      href={reader.downloadUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <span>
+                        <Download size={18} />
+                        <span>
+                          <small>نسخة رقمية</small>
+                          <strong>تحميل المصنَّف</strong>
+                        </span>
+                      </span>
+                      <ArrowLeft size={17} />
+                    </a>
+                  )}
+                </aside>
+              )}
             </div>
           </div>
 
-          {relatedWorks.length > 0 && (
+          {relatedItems.length > 0 && (
             <section className={styles.related}>
               <header>
                 <span>من المكتبة</span>
                 <h2>مواد ذات صلة</h2>
               </header>
               <div>
-                {relatedWorks.map((item) => (
+                {relatedItems.map((relatedItem) => (
                   <Link
-                    href={`/library/${item.slug}`}
-                    key={item.slug}
+                    href={`/library/${relatedItem.slug}`}
+                    key={String(relatedItem.id)}
+                    prefetch={false}
                     style={
-                      { "--work-accent": item.accent } as React.CSSProperties
+                      {
+                        "--work-accent": workAccent(relatedItem),
+                      } as React.CSSProperties
                     }
                   >
                     <span className={styles.relatedIcon}>
-                      <LibraryWorkIcon type={item.contentType} size={25} />
+                      <LibraryWorkIcon
+                        type={relatedItem.content_type}
+                        size={25}
+                      />
                     </span>
                     <span>
-                      <small>{item.contentType}</small>
-                      <strong>{item.title}</strong>
-                      <em>{item.field}</em>
+                      <small>{relatedItem.content_type}</small>
+                      <strong>{relatedItem.title}</strong>
+                      <em>{relatedItem.scientific_field}</em>
                     </span>
                     <ArrowLeft size={17} />
                   </Link>
@@ -308,35 +412,39 @@ export default function LibraryItemContent({
         </div>
       </section>
 
-      {readerOpen && (
+      {readerOpen && reader.readerUrl && (
         <div
           className={styles.fullReaderOverlay}
           role="dialog"
           aria-modal="true"
-          aria-label={`قارئ ${work.title}`}
+          aria-label={`قارئ ${item.title}`}
+          onKeyDown={(event) => {
+            if (event.key !== "Tab") return;
+            const first = closeReaderRef.current;
+            const last = fullReaderFrameRef.current;
+            if (event.shiftKey && document.activeElement === first) {
+              event.preventDefault();
+              last?.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+              event.preventDefault();
+              first?.focus();
+            }
+          }}
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) setReaderOpen(false);
           }}
         >
-          <div
-            className={`${styles.fullReaderModal} ${
-              work.pdfUrl ? styles.pdfModal : ""
-            }`}
-          >
+          <div className={`${styles.fullReaderModal} ${styles.pdfModal}`}>
             <header className={styles.fullReaderHeader}>
               <span className={styles.fullReaderBrand}>
                 <BookOpen size={21} />
                 <span>
                   <small>قارئ المكتبة الرقمية</small>
-                  <strong>{work.title}</strong>
+                  <strong>{item.title}</strong>
                 </span>
               </span>
-              {!work.pdfUrl && (
-                <span className={styles.fullReaderProgress}>
-                  الصفحة {toArabicDigits(currentPage + 1)} من {toArabicDigits(readerPages.length)}
-                </span>
-              )}
               <button
+                ref={closeReaderRef}
                 type="button"
                 onClick={() => setReaderOpen(false)}
                 aria-label="إغلاق العرض الكامل"
@@ -344,73 +452,13 @@ export default function LibraryItemContent({
                 <X size={20} />
               </button>
             </header>
-
-            {work.pdfUrl ? (
-              <iframe
-                className={styles.fullPdfFrame}
-                src={work.pdfUrl}
-                title={`العرض الكامل: ${work.title}`}
-              />
-            ) : (
-              <div className={`${styles.fullReaderBody} ${readerStyles.readerBody}`}>
-
-                <div className={styles.fullPageStage}>
-                  <article
-                    key={`${currentPage}-${pageDirection}`}
-                    className={`${styles.fullReaderPage} ${
-                      pageDirection === "next"
-                        ? styles.turnNext
-                        : styles.turnPrevious
-                    }`}
-                  >
-                    <span className={styles.fullPageEyebrow}>
-                      {readerPages[currentPage].title}
-                    </span>
-                    <h2>{readerPages[currentPage].heading}</h2>
-                    <i className={styles.fullPageRule} />
-                    {readerPages[currentPage].paragraphs.map((paragraph) => (
-                      <p key={paragraph}>{paragraph}</p>
-                    ))}
-                    <footer>
-                      <span>{work.shortTitle}</span>
-                      <strong>{toArabicDigits(currentPage + 1)}</strong>
-                    </footer>
-                  </article>
-                </div>
-              </div>
-            )}
-
-            {!work.pdfUrl && (
-              <footer className={styles.fullReaderControls}>
-                <button
-                  type="button"
-                  disabled={currentPage === 0}
-                  onClick={() => goToPage(currentPage - 1)}
-                >
-                  <ChevronRight size={18} />
-                  الصفحة السابقة
-                </button>
-                <span>
-                  {readerPages.map((page, index) => (
-                    <button
-                      type="button"
-                      aria-label={`الانتقال إلى ${page.title}`}
-                      className={currentPage === index ? styles.currentDot : undefined}
-                      key={page.title}
-                      onClick={() => goToPage(index)}
-                    />
-                  ))}
-                </span>
-                <button
-                  type="button"
-                  disabled={currentPage === readerPages.length - 1}
-                  onClick={() => goToPage(currentPage + 1)}
-                >
-                  الصفحة التالية
-                  <ChevronLeft size={18} />
-                </button>
-              </footer>
-            )}
+            <iframe
+              ref={fullReaderFrameRef}
+              className={styles.fullPdfFrame}
+              src={reader.readerUrl}
+              title={`العرض الكامل: ${item.title}`}
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
           </div>
         </div>
       )}

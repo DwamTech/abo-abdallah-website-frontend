@@ -1,32 +1,39 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import LibraryItemContent from "@/components/library/LibraryItemContent/LibraryItemContent";
-import {
-  getLibraryWork,
-  getRelatedWorks,
-  libraryWorks,
-} from "@/lib/libraryData";
+import { ApiError } from "@/lib/api";
+import { getScientificLibraryItem } from "@/lib/scientificLibraryApi";
 
 type LibraryItemPageProps = {
   params: Promise<{ workSlug: string }>;
 };
 
-export function generateStaticParams() {
-  return libraryWorks.map((work) => ({ workSlug: work.slug }));
-}
+const loadBook = cache(async (identifier: string, cookieHeader: string) => {
+  try {
+    return await getScientificLibraryItem(identifier, { cookie: cookieHeader });
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) notFound();
+    throw error;
+  }
+});
 
 export async function generateMetadata({
   params,
 }: LibraryItemPageProps): Promise<Metadata> {
   const { workSlug } = await params;
-  const work = getLibraryWork(workSlug);
+  const cookieHeader = (await cookies()).toString();
+  const { item } = await loadBook(workSlug, cookieHeader);
 
   return {
-    title: work?.title ?? "المكتبة الرقمية",
-    description: work?.description,
+    title: item.title,
+    description:
+      item.description || `عرض ${item.title} وملفه الرقمي من مكتبة الشيخ.`,
+    keywords: item.keywords,
   };
 }
 
@@ -34,15 +41,14 @@ export default async function LibraryItemPage({
   params,
 }: LibraryItemPageProps) {
   const { workSlug } = await params;
-  const work = getLibraryWork(workSlug);
-
-  if (!work) notFound();
+  const cookieHeader = (await cookies()).toString();
+  const initialData = await loadBook(workSlug, cookieHeader);
 
   return (
     <>
       <Header />
       <main>
-        <LibraryItemContent work={work} relatedWorks={getRelatedWorks(work)} />
+        <LibraryItemContent initialData={initialData} />
         <SectionDivider variant="manuscript" />
       </main>
       <Footer />

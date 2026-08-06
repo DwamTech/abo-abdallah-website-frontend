@@ -1,0 +1,37 @@
+.sectionState {
+  display: flex;
+  min-height: 335px;
+  padding: 35px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  color: rgba(255, 248, 237, 0.68);
+  border: 1px solid rgba(231, 199, 147, 0.22);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.035);
+}
+.sectionState svg {
+  margin-bottom: 15px;
+  color: #e3bd7a;
+}
+.sectionState strong {
+  color: #fff8ed;
+  font:
+    600 19px "Noto Kufi Arabic Variable",
+    sans-serif;
+}
+.sectionState p {
+  max-width: 540px;
+  margin: 9px 0 17px;
+}
+.sectionState a {
+  display: inline-flex;
+  padding: 9px 18px;
+  color: #35231a;
+  border-radius: 22px;
+  background: #e7bf7c;
+  font:
+    11px "Noto Kufi Arabic Variable",
+    sans-serif;
+}

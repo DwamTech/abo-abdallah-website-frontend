@@ -4,33 +4,39 @@ import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import SeriesPageContent from "@/components/listening/SeriesPageContent/SeriesPageContent";
-import { getListeningSeries, listeningSeries } from "@/lib/listeningData";
+import { ApiError, getListeningSeriesDetail } from "@/lib/api";
 
 type SeriesPageProps = {
   params: Promise<{ seriesSlug: string }>;
 };
 
-export function generateStaticParams() {
-  return listeningSeries.map((series) => ({ seriesSlug: series.slug }));
-}
-
 export async function generateMetadata({
   params,
 }: SeriesPageProps): Promise<Metadata> {
   const { seriesSlug } = await params;
-  const series = getListeningSeries(seriesSlug);
+  try {
+    const series = await getListeningSeriesDetail(seriesSlug);
 
-  return {
-    title: series?.title ?? "مجالس السماع",
-    description: series?.description,
-  };
+    return {
+      title: series.title,
+      description: series.description || undefined,
+    };
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) notFound();
+    return { title: "مجالس السماع" };
+  }
 }
 
 export default async function SeriesPage({ params }: SeriesPageProps) {
   const { seriesSlug } = await params;
-  const series = getListeningSeries(seriesSlug);
+  let series: Awaited<ReturnType<typeof getListeningSeriesDetail>>;
 
-  if (!series) notFound();
+  try {
+    series = await getListeningSeriesDetail(seriesSlug);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) notFound();
+    throw error;
+  }
 
   return (
     <>

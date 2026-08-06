@@ -1,0 +1,50 @@
+.state {
+  display: grid;
+  min-height: 260px;
+  padding: 36px;
+  place-items: center;
+  text-align: center;
+  color: #746355;
+  border: 1px solid #e1d0b8;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.68);
+  box-shadow: 0 17px 35px rgba(70, 45, 33, 0.05);
+}
+.state p {
+  margin: 0;
+  font-size: 17px;
+}
+.state button {
+  padding: 10px 18px;
+  color: #fff9ef;
+  border: 1px solid #684632;
+  border-radius: 22px;
+  background: #684632;
+  font:
+    11px "Noto Kufi Arabic Variable",
+    sans-serif;
+  cursor: pointer;
+}
+.state button:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+.loading {
+  pointer-events: none;
+  opacity: 0.55;
+  transition: opacity 0.18s;
+}
+.pageSlot {
+  display: flex !important;
+  align-items: center;
+  gap: 7px;
+}
+.ellipsis {
+  color: #9e8872;
+  font-style: normal;
+}
+@media (max-width: 620px) {
+  .pageSlot:not(:first-child):not(:last-child) {
+    display: none !important;
+  }
+}
