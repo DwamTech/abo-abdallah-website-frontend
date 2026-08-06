@@ -27,7 +27,7 @@ export default function TributeSection() {
           </h2>
 
           <p className={styles.intro}>
-            لوحةٌ أدبية تستحضر أثر مسيرةٍ علمية امتد عطاؤها في تعليم الحديث
+            أثر مسيرةٍ علمية امتد عطاؤها في تعليم الحديث
             وعلومه، وخدمة هدي النبي ﷺ، وبناء أجيالٍ من طلاب العلم.
           </p>
 
@@ -37,16 +37,12 @@ export default function TributeSection() {
             </span>
             <p>
               يا أيها الشيخ الجليل بعلمه
-              <span>وبقدره وبنبله وفضائله</span>
+              <span>وبقدره وببذله وفضائله</span>
             </p>
-            <footer>من أبيات لوحة الوفاء</footer>
           </blockquote>
 
           <div className={styles.actions}>
-            <Link className={styles.cta} href="/about">
-              <span>اقرأ المسيرة العلمية</span>
-              <ArrowLeft size={17} strokeWidth={1.7} />
-            </Link>
+
 
             <span className={styles.note}>علمٌ يُروى، وأثرٌ يبقى</span>
           </div>
@@ -65,10 +61,7 @@ export default function TributeSection() {
           </div>
 
           <figcaption className={styles.caption}>
-            <span>
-              <i aria-hidden="true" />
-              قصيدة في العلم والأثر
-            </span>
+           
             <a href={artworkPath} target="_blank" rel="noreferrer">
               <Maximize2 size={15} strokeWidth={1.6} />
               عرض اللوحة كاملة
