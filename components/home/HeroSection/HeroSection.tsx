@@ -31,7 +31,7 @@ export default function HeroSection() {
               priority
             />
             <span className={styles.englishName} lang="en" dir="ltr">
-              Abu Abdullah Yahya bin Abdullah Al-Bakri Al-Shahri
+              Abdullah Yahya Abdullah Al-Bakri Al-Shehri
             </span>
           </div>
           <div className={styles.divider} aria-hidden="true">
@@ -41,7 +41,7 @@ export default function HeroSection() {
           </div>
           <p className={styles.subtitle}>أستاذ الحديث وعلومه بجامعة الملك خالد في أبها</p>
           <p className={styles.intro}>
-            منصة علمية تجمع الإنتاج الأكاديمي والدعوي، وتيسّر للباحثين وطلاب العلم الوصول إلى
+            منصة علمية تجمع الإنتاج الأكاديمي ، وتيسّر للباحثين وطلاب العلم الوصول إلى
             المؤلفات والبحوث والدروس ومجالس السماع.
           </p>
           <HeroSearchTrigger />
@@ -51,7 +51,7 @@ export default function HeroSection() {
               المسيرة العلمية
               <ArrowLeft size={17} />
             </a>
-            
+
           </div>
         </div>
 

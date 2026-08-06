@@ -3,6 +3,7 @@ import {
   scientificFatwaQuestionSchema,
   scientificFatwaSubmissionResponseSchema,
 } from "@/lib/scientificFatwaApi";
+import { isSameOriginMutation } from "@/lib/sameOriginRequest";
 
 export const runtime = "nodejs";
 
@@ -14,8 +15,7 @@ function failure(status: number, message: string) {
 }
 
 export async function POST(request: Request): Promise<Response> {
-  const origin = request.headers.get("origin");
-  if (origin && origin !== new URL(request.url).origin)
+  if (!isSameOriginMutation(request))
     return failure(403, "تعذر التحقق من مصدر الطلب.");
 
   const body: unknown = await request.json().catch(() => null);

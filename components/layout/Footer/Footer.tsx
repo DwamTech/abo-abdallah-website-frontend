@@ -39,7 +39,7 @@ export default function Footer() {
               />
             </a>
             <p>
-              موقع علمي يجمع الإنتاج الأكاديمي والدعوي، ويخدم الباحثين وطلاب
+              موقع علمي يجمع الإنتاج الأكاديمي، ويخدم الباحثين وطلاب
               العلم في الحديث النبوي وعلومه.
             </p>
             <div className={premium.identityTags}><span><BookOpenCheck size={15}/>مكتبة علمية</span><span><Headphones size={15}/>مجالس سماع</span><span><MessageCircleQuestion size={15}/>فتاوى حديثية</span></div>
