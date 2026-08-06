@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import "@fontsource-variable/noto-kufi-arabic";
 import "@fontsource-variable/noto-naskh-arabic";
+import NewsTicker from "@/components/layout/NewsTicker/NewsTicker";
 import ScrollToTop from "@/components/layout/ScrollToTop/ScrollToTop";
 import "./globals.css";
 
@@ -32,6 +34,9 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body>
+        <Suspense fallback={null}>
+          <NewsTicker />
+        </Suspense>
         {children}
         <ScrollToTop />
       </body>

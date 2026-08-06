@@ -87,6 +87,7 @@
 }
 
 .viewport:hover .track,
+.viewport:focus-within .track,
 .track.paused {
   animation-play-state: paused;
 }

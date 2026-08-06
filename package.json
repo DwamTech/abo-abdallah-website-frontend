@@ -11,6 +11,7 @@
     "test:scientific-library-proxy": "node --test lib/scientificLibraryCookies.test.mjs lib/scientificLibraryMarkup.test.mjs lib/scientificLibraryProxy.test.mjs",
     "test:scientific-fatwas": "node --test lib/scientificFatwaMarkup.test.mjs lib/sameOriginRequest.test.mjs",
     "test:dissertations": "node --test lib/dissertationProxy.test.mjs",
+    "test:news-ticker": "node --test lib/newsTickerContract.test.mjs lib/newsTickerMarkup.test.mjs",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

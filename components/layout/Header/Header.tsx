@@ -12,7 +12,6 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
-import NewsTicker from "@/components/layout/NewsTicker/NewsTicker";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import styles from "./Header.module.css";
 import siteContent from "@/data/site-content.json";
@@ -68,8 +67,6 @@ export default function Header() {
 
   return (
     <>
-      <NewsTicker />
-
       <header
         className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}
       >
