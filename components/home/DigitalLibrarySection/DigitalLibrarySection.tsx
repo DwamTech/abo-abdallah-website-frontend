@@ -85,7 +85,7 @@ export default function DigitalLibrarySection() {
             </span>
             <h2>
               المصنَّفات
-              <span>والمكتبة الرقمية</span>
+              <span>والمكتبة البكرية</span>
             </h2>
           </div>
 
@@ -277,7 +277,7 @@ function FeaturedWork({ item }: { item: ScientificLibraryCard }) {
           />
         ) : (
           <>
-            <span>المكتبة الرقمية</span>
+            <span>المكتبة البكرية</span>
             <LibraryWorkIcon type={item.content_type} size={58} />
             <strong>{item.short_title || item.title}</strong>
             <i />

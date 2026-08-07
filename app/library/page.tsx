@@ -5,9 +5,9 @@ import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import LibraryIndexContent from "@/components/library/LibraryIndexContent/LibraryIndexContent";
 
 export const metadata: Metadata = {
-  title: "المصنَّفات والمكتبة الرقمية",
+  title: "المصنَّفات والمكتبة البكرية",
   description:
-    "المكتبة الرقمية للمؤلفات والتحقيقات والأبحاث والمواد المكتوبة، مصنفة بحسب مجالات الحديث وعلومه.",
+    "المكتبة البكرية للمؤلفات والتحقيقات والأبحاث والمواد المكتوبة، مصنفة بحسب مجالات الحديث وعلومه.",
 };
 
 export default function LibraryPage() {

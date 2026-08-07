@@ -243,7 +243,7 @@
     { "label": "الرئيسية", "href": "/" },
     { "label": "عن الشيخ", "href": "/about" },
     { "label": "مجالس السماع", "href": "/listening" },
-    { "label": "المكتبة الرقمية", "href": "/library" },
+    { "label": "المكتبة البكرية", "href": "/library" },
     { "label": "الإشراف العلمي", "href": "/dissertations" },
     { "label": "الفتاوى", "href": "/fatwas" },
     { "label": "المرئيات", "href": "/videos" },
@@ -256,7 +256,7 @@
       "href": "/fatwas"
     },
     {
-      "label": "المصنَّفات والمكتبة الرقمية",
+      "label": "المصنَّفات والمكتبة البكرية",
       "description": "الكتب والتحقيقات والأبحاث مع قارئ PDF مدمج",
       "href": "/library"
     },
@@ -291,7 +291,7 @@
   ],
   "footerKnowledgeLinks": [
     { "label": "مجالس السماع", "href": "/listening" },
-    { "label": "المكتبة الرقمية", "href": "/library" },
+    { "label": "المكتبة البكرية", "href": "/library" },
     { "label": "الإشراف العلمي", "href": "/dissertations" },
     { "label": "الفتاوى والأجوبة", "href": "/fatwas" },
     { "label": "المسيرة العلمية", "href": "/about" },

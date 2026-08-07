@@ -111,7 +111,7 @@ export default function LibraryItemContent({
               الرئيسية
             </Link>
             <span>/</span>
-            <Link href="/library">المكتبة الرقمية</Link>
+            <Link href="/library">المكتبة البكرية</Link>
             <span>/</span>
             <strong>{shortTitle}</strong>
           </nav>
@@ -129,7 +129,7 @@ export default function LibraryItemContent({
                 />
               ) : (
                 <>
-                  <span>المكتبة الرقمية</span>
+                  <span>المكتبة البكرية</span>
                   <LibraryWorkIcon type={item.content_type} size={66} />
                   <strong>{shortTitle}</strong>
                   <i />
@@ -439,7 +439,7 @@ export default function LibraryItemContent({
               <span className={styles.fullReaderBrand}>
                 <BookOpen size={21} />
                 <span>
-                  <small>قارئ المكتبة الرقمية</small>
+                  <small>قارئ المكتبة البكرية</small>
                   <strong>{item.title}</strong>
                 </span>
               </span>

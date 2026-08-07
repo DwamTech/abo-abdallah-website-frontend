@@ -134,7 +134,7 @@ export default function LibraryIndexContent() {
               الرئيسية
             </Link>
             <span>/</span>
-            <strong>المكتبة الرقمية</strong>
+            <strong>المكتبة البكرية</strong>
           </nav>
 
           <div className={styles.heroLayout}>
@@ -145,7 +145,7 @@ export default function LibraryIndexContent() {
               </span>
               <h1>
                 المصنَّفات
-                <span>والمكتبة الرقمية</span>
+                <span>والمكتبة البكرية</span>
               </h1>
               <p>
                 الكتب والتحقيقات والأبحاث والمواد المكتوبة في فهرس علمي واحد، مع
@@ -185,7 +185,7 @@ export default function LibraryIndexContent() {
               <span className={styles.heroSpark} />
               <div className={styles.heroBook}>
                 <div className={styles.heroBookCover}>
-                  <small>المكتبة الرقمية</small>
+                  <small>المكتبة البكرية</small>
                   <LibraryWorkIcon type="كتاب" size={58} />
                   <strong>خزانة العلم</strong>
                   <i />
@@ -218,7 +218,7 @@ export default function LibraryIndexContent() {
               <span className={styles.searchControl}>
                 <small>البحث في المصنَّفات</small>
                 <input
-                  aria-label="البحث في المكتبة الرقمية"
+                  aria-label="البحث في المكتبة البكرية"
                   onChange={(event) => setQuery(event.target.value)}
                   placeholder="العنوان أو كلمة مفتاحية..."
                   value={query}
@@ -297,7 +297,7 @@ export default function LibraryIndexContent() {
                         )}
                         {!coverUrl && (
                           <>
-                            <small>المكتبة الرقمية</small>
+                            <small>المكتبة البكرية</small>
                             <LibraryWorkIcon
                               type={item.content_type}
                               size={46}
