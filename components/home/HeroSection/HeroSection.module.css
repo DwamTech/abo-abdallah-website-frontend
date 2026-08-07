@@ -153,6 +153,19 @@
     drop-shadow(0 10px 24px rgba(191, 150, 80, 0.2));
 }
 
+.subCalligraphy {
+  display: block;
+  width: min(45%, 260px);
+  height: auto;
+  margin: 6px auto 4px;
+  object-fit: contain;
+  object-position: center;
+  opacity: 0.92;
+  filter:
+    drop-shadow(0 2px 4px rgba(18, 10, 7, 0.45))
+    drop-shadow(0 6px 16px rgba(191, 150, 80, 0.15));
+}
+
 .englishName {
   display: block;
   width: 94%;

@@ -30,6 +30,13 @@ export default function HeroSection() {
               height={288}
               priority
             />
+            <Image
+              className={styles.subCalligraphy}
+              src="/media/images/elmaktaba_elbakrya.png"
+              alt="المكتبة البكرية"
+              width={834}
+              height={299}
+            />
             <span className={styles.englishName} lang="en" dir="ltr">
               Abdullah Yahya Abdullah Al-Bakri Al-Shehri
             </span>
