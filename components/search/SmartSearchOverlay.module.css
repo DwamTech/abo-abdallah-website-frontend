@@ -1,0 +1,534 @@
+/* SmartSearchOverlay.module.css
+   مطابق لنظام التصميم في Header.module.css */
+
+.overlay {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  padding: clamp(14px, 3vw, 34px);
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(191, 150, 80, 0.16), transparent 30%),
+    rgba(35, 23, 18, 0.82);
+  backdrop-filter: blur(14px) saturate(115%);
+  animation: overlayIn 220ms ease both;
+}
+
+.panel {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 820px);
+  max-height: calc(100dvh - clamp(28px, 6vw, 68px));
+  padding: clamp(25px, 4vw, 42px);
+  overflow: hidden;
+  border: 1px solid rgba(221, 194, 142, 0.62);
+  border-radius: 20px;
+  background:
+    linear-gradient(145deg, rgba(248, 243, 233, 0.92), transparent 42%),
+    var(--cream-50);
+  box-shadow:
+    0 35px 110px rgba(24, 15, 11, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  animation: panelIn 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.panel::before {
+  position: absolute;
+  top: 0;
+  right: 44px;
+  width: 110px;
+  height: 4px;
+  content: "";
+  border-radius: 0 0 8px 8px;
+  background: linear-gradient(90deg, var(--gold-300), var(--gold-600));
+}
+
+.panel::after {
+  position: absolute;
+  z-index: -1;
+  top: -135px;
+  left: -110px;
+  width: 320px;
+  height: 320px;
+  content: "";
+  border: 1px solid rgba(166, 122, 53, 0.09);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 42px rgba(166, 122, 53, 0.025),
+    0 0 0 84px rgba(166, 122, 53, 0.016);
+}
+
+/* ─── Header ─── */
+.panelTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 28px;
+  margin-bottom: clamp(16px, 2.5vh, 22px);
+  flex-shrink: 0;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--gold-600);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 9px;
+}
+
+.panel h2 {
+  margin: 7px 0 3px;
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: clamp(20px, 2.8vw, 30px);
+  font-weight: 620;
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+}
+
+.panelTop p {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 14px;
+}
+
+.panelTop button {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  padding: 0;
+  place-items: center;
+  color: var(--brown-800);
+  border: 1px solid var(--cream-300);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    background 180ms ease;
+}
+
+.panelTop button:hover {
+  color: var(--cream-50);
+  background: var(--brown-800);
+}
+
+/* ─── Search Field ─── */
+.field {
+  display: grid;
+  min-height: 64px;
+  padding-inline: 18px;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 13px;
+  color: var(--gold-600);
+  border: 1px solid #d7c6a9;
+  border-radius: 12px;
+  background: var(--white);
+  box-shadow:
+    0 10px 35px rgba(63, 45, 34, 0.055),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  flex-shrink: 0;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.field:focus-within {
+  border-color: var(--gold-500);
+  box-shadow:
+    0 0 0 4px rgba(191, 150, 80, 0.1),
+    0 15px 42px rgba(63, 45, 34, 0.09);
+  transform: translateY(-1px);
+}
+
+.field input {
+  width: 100%;
+  color: var(--ink);
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 16px;
+}
+
+.field input::placeholder {
+  color: #a1958b;
+}
+
+.field kbd {
+  padding: 3px 8px;
+  color: #a09286;
+  border: 1px solid var(--cream-300);
+  border-radius: 5px;
+  background: var(--cream-100);
+  font-family: sans-serif;
+  font-size: 9px;
+  box-shadow: 0 2px 0 var(--cream-300);
+}
+
+/* ─── Spinner ─── */
+.spinner {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--cream-300);
+  border-top-color: var(--gold-600);
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+
+/* ─── Results area ─── */
+.resultsArea {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: clamp(15px, 2.5vh, 22px);
+  padding-bottom: 8px;
+  overscroll-behavior: contain;
+
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(166, 122, 53, 0.25) transparent;
+}
+
+.resultsArea::-webkit-scrollbar {
+  width: 5px;
+}
+
+.resultsArea::-webkit-scrollbar-thumb {
+  background: rgba(166, 122, 53, 0.25);
+  border-radius: 3px;
+}
+
+.sectionLabel {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--ink-muted);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 9px;
+}
+
+.totalCount {
+  color: var(--gold-600);
+}
+
+/* ─── Quick Links grid ─── */
+.quickLinks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.quickLinks a {
+  display: flex;
+  min-height: 78px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 15px;
+  overflow: hidden;
+  border: 1px solid var(--cream-300);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.58);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.quickLinks a:hover {
+  border-color: #cfb47f;
+  background: var(--white);
+  box-shadow: 0 10px 28px rgba(63, 45, 34, 0.07);
+  transform: translateY(-2px);
+}
+
+.quickLinks a > span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.quickLinks strong {
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.quickLinks small {
+  color: var(--ink-muted);
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quickLinks svg {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  padding: 7px;
+  color: var(--gold-600);
+  border: 1px solid var(--cream-300);
+  border-radius: 50%;
+  background: var(--cream-100);
+  transition:
+    color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.quickLinks a:hover svg {
+  color: var(--cream-50);
+  background: var(--brown-800);
+  transform: translate(-2px, -2px);
+}
+
+/* ─── Module Groups ─── */
+.moduleGroup {
+  margin-bottom: 18px;
+}
+
+.moduleGroup:last-child {
+  margin-bottom: 0;
+}
+
+.moduleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--cream-300);
+}
+
+.moduleHeader > span {
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.moreLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--gold-600);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 9px;
+  transition: color 180ms ease;
+}
+
+.moreLink:hover {
+  color: var(--brown-800);
+}
+
+.moduleItems {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+/* ─── Result Card ─── */
+.resultCard {
+  display: flex;
+  min-height: 68px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 13px;
+  overflow: hidden;
+  border: 1px solid var(--cream-300);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.58);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.resultCard:hover {
+  border-color: #cfb47f;
+  background: var(--white);
+  box-shadow: 0 8px 22px rgba(63, 45, 34, 0.07);
+  transform: translateY(-2px);
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.cardContent strong {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.cardContent small {
+  display: block;
+  overflow: hidden;
+  color: var(--ink-muted);
+  font-size: 11px;
+  line-height: 1.4;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cardArrow {
+  flex: 0 0 auto;
+  color: var(--gold-600);
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.resultCard:hover .cardArrow {
+  color: var(--brown-800);
+  transform: translate(-2px, -2px);
+}
+
+/* ─── Skeleton ─── */
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.skeleton {
+  height: 78px;
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    rgba(221, 194, 142, 0.18) 25%,
+    rgba(221, 194, 142, 0.32) 50%,
+    rgba(221, 194, 142, 0.18) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.3s linear infinite;
+}
+
+/* ─── Empty state ─── */
+.empty {
+  margin: 6px 0 0;
+  padding: 18px;
+  color: var(--ink-muted);
+  border: 1px dashed var(--cream-300);
+  border-radius: 10px;
+  background: rgba(248, 243, 233, 0.5);
+  text-align: center;
+  font-size: 14px;
+}
+
+/* ─── Animations ─── */
+@keyframes overlayIn {
+  from { opacity: 0; }
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 680px) {
+  .panel {
+    max-height: calc(100dvh - 20px);
+    padding: 22px 16px 18px;
+    border-radius: 15px;
+  }
+
+  .panelTop p {
+    display: none;
+  }
+
+  .panel h2 {
+    font-size: clamp(18px, 6vw, 23px);
+    margin-top: 5px;
+  }
+
+  .field {
+    min-height: 56px;
+    padding-inline: 13px;
+    border-radius: 9px;
+  }
+
+  .field kbd {
+    display: none;
+  }
+
+  .quickLinks,
+  .moduleItems,
+  .skeletonGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .quickLinks a,
+  .resultCard {
+    min-height: 60px;
+    padding: 9px 12px;
+  }
+}
+
+@media (max-height: 650px) {
+  .panel {
+    padding-block: 18px 14px;
+  }
+
+  .panelTop {
+    margin-bottom: 11px;
+  }
+
+  .panelTop p,
+  .cardContent small {
+    display: none;
+  }
+
+  .panel h2 {
+    margin-top: 3px;
+    font-size: 19px;
+  }
+
+  .field {
+    min-height: 52px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .panel,
+  .skeleton {
+    animation: none;
+    transition: none;
+  }
+}

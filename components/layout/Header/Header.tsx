@@ -13,25 +13,17 @@ import {
   X,
 } from "lucide-react";
 import { toArabicDigits } from "@/lib/arabicNumbers";
+import SmartSearchOverlay from "@/components/search/SmartSearchOverlay";
 import styles from "./Header.module.css";
 import siteContent from "@/data/site-content.json";
 
 const navigation = siteContent.navigation;
-
-const searchLinks = siteContent.searchLinks;
 
 export default function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [query, setQuery] = useState("");
-
-  const filteredLinks = searchLinks.filter(
-    (item) =>
-      item.label.includes(query.trim()) ||
-      item.description.includes(query.trim()),
-  );
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 24);
@@ -196,68 +188,7 @@ export default function Header() {
       </div>
 
       {searchOpen && (
-        <div
-          className={styles.searchOverlay}
-          role="dialog"
-          aria-modal="true"
-          aria-label="البحث في الموقع"
-          onMouseDown={(event) => {
-            if (event.currentTarget === event.target) setSearchOpen(false);
-          }}
-        >
-          <div className={styles.searchPanel}>
-            <div className={styles.searchPanelTop}>
-              <div>
-                <span className={styles.searchEyebrow}>
-                  <Search size={13} />
-                  البحث الذكي في الموقع
-                </span>
-                <h2>ما المادة التي تبحث عنها؟</h2>
-                <p>ابحث في أبواب المكتبة والمحتوى العلمي.</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setSearchOpen(false)}
-                aria-label="إغلاق البحث"
-              >
-                <X size={22} />
-              </button>
-            </div>
-
-            <label className={styles.searchField}>
-              <Search size={21} aria-hidden="true" />
-              <input
-                autoFocus
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="مثال: البحوث، مجالس السماع، المحاضرات..."
-              />
-              <kbd>ESC</kbd>
-            </label>
-
-            <div className={styles.searchResults}>
-              <span>{query ? "نتائج البحث" : "وصول سريع"}</span>
-              {(query ? filteredLinks : searchLinks).map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => setSearchOpen(false)}
-                >
-                  <span>
-                    <strong>{item.label}</strong>
-                    <small>{item.description}</small>
-                  </span>
-                  <ArrowUpLeft size={18} />
-                </a>
-              ))}
-              {query && filteredLinks.length === 0 && (
-                <p className={styles.emptyResult}>
-                  لا توجد نتيجة مباشرة. جرّب عبارة بحث أقصر.
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
+        <SmartSearchOverlay onClose={() => setSearchOpen(false)} />
       )}
     </>
   );
