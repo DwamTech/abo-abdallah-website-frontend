@@ -6,6 +6,8 @@ import Header from "@/components/layout/Header/Header";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import {
   getScientificFatwaItems,
+  getScientificFatwaOptions,
+  type ScientificFatwaCategoryOption,
   type ScientificFatwaIndex,
 } from "@/lib/scientificFatwaApi";
 
@@ -28,11 +30,25 @@ export default async function FatwasPage({
 }) {
   const raw = await searchParams;
   const search = first(raw.search)?.trim().slice(0, 180) ?? "";
-  const category = first(raw.category)?.trim().slice(0, 180) ?? "";
+  const requestedCategory = first(raw.category)?.trim().slice(0, 180) ?? "";
   const requestedPage = Number.parseInt(first(raw.page) ?? "1", 10);
   const page =
     Number.isFinite(requestedPage) && requestedPage > 0 ? requestedPage : 1;
+  let initialCategories: string[] = [];
+  let initialCategoryOptions: ScientificFatwaCategoryOption[] = [];
   let initial: ScientificFatwaIndex | null = null;
+
+  try {
+    const options = await getScientificFatwaOptions();
+    initialCategories = options.categories;
+    initialCategoryOptions = options.category_options;
+  } catch {
+    // The client retries the dedicated options endpoint after hydration.
+  }
+
+  const category = initialCategories.includes(requestedCategory)
+    ? requestedCategory
+    : "";
 
   try {
     initial = await getScientificFatwaItems({
@@ -51,6 +67,8 @@ export default async function FatwasPage({
       <main>
         <FatwaIndexContent
           initial={initial}
+          initialCategories={initialCategories}
+          initialCategoryOptions={initialCategoryOptions}
           initialCategory={category}
           initialPage={page}
           initialSearch={search}

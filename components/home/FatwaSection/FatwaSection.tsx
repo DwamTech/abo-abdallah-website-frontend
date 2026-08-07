@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 
 import { toArabicDigits } from "@/lib/arabicNumbers";
-import { questionSubmissionStages } from "@/lib/fatwaData";
+import { scientificFatwaSubmissionStages } from "@/lib/scientificFatwaPresentation";
 import {
   getScientificFatwaHome,
   type ScientificFatwaHome,
@@ -49,8 +49,8 @@ export default async function FatwaSection() {
           </div>
           <div className={styles.intro}>
             <p>
-              أجوبة متخصصة في الحديث وعلومه، مفهرسة في أبواب واضحة تسهّل وصول
-              الباحث إلى المسألة ومراجعها.
+              أجوبة متخصصة في الحديث وعلومه، ضمن تصنيفات علمية واضحة تسهّل
+              وصول الباحث إلى المسألة ومراجعها.
             </p>
             <div className={premium.headingMeta}>
               <span>
@@ -58,7 +58,7 @@ export default async function FatwaSection() {
               </span>
               <i />
               <span>
-                <strong>{toArabicDigits(categoryCount)}</strong> أبواب علمية
+                <strong>{toArabicDigits(categoryCount)}</strong> تصنيفات علمية
               </span>
             </div>
           </div>
@@ -117,7 +117,7 @@ export default async function FatwaSection() {
           <aside className={`${styles.sidePanel} ${premium.sidePanel}`}>
             <div className={`${styles.categories} ${premium.categories}`}>
               <header className={premium.categoriesHeader}>
-                <span>أبواب المسائل</span>
+                <span>التصنيفات العلمية</span>
                 <strong>{toArabicDigits(categoryCount)}</strong>
               </header>
               <div>
@@ -137,7 +137,7 @@ export default async function FatwaSection() {
                   ))
                 ) : (
                   <p className={premium.emptyCategories}>
-                    ستظهر الأبواب العلمية بعد نشر أولى المسائل.
+                    ستظهر التصنيفات العلمية بعد نشر أولى المسائل.
                   </p>
                 )}
               </div>
@@ -156,7 +156,7 @@ export default async function FatwaSection() {
                 والاعتماد.
               </p>
               <div className={styles.stageDots}>
-                {questionSubmissionStages.map((stage) => (
+                {scientificFatwaSubmissionStages.map((stage) => (
                   <i key={stage} title={stage} />
                 ))}
               </div>

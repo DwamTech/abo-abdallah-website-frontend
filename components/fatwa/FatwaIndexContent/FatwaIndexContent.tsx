@@ -23,12 +23,14 @@ import {
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
 import { ApiError } from "@/lib/api";
 import { toArabicDigits } from "@/lib/arabicNumbers";
-import { questionSubmissionStages } from "@/lib/fatwaData";
 import {
   getScientificFatwaItems,
+  getScientificFatwaOptions,
   submitScientificFatwaQuestion,
+  type ScientificFatwaCategoryOption,
   type ScientificFatwaIndex,
 } from "@/lib/scientificFatwaApi";
+import { scientificFatwaSubmissionStages } from "@/lib/scientificFatwaPresentation";
 
 import styles from "./FatwaIndexContent.module.css";
 import enhancements from "./FatwaPagination.module.css";
@@ -38,6 +40,8 @@ const ITEMS_PER_PAGE = 8;
 
 type Props = {
   initial: ScientificFatwaIndex | null;
+  initialCategories: string[];
+  initialCategoryOptions: ScientificFatwaCategoryOption[];
   initialCategory?: string;
   initialPage?: number;
   initialSearch?: string;
@@ -47,6 +51,8 @@ type SubmissionState =
   | { status: "idle" | "submitting" }
   | { status: "success"; referenceNumber: string }
   | { status: "error"; message: string };
+
+type CategoryOptionsStatus = "loading" | "ready" | "error";
 
 function visiblePages(current: number, last: number) {
   const start = Math.max(1, Math.min(current - 2, last - 4));
@@ -59,6 +65,8 @@ function visiblePages(current: number, last: number) {
 
 export default function FatwaIndexContent({
   initial,
+  initialCategories,
+  initialCategoryOptions,
   initialCategory = "",
   initialPage = 1,
   initialSearch = "",
@@ -70,6 +78,15 @@ export default function FatwaIndexContent({
     initial?.meta.current_page ?? initialPage,
   );
   const [result, setResult] = useState<ScientificFatwaIndex | null>(initial);
+  const [scientificCategories, setScientificCategories] =
+    useState(initialCategories);
+  const [scientificCategoryOptions, setScientificCategoryOptions] = useState(
+    initialCategoryOptions,
+  );
+  const [categoryOptionsStatus, setCategoryOptionsStatus] =
+    useState<CategoryOptionsStatus>(
+      initialCategories.length > 0 ? "ready" : "loading",
+    );
   const [loading, setLoading] = useState(!initial);
   const [error, setError] = useState<string | null>(null);
   const [retryKey, setRetryKey] = useState(0);
@@ -77,8 +94,41 @@ export default function FatwaIndexContent({
     status: "idle",
   });
   const skipInitialRequest = useRef(Boolean(initial));
+  const skipInitialSearchDebounce = useRef(true);
 
   useEffect(() => {
+    const controller = new AbortController();
+    if (initialCategories.length === 0) setCategoryOptionsStatus("loading");
+
+    getScientificFatwaOptions(controller.signal)
+      .then((options) => {
+        setScientificCategories(options.categories);
+        setScientificCategoryOptions(options.category_options);
+        setCategory((current) =>
+          current === "الكل" || options.categories.includes(current)
+            ? current
+            : "الكل",
+        );
+        setCategoryOptionsStatus("ready");
+      })
+      .catch((requestError: unknown) => {
+        if (
+          requestError instanceof DOMException &&
+          requestError.name === "AbortError"
+        )
+          return;
+        setCategoryOptionsStatus("error");
+      });
+
+    return () => controller.abort();
+  }, [initialCategories.length]);
+
+  useEffect(() => {
+    if (skipInitialSearchDebounce.current) {
+      skipInitialSearchDebounce.current = false;
+      return;
+    }
+
     const timeout = window.setTimeout(() => {
       setCurrentPage(1);
       setDebouncedQuery(query.trim());
@@ -139,16 +189,13 @@ export default function FatwaIndexContent({
   }, [category, currentPage, debouncedQuery]);
 
   const categories = useMemo(() => {
-    const values = result?.filter_options.categories ?? [];
-    if (category !== "الكل" && !values.includes(category))
-      return ["الكل", category, ...values];
-    return ["الكل", ...values];
-  }, [category, result?.filter_options.categories]);
+    return ["الكل", ...scientificCategories];
+  }, [scientificCategories]);
 
   const pageItems = result?.data ?? [];
   const totalResults = result?.meta.total ?? 0;
   const publishedItems = result?.stats.published_items ?? 0;
-  const categoryCount = result?.stats.categories ?? 0;
+  const categoryCount = scientificCategories.length;
   const totalPages = result?.meta.last_page ?? 1;
   const pages = visiblePages(currentPage, totalPages);
 
@@ -175,7 +222,7 @@ export default function FatwaIndexContent({
       const response = await submitScientificFatwaQuestion({
         name: String(values.get("name") ?? ""),
         email: String(values.get("email") ?? ""),
-        category: String(values.get("category") ?? ""),
+        category_id: String(values.get("category_id") ?? ""),
         title: String(values.get("title") ?? ""),
         question: String(values.get("question") ?? ""),
         consent: true,
@@ -227,7 +274,7 @@ export default function FatwaIndexContent({
             الفتاوى <span>والمسائل الحديثية</span>
           </h1>
           <p>
-            أجوبة علمية مصنفة في أبواب الحديث وعلومه، تجمع السؤال والجواب
+            أجوبة علمية ضمن تصنيفات الحديث وعلومه، تجمع السؤال والجواب
             والمراجع والمسائل المرتبطة في سجل واحد.
           </p>
           <div className={enhancements.actionStack}>
@@ -247,7 +294,7 @@ export default function FatwaIndexContent({
               </span>
               <i />
               <span>
-                <strong>{toArabicDigits(categoryCount)}</strong>أبواب علمية
+                <strong>{toArabicDigits(categoryCount)}</strong>تصنيفات علمية
               </span>
             </div>
           </div>
@@ -287,7 +334,11 @@ export default function FatwaIndexContent({
               <strong>{loading ? "—" : toArabicDigits(totalResults)}</strong>
             </label>
           </header>
-          <div className={styles.filters}>
+          <div
+            className={styles.filters}
+            role="group"
+            aria-label="التصنيف العلمي"
+          >
             {categories.map((item) => (
               <button
                 type="button"
@@ -323,7 +374,7 @@ export default function FatwaIndexContent({
               <div className={stateStyles.catalogState}>
                 <Search size={28} />
                 <strong>لا توجد مسائل مطابقة</strong>
-                <p>جرّب كلمة أقصر أو اختر بابًا علميًا آخر.</p>
+                <p>جرّب كلمة أقصر أو اختر تصنيفًا علميًا آخر.</p>
                 {(query || category !== "الكل") && (
                   <button
                     type="button"
@@ -420,7 +471,7 @@ export default function FatwaIndexContent({
                 للسائل فقط.
               </p>
               <ol>
-                {questionSubmissionStages.map((stage, index) => (
+                {scientificFatwaSubmissionStages.map((stage, index) => (
                   <li key={stage}>
                     <i>{toArabicDigits(index + 1)}</i>
                     <span>{stage}</span>
@@ -471,14 +522,21 @@ export default function FatwaIndexContent({
                 />
               </label>
               <label>
-                <span>تصنيف السؤال</span>
-                <select name="category" required defaultValue="">
+                <span>التصنيف العلمي</span>
+                <select name="category_id" required defaultValue="">
                   <option value="" disabled>
-                    اختر الباب العلمي
+                    {categoryOptionsStatus === "loading"
+                      ? "جارٍ تحميل التصنيفات العلمية..."
+                      : categoryOptionsStatus === "error" &&
+                          scientificCategoryOptions.length === 0
+                        ? "تعذّر تحميل التصنيفات العلمية"
+                        : scientificCategoryOptions.length === 0
+                          ? "لا توجد تصنيفات علمية متاحة"
+                          : "اختر التصنيف العلمي"}
                   </option>
-                  {categories.slice(1).map((item) => (
-                    <option key={item} value={item}>
-                      {item}
+                  {scientificCategoryOptions.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
                     </option>
                   ))}
                 </select>

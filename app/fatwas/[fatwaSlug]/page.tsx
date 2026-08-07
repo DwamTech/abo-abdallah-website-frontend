@@ -11,6 +11,15 @@ import { getScientificFatwaItem } from "@/lib/scientificFatwaApi";
 
 type Props = { params: Promise<{ fatwaSlug: string }> };
 
+// Every published slug must be discoverable immediately, even when it has not
+// appeared in a previously cached index response or navigation list.
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
+export const revalidate = 0;
+
+// React cache only de-duplicates metadata/page reads in the current render;
+// getScientificFatwaItem itself uses `no-store`, so records are not cached
+// between requests.
 const loadFatwa = cache((slug: string) => getScientificFatwaItem(slug));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

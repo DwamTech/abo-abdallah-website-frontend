@@ -1,6 +1,11 @@
 import { z } from "zod";
 
 import { API_BASE_URL, ApiError } from "@/lib/api";
+import {
+  scientificFatwaOptionsResponseSchema,
+  type ScientificFatwaCategoryOption,
+  type ScientificFatwaOptions,
+} from "@/lib/scientificFatwaOptions";
 
 const apiNumber = z.coerce.number();
 const nullableApiNumber = z.preprocess(
@@ -78,7 +83,6 @@ const indexSchema = z.object({
     from: nullableApiNumber,
     to: nullableApiNumber,
   }),
-  filter_options: z.object({ categories: z.array(z.string()).default([]) }),
   stats: statsSchema,
 });
 
@@ -90,7 +94,7 @@ const detailSchema = z.object({
 export const scientificFatwaQuestionSchema = z.strictObject({
   name: z.string().trim().min(3).max(150),
   email: z.email().max(190),
-  category: z.string().trim().min(1).max(180),
+  category_id: z.string().trim().regex(/^[1-9]\d*$/).max(20),
   title: z.string().trim().min(3).max(255),
   question: z.string().trim().min(20).max(9500),
   consent: z.literal(true),
@@ -113,6 +117,7 @@ export const scientificFatwaSubmissionResponseSchema = z.object({
 export type ScientificFatwaHome = z.infer<typeof homeSchema>["data"];
 export type ScientificFatwaIndex = z.infer<typeof indexSchema>;
 export type ScientificFatwaDetail = z.infer<typeof detailSchema>;
+export type { ScientificFatwaCategoryOption, ScientificFatwaOptions };
 
 function apiUrl(
   path: string,
@@ -191,6 +196,18 @@ export function getScientificFatwaItems(
   signal?: AbortSignal,
 ) {
   return fetchAndParse("/items", indexSchema, { params, signal });
+}
+
+export async function getScientificFatwaOptions(
+  signal?: AbortSignal,
+): Promise<ScientificFatwaOptions> {
+  const result = await fetchAndParse(
+    "/options",
+    scientificFatwaOptionsResponseSchema,
+    { signal },
+  );
+
+  return result.data;
 }
 
 export function getScientificFatwaItem(slug: string, signal?: AbortSignal) {

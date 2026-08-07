@@ -3,6 +3,7 @@ import {
   scientificFatwaQuestionSchema,
   scientificFatwaSubmissionResponseSchema,
 } from "@/lib/scientificFatwaApi";
+import { createFatwaBffProxyHeaders } from "@/lib/fatwaBffProxyHeaders";
 import { isSameOriginMutation } from "@/lib/sameOriginRequest";
 
 export const runtime = "nodejs";
@@ -24,11 +25,16 @@ export async function POST(request: Request): Promise<Response> {
 
   let upstream: Response;
   try {
+    const trustedProxyHeaders = createFatwaBffProxyHeaders(
+      request.headers,
+      process.env.FATWA_BFF_SHARED_SECRET,
+    );
     upstream = await fetch(`${API_BASE_URL}/scientific-fatwas/questions`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        ...trustedProxyHeaders,
         ...(request.headers.get("user-agent")
           ? { "User-Agent": request.headers.get("user-agent") as string }
           : {}),
