@@ -4,6 +4,7 @@ import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import HeroSection from "@/components/home/HeroSection/HeroSection";
 import TributeSection from "@/components/home/TributeSection/TributeSection";
 import ListeningSection from "@/components/home/ListeningSection/ListeningSection";
+import HadithCardsSection from "@/components/home/HadithCardsSection/HadithCardsSection";
 import DigitalLibrarySection from "@/components/home/DigitalLibrarySection/DigitalLibrarySection";
 import DissertationSection from "@/components/home/DissertationSection/DissertationSection";
 import FatwaSection from "@/components/home/FatwaSection/FatwaSection";
@@ -17,6 +18,7 @@ export default function HomePage() {
       <main>
         <HeroSection />
         <TributeSection />
+        <HadithCardsSection />
         <ListeningSection />
         <SectionDivider variant="audioBook" />
         <DigitalLibrarySection />

@@ -1,0 +1,42 @@
+.section {
+  position: relative;
+  padding: clamp(76px, 9vw, 118px) 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(166, 122, 53, 0.14), transparent 26%),
+    linear-gradient(135deg, #fffdf8, #f3e8d8);
+}
+
+.section::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  opacity: 0.22;
+  background-image: radial-gradient(rgba(117, 78, 50, 0.25) 0.8px, transparent 0.8px);
+  background-size: 24px 24px;
+  mask-image: linear-gradient(90deg, #000, transparent 65%);
+}
+
+.container { position: relative; width: min(calc(100% - 48px), var(--container)); margin: auto; }
+.heading { display: grid; margin-bottom: 38px; grid-template-columns: 1fr 0.8fr; align-items: end; gap: 60px; }
+.heading > div:first-child > span { display: inline-flex; align-items: center; gap: 8px; color: var(--gold-600); font: 11px "Noto Kufi Arabic Variable", sans-serif; }
+.heading h2 { margin: 8px 0 0; color: var(--brown-900); font: 600 clamp(38px, 5vw, 61px)/1.3 "Noto Kufi Arabic Variable", sans-serif; }
+.heading h2 em { color: #9a6e36; font-style: normal; }
+.heading p { margin: 0 0 10px; color: var(--ink-muted); font-size: 16px; line-height: 1.9; }
+.heading a { display: inline-flex; align-items: center; gap: 8px; color: var(--gold-600); font: 11px "Noto Kufi Arabic Variable", sans-serif; }
+.projects { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.project { display: grid; min-height: 430px; padding: 18px; grid-template-columns: minmax(180px, 0.75fr) 1fr; align-items: center; gap: 25px; overflow: hidden; color: var(--brown-900); border: 1px solid #ddcdb3; border-radius: 24px 7px 24px 7px; background: rgba(255,255,255,.76); box-shadow: 0 24px 58px rgba(72, 46, 33, 0.1); transition: 280ms ease; }
+.project:hover { transform: translateY(-7px); box-shadow: 0 32px 68px rgba(72, 46, 33, 0.15); }
+.imageWrap { position: relative; height: 390px; overflow: hidden; border-radius: 14px 4px 14px 4px; background: #e9ddcb; box-shadow: 0 12px 28px rgba(59,39,29,.14); }
+.imageWrap img { object-fit: cover; object-position: top center; transition: transform 500ms ease; }
+.project:hover .imageWrap img { transform: scale(1.025); }
+.projectCopy > span { display: inline-flex; align-items: center; gap: 6px; color: #9a6e36; font: 9px "Noto Kufi Arabic Variable", sans-serif; }
+.projectCopy h3 { margin: 10px 0; font: 600 clamp(20px, 2vw, 27px)/1.55 "Noto Kufi Arabic Variable", sans-serif; }
+.projectCopy p { margin: 0; color: #77685b; font-size: 14px; line-height: 1.9; }
+.projectCopy strong { display: inline-flex; margin-top: 20px; align-items: center; gap: 7px; color: #765035; font: 10px "Noto Kufi Arabic Variable", sans-serif; }
+.blue { border-color: #c4d1d8; background: linear-gradient(145deg, rgba(255,255,255,.9), rgba(231,239,242,.76)); }
+.blue .projectCopy > span, .blue .projectCopy strong { color: #245475; }
+
+@media (max-width: 1050px) { .projects { grid-template-columns: 1fr; } .project { grid-template-columns: 250px 1fr; } }
+@media (max-width: 760px) { .heading { grid-template-columns: 1fr; gap: 15px; } .project { grid-template-columns: 1fr; } .imageWrap { width: min(100%, 330px); height: 430px; margin: auto; } }
+@media (max-width: 560px) { .container { width: min(calc(100% - 30px), var(--container)); } .section { padding-block: 68px 76px; } .project { min-height: 0; padding: 13px; } .imageWrap { height: 390px; } }

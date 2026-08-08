@@ -243,6 +243,7 @@
     { "label": "الرئيسية", "href": "/" },
     { "label": "المسيرة العلمية", "href": "/about" },
     { "label": "مجالس السماع", "href": "/listening" },
+    { "label": "بطاقات حديثية", "href": "/hadith-cards" },
     { "label": "المكتبة البكرية", "href": "/library" },
     { "label": "الإشراف العلمي", "href": "/dissertations" },
     { "label": "الفتاوى", "href": "/fatwas" },

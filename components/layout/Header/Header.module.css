@@ -311,9 +311,28 @@
     background 180ms ease;
 }
 
-.libraryButton svg:last-child {
+.libraryButton > svg:last-child {
   margin-right: 4px;
   transition: transform 180ms ease;
+}
+
+.audioQuranIcon {
+  position: relative;
+  display: grid;
+  width: 25px;
+  height: 25px;
+  flex: 0 0 auto;
+  place-items: center;
+}
+
+.audioQuranIcon svg:last-child {
+  position: absolute;
+  right: -3px;
+  bottom: 0;
+  padding: 1px;
+  color: var(--cream-50);
+  border-radius: 50%;
+  background: var(--brown-800);
 }
 
 .libraryButton:hover {
@@ -322,7 +341,7 @@
   transform: translateY(-2px);
 }
 
-.libraryButton:hover svg:last-child {
+.libraryButton:hover > svg:last-child {
   transform: translate(-3px, -3px);
 }
 

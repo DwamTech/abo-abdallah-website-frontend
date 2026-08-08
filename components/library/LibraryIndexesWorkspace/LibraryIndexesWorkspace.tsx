@@ -125,13 +125,14 @@ export default function LibraryIndexesWorkspace() {
   const [goldenSearch, setGoldenSearch] = useState("");
   const [guestSearch, setGuestSearch] = useState("");
   const [subjectSearch, setSubjectSearch] = useState("");
+  const [alphabeticalSearch, setAlphabeticalSearch] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [goldenMessage, setGoldenMessage] = useState("");
   const [guestMessage, setGuestMessage] = useState("");
   const [formError, setFormError] = useState("");
   const [activeTable, setActiveTable] = useState<
-    "golden" | "guests" | "subjects" | null
+    "golden" | "guests" | "subjects" | "alphabetical" | null
   >(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -451,6 +452,12 @@ export default function LibraryIndexesWorkspace() {
             <span className={styles.nextStage}>قيد الإعداد للمرحلة القادمة</span>
           </div>
         </div>
+        <TableLauncher
+          count={0}
+          description="استعرض العناوين مرتبة هجائيًا وابحث داخل الفهرس فور إضافة بياناته."
+          onClick={() => setActiveTable("alphabetical")}
+          title="فتح الفهرس الألف بائي"
+        />
       </section>
 
       {activeTable && (
@@ -464,7 +471,9 @@ export default function LibraryIndexesWorkspace() {
             aria-labelledby="library-table-title"
             aria-modal="true"
             className={`${styles.modalPanel} ${
-              activeTable === "subjects" ? styles.subjectModalPanel : ""
+              activeTable === "subjects" || activeTable === "alphabetical"
+                ? styles.subjectModalPanel
+                : ""
             }`}
             role="dialog"
           >
@@ -476,7 +485,9 @@ export default function LibraryIndexesWorkspace() {
                     ? "سجل الزيارات"
                     : activeTable === "guests"
                       ? "الضيوف المسجلون"
-                      : "الفهرس الموضوعي"}
+                      : activeTable === "subjects"
+                        ? "الفهرس الموضوعي"
+                        : "الفهرس الألف بائي"}
                 </h2>
               </div>
               <button type="button" onClick={() => setActiveTable(null)} aria-label="إغلاق النافذة">
@@ -486,7 +497,9 @@ export default function LibraryIndexesWorkspace() {
 
             <div
               className={`${styles.modalBody} ${
-                activeTable === "subjects" ? styles.subjectModalBody : ""
+                activeTable === "subjects" || activeTable === "alphabetical"
+                  ? styles.subjectModalBody
+                  : ""
               }`}
             >
               {activeTable === "golden" && (
@@ -535,6 +548,37 @@ export default function LibraryIndexesWorkspace() {
                       <tbody>{filteredSubjects.map((entry) => <tr key={entry.number}><td data-label="الرقم العام"><span className={styles.numberBadge}>{toArabicDigits(entry.number)}</span></td><td data-label="رمز التصنيف"><code>{entry.code}</code></td><td data-label="الموضوع"><strong>{entry.subject}</strong></td></tr>)}</tbody>
                     </table>
                     {!filteredSubjects.length && <EmptyTable search={subjectSearch} label="لا توجد تصنيفات مطابقة لعبارة البحث" />}
+                  </div>
+                </>
+              )}
+
+              {activeTable === "alphabetical" && (
+                <>
+                  <div className={styles.subjectToolbar}>
+                    <label>
+                      <Search size={21} />
+                      <span>
+                        <small>بحث هجائي ذكي</small>
+                        <input
+                          value={alphabeticalSearch}
+                          onChange={(event) => setAlphabeticalSearch(event.target.value)}
+                          placeholder="ابحث باسم الكتاب أو المؤلف أو التصنيف..."
+                        />
+                      </span>
+                      {alphabeticalSearch && (
+                        <button type="button" onClick={() => setAlphabeticalSearch("")} aria-label="مسح البحث">
+                          <X size={16} />
+                        </button>
+                      )}
+                    </label>
+                    <div><ListOrdered size={20} /><span><strong>٠</strong><small>عنوان مفهرس</small></span></div>
+                  </div>
+                  <div className={`${styles.tableShell} ${styles.subjectTable}`}>
+                    <table>
+                      <thead><tr><th>الحرف</th><th>العنوان</th><th>التصنيف</th></tr></thead>
+                      <tbody />
+                    </table>
+                    <EmptyTable search={alphabeticalSearch} label="الفهرس الألف بائي فارغ حاليًا" />
                   </div>
                 </>
               )}

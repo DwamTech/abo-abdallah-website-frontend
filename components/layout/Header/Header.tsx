@@ -4,14 +4,15 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
+  AudioLines,
   ArrowUpLeft,
   BookMarked,
+  BookOpen,
   ChevronDown,
   GraduationCap,
   LibraryBig,
   MapPin,
   Menu,
-  MessageCircleQuestion,
   Search,
   Sparkles,
   X,
@@ -192,9 +193,12 @@ export default function Header() {
 
             <span className={styles.actionDivider} aria-hidden="true" />
 
-            <a className={styles.libraryButton} href="/fatwas">
-              <MessageCircleQuestion size={18} strokeWidth={1.5} />
-              <span>الفتاوى</span>
+            <a className={styles.libraryButton} href="/listening">
+              <span className={styles.audioQuranIcon} aria-hidden="true">
+                <BookOpen size={20} strokeWidth={1.45} />
+                <AudioLines size={10} strokeWidth={2} />
+              </span>
+              <span>المقرأة الصوتية</span>
               <ArrowUpLeft size={15} strokeWidth={1.7} />
             </a>
 
