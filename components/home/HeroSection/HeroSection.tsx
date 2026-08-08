@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowDown, BookOpen, Feather, ScrollText, Sparkles } from 'lucide-react';
+import { ArrowLeft, BookOpen, Feather, ScrollText } from 'lucide-react';
 import Image from 'next/image';
 import HeroSearchTrigger from '@/components/home/HeroSearchTrigger/HeroSearchTrigger';
 import RotatingKnowledgeSeal from '@/components/home/RotatingKnowledgeSeal/RotatingKnowledgeSeal';
@@ -10,11 +10,13 @@ export default function HeroSection() {
       <div className={styles.pattern} aria-hidden="true" />
       <div className={styles.container}>
         <div className={styles.content}>
-          <div className={styles.eyebrow}>
-            {/* <Sparkles size={15} strokeWidth={1.5} /> */}
-            <span>۞ العلم ميراث النبوة</span>
+          <div className={styles.introHeader}>
+            <span className={styles.introSeal} aria-hidden="true">۞</span>
+            <div className={styles.introCopy}>
+              <div className={styles.eyebrow}>العلم ميراث النبوة</div>
+              <p className={styles.preTitle}>الموقع الرسمي لفضيلة الأستاذ الدكتور</p>
+            </div>
           </div>
-          <p className={styles.preTitle}>الموقع الرسمي لفضيلة الأستاذ الدكتور</p>
           <h1 className={styles.srOnly}>أبو عبد الله يحيى بن عبد الله البكري الشهري</h1>
           <div className={styles.nameArtwork} aria-hidden="true">
             <span className={styles.nameOrnament}>
@@ -31,35 +33,29 @@ export default function HeroSection() {
               priority
             />
              <span className={styles.englishName} lang="en" dir="ltr">
-              Abdullah Yahya Abdullah Al-Bakri Al-Shehri
+              Yahya Abdullah Al-Bakri Al-Shehri
             </span>
-            <Image
-              className={styles.subCalligraphy}
-              src="/media/images/elmaktaba_elbakrya.png"
-              alt="المكتبة البكرية"
-              width={834}
-              height={299}
-            />
-
           </div>
-          <div className={styles.divider} aria-hidden="true">
-            <span />
-            <i />
-            <span />
+          <div className={styles.profileSummary}>
+            <span className={styles.summaryMark} aria-hidden="true" />
+            <div>
+              <p className={styles.subtitle}>أستاذ الحديث وعلومه بجامعة الملك خالد في أبها</p>
+              <p className={styles.intro}>
+                منصة علمية تجمع الإنتاج الأكاديمي، وتيسّر للباحثين وطلاب العلم
+                الوصول إلى المؤلفات والبحوث والدروس ومجالس السماع.
+              </p>
+            </div>
           </div>
-          <p className={styles.subtitle}>أستاذ الحديث وعلومه بجامعة الملك خالد في أبها</p>
-          <p className={styles.intro}>
-            منصة علمية تجمع الإنتاج الأكاديمي ، وتيسّر للباحثين وطلاب العلم الوصول إلى
-            المؤلفات والبحوث والدروس ومجالس السماع.
-          </p>
-          <HeroSearchTrigger />
-          <div className={styles.ctas}>
-            <a className={styles.primaryCta} href="/about">
-              <BookOpen size={19} strokeWidth={1.6} />
-              المسيرة العلمية
-              <ArrowLeft size={17} />
-            </a>
 
+          <div className={styles.actionRow}>
+            <HeroSearchTrigger />
+            <div className={styles.ctas}>
+              <a className={styles.primaryCta} href="/about">
+                <BookOpen size={18} strokeWidth={1.6} />
+                المسيرة العلمية
+                <ArrowLeft size={16} />
+              </a>
+            </div>
           </div>
         </div>
 
@@ -103,6 +99,17 @@ export default function HeroSection() {
               <small>منهج علمي</small>
               <strong>الرواية والدراية</strong>
             </div>
+          </div>
+
+          <div className={styles.visualBrand}>
+            <Image
+              className={styles.subCalligraphy}
+              src="/media/images/elmaktaba_elbakrya.png"
+              alt="المكتبة البكرية"
+              width={834}
+              height={299}
+            />
+            <span>خزانة العلم والمعرفة</span>
           </div>
 
           <span className={`${styles.particle} ${styles.particleOne}`} />

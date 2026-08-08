@@ -724,3 +724,25 @@
     display: none;
   }
 }
+
+/* Responsive vertical rhythm with room for every library card. */
+@media (min-width: 900px) {
+  .section {
+    height: auto;
+    min-height: clamp(700px, var(--desktop-section-height), 940px);
+    padding: clamp(64px, 8vh, 94px) 0;
+  }
+}
+
+@media (max-width: 899px) {
+  .section {
+    min-height: 0;
+    padding-block: clamp(72px, 10vw, 96px);
+  }
+}
+
+@media (max-width: 560px) {
+  .section {
+    padding-block: 66px 76px;
+  }
+}

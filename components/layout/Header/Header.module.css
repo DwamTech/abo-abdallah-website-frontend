@@ -83,6 +83,151 @@
     transform 180ms ease;
 }
 
+.navDropdown {
+  position: relative;
+}
+
+.navDropdownTrigger {
+  display: inline-flex;
+  min-height: 39px;
+  padding-inline: 11px;
+  align-items: center;
+  gap: 6px;
+  color: inherit;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 180ms ease, background 180ms ease;
+}
+
+.navDropdownTrigger svg {
+  transition: transform 180ms ease;
+}
+
+.navDropdown:hover .navDropdownTrigger,
+.navDropdown:focus-within .navDropdownTrigger,
+.navDropdownActive .navDropdownTrigger {
+  color: var(--cream-50);
+  background: var(--brown-800);
+}
+
+.navDropdown:hover .navDropdownTrigger svg,
+.navDropdown:focus-within .navDropdownTrigger svg {
+  transform: rotate(180deg);
+}
+
+.navDropdownPanel {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 50%;
+  width: 360px;
+  padding: 10px;
+  visibility: hidden;
+  opacity: 0;
+  border: 1px solid rgba(188, 154, 99, 0.38);
+  border-radius: 16px;
+  background: rgba(255, 253, 248, 0.98);
+  box-shadow: 0 26px 70px rgba(42, 27, 20, 0.2);
+  transform: translate(50%, 10px);
+  transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+}
+
+.navDropdownPanel::before {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  height: 16px;
+  content: "";
+}
+
+.navDropdown:hover .navDropdownPanel,
+.navDropdown:focus-within .navDropdownPanel {
+  visibility: visible;
+  opacity: 1;
+  transform: translate(50%, 0);
+}
+
+.dropdownHeading {
+  padding: 10px 13px 13px;
+  border-bottom: 1px solid var(--cream-300);
+}
+
+.dropdownHeading span,
+.dropdownHeading small {
+  display: block;
+}
+
+.dropdownHeading span {
+  color: var(--brown-900);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.dropdownHeading small {
+  margin-top: 3px;
+  color: #948274;
+  font-family: "Noto Naskh Arabic Variable", serif;
+  font-size: 13px;
+}
+
+.desktopNav .navDropdownPanel > a {
+  display: grid;
+  min-height: 65px;
+  padding: 9px 10px;
+  grid-template-columns: 38px minmax(0, 1fr) 18px;
+  justify-content: initial;
+  gap: 10px;
+  border-radius: 10px;
+  white-space: normal;
+}
+
+.desktopNav .navDropdownPanel > a:hover,
+.desktopNav .navDropdownPanel > .dropdownActiveLink {
+  background: #f4ecdf;
+  transform: none;
+}
+
+.navDropdownPanel a > i {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  color: var(--gold-600);
+  border: 1px solid #dfceb1;
+  border-radius: 10px;
+  background: #fffaf1;
+}
+
+.navDropdownPanel a > span {
+  min-width: 0;
+}
+
+.navDropdownPanel a strong,
+.navDropdownPanel a small {
+  display: block;
+}
+
+.navDropdownPanel a strong {
+  color: var(--brown-900);
+  font-size: 11px;
+}
+
+.navDropdownPanel a small {
+  margin-top: 2px;
+  color: #8e7d70;
+  font-family: "Noto Naskh Arabic Variable", serif;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.navDropdownPanel a > svg {
+  color: var(--gold-600);
+}
+
 .desktopNav a:hover {
   color: var(--brown-900);
   background: rgba(255, 255, 255, 0.88);
@@ -328,6 +473,52 @@
 
 .mobileNav svg {
   color: var(--gold-600);
+}
+
+.mobileLibraryGroup {
+  border-bottom: 1px solid var(--cream-300);
+  background: rgba(248, 243, 233, 0.48);
+}
+
+.mobileLibraryTitle {
+  display: grid;
+  min-height: 60px;
+  padding-inline: 4px;
+  grid-template-columns: 30px 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.mobileLibraryTitle strong {
+  color: var(--brown-900);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 13px;
+}
+
+.mobileLibraryLinks {
+  display: grid;
+  padding: 0 35px 12px 4px;
+  gap: 5px;
+}
+
+.mobileNav .mobileLibraryLinks a {
+  min-height: 46px;
+  padding-inline: 12px;
+  grid-template-columns: 23px 1fr auto;
+  gap: 8px;
+  border: 1px solid rgba(221, 204, 177, 0.76);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.64);
+}
+
+.mobileNav .mobileLibraryLinks a:hover {
+  padding-inline: 12px;
+}
+
+.mobileLibraryLinks span {
+  color: var(--brown-800);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 10px;
 }
 
 .drawerFooter {

@@ -5,7 +5,7 @@ import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import AboutPageContent from "@/components/about/AboutPageContent/AboutPageContent";
 
 export const metadata: Metadata = {
-  title: "عن الشيخ",
+  title: "المسيرة العلمية",
   description:
     "التعريف بفضيلة الأستاذ الدكتور أبو عبد الله يحيى بن عبد الله البكري الشهري ومسيرته العلمية والأكاديمية.",
 };

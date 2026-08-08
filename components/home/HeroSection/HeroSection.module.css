@@ -3,7 +3,6 @@
   min-height: 710px;
   overflow: hidden;
   color: var(--cream-50);
-  /* background-color: var(--brown-950); */
   background-image: url("/media/images/background.jpg");
   background-position: center center;
   background-size: cover;
@@ -59,34 +58,73 @@
   z-index: 1;
   display: grid;
   width: min(calc(100% - 48px), var(--container));
-  min-height: 660px;
+  min-height: 680px;
   margin-inline: auto;
-  grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
+  grid-template-columns: minmax(0, 1fr) 420px;
   align-items: center;
-  gap: clamp(48px, 7vw, 100px);
-  padding-block: 70px 82px;
+  gap: clamp(72px, 8vw, 112px);
+  padding-block: 54px 58px;
 }
 
 .content {
-  max-width: 715px;
+  display: flex;
+  width: 100%;
+  max-width: 735px;
+  flex-direction: column;
+}
+
+.introHeader {
+  display: grid;
+  width: min(100%, 500px);
+  margin-bottom: 15px;
+  grid-template-columns: 38px auto minmax(45px, 1fr);
+  align-items: center;
+  gap: 11px;
+}
+
+.introSeal {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  color: var(--gold-300);
+  border: 1px solid rgba(221, 194, 142, 0.36);
+  border-radius: 50%;
+  background: rgba(38, 24, 18, 0.42);
+  box-shadow:
+    0 0 0 5px rgba(221, 194, 142, 0.035),
+    inset 0 0 15px rgba(221, 194, 142, 0.06);
+  font-size: 15px;
+}
+
+.introCopy {
+  display: flex;
+  flex-direction: column;
 }
 
 .eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 22px;
+  flex: 0 0 auto;
+  margin: 0;
   color: var(--gold-300);
   font-family: "Noto Kufi Arabic Variable", sans-serif;
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.02em;
 }
 
+.headerLine {
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, rgba(221, 194, 142, 0.56));
+}
+
 .preTitle {
-  margin-bottom: 7px;
-  color: rgba(255, 255, 255, 0.66);
+  margin: 3px 0 0;
+  color: rgba(255, 255, 255, 0.7);
   font-family: "Noto Kufi Arabic Variable", sans-serif;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .srOnly {
@@ -103,9 +141,9 @@
 
 .nameArtwork {
   position: relative;
-  width: min(100%, 690px);
-  margin-top: 2px;
-  padding-block: 9px 5px;
+  width: min(100%, 675px);
+  margin-top: 0;
+  padding-block: 5px 3px;
 }
 
 /* .nameArtwork::before {
@@ -123,7 +161,7 @@
   width: 170px;
   align-items: center;
   gap: 8px;
-  margin: 0 8px -4px 0;
+  margin: 0 8px -7px 0;
   color: var(--gold-300);
 }
 
@@ -155,9 +193,9 @@
 
 .subCalligraphy {
   display: block;
-  width: min(45%, 260px);
+  width: min(100%, 170px);
   height: auto;
-  margin: 6px auto 4px;
+  margin: 0 auto;
   object-fit: contain;
   object-position: center;
   opacity: 0.92;
@@ -169,7 +207,7 @@
 .englishName {
   display: block;
   width: 94%;
-  margin: 2px auto 0;
+  margin: -1px auto 0;
   overflow: hidden;
   color: rgba(239, 213, 159, 0.82);
   font-family: Georgia, "Times New Roman", serif;
@@ -204,8 +242,27 @@
   transform: rotate(45deg);
 }
 
+.profileSummary {
+  display: grid;
+  width: min(100%, 655px);
+  margin: 18px 0 20px;
+  padding: 14px 16px 14px 18px;
+  grid-template-columns: 3px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 14px;
+  border: 1px solid rgba(221, 194, 142, 0.16);
+  border-radius: 5px;
+  background: rgba(35, 22, 17, 0.26);
+  backdrop-filter: blur(6px);
+}
+
+.summaryMark {
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--gold-300), rgba(221, 194, 142, 0.08));
+}
+
 .subtitle {
-  margin-bottom: 12px;
+  margin: 0 0 5px;
   color: var(--gold-300);
   font-family: "Noto Kufi Arabic Variable", sans-serif;
   font-size: clamp(15px, 1.6vw, 19px);
@@ -213,16 +270,29 @@
 }
 
 .intro {
-  max-width: 630px;
-  margin-bottom: 19px;
+  max-width: 620px;
+  margin: 0;
   color: rgba(255, 255, 255, 0.7);
   font-size: 15px;
   line-height: 1.9;
 }
 
+.actionRow {
+  display: grid;
+  width: min(100%, 655px);
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.actionRow > button {
+  min-height: 56px;
+  margin: 0;
+}
+
 .ctas {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 12px;
 }
@@ -232,7 +302,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 53px;
+  min-height: 56px;
   gap: 10px;
   padding-inline: 22px;
   border: 1px solid transparent;
@@ -275,7 +345,7 @@
 .visual {
   position: relative;
   display: grid;
-  min-height: 510px;
+  min-height: 535px;
   place-items: center;
   perspective: 1000px;
 }
@@ -435,8 +505,35 @@
 
 .cardTwo {
   right: -8px;
-  bottom: 73px;
+  bottom: 100px;
   animation: cardFloatTwo 6.8s ease-in-out infinite;
+}
+
+.visualBrand {
+  position: absolute;
+  z-index: 5;
+  bottom: 3px;
+  left: 50%;
+  display: flex;
+  width: 210px;
+  min-height: 70px;
+  padding: 7px 15px 8px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 1px solid rgba(221, 194, 142, 0.2);
+  border-radius: 50% 50% 9px 9px;
+  background: rgba(39, 25, 19, 0.62);
+  box-shadow: 0 15px 34px rgba(12, 7, 4, 0.22);
+  backdrop-filter: blur(9px);
+  transform: translateX(-50%);
+}
+
+.visualBrand span {
+  margin-top: -2px;
+  color: rgba(239, 214, 166, 0.62);
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 7px;
 }
 
 .particle {
@@ -593,7 +690,7 @@
   }
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1100px) {
   .hero {
     background-position: center top;
   }
@@ -622,6 +719,16 @@
   .eyebrow,
   .ctas {
     justify-content: center;
+  }
+
+  .introHeader,
+  .profileSummary,
+  .actionRow {
+    margin-inline: auto;
+  }
+
+  .profileSummary {
+    text-align: right;
   }
 
   .divider,
@@ -653,7 +760,12 @@
   .container {
     width: min(calc(100% - 32px), var(--container));
     padding-block: 62px 86px;
-    gap: 42px;
+    gap: 28px;
+  }
+
+  .introHeader {
+    width: min(100%, 420px);
+    margin-bottom: 10px;
   }
 
   .preTitle {
@@ -676,7 +788,21 @@
   }
 
   .intro {
-    font-size: 17px;
+    font-size: 15px;
+  }
+
+  .profileSummary {
+    margin-block: 14px 16px;
+    padding: 12px 13px;
+    gap: 10px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .actionRow {
+    grid-template-columns: 1fr;
   }
 
   .ctas {
@@ -689,7 +815,8 @@
   }
 
   .visual {
-    min-height: 430px;
+    min-height: 405px;
+    margin-block: -28px -36px;
     transform: scale(0.78);
   }
 }

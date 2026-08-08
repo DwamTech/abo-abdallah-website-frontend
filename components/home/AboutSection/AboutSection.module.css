@@ -2,9 +2,11 @@
   position: relative;
   padding: 76px 0 82px;
   overflow: hidden;
+  border-block: 1px solid rgba(166, 122, 53, 0.13);
   background:
     radial-gradient(circle at 7% 16%, rgba(191, 150, 80, 0.08), transparent 25%),
-    var(--cream-50);
+    linear-gradient(125deg, rgba(255, 255, 255, 0.66), transparent 48%),
+    #f8f2e7;
 }
 
 .section::before {
@@ -291,13 +293,13 @@
 .visual {
   position: relative;
   display: grid;
-  min-height: 440px;
+  min-height: 500px;
   place-items: center;
   overflow: hidden;
-  background:
-    linear-gradient(145deg, rgba(47, 29, 22, 0.7), rgba(30, 18, 14, 0.93)),
-    url("/media/images/b2.jpg") center / cover;
-  box-shadow: 0 26px 62px rgba(63, 45, 34, 0.16);
+  border: 1px solid rgba(166, 122, 53, 0.34);
+  border-radius: 220px 220px 14px 14px;
+  background: #3a271e;
+  box-shadow: 0 30px 72px rgba(63, 45, 34, 0.2);
 }
 
 .visual::before {
@@ -305,6 +307,7 @@
   inset: 14px;
   content: "";
   border: 1px solid rgba(221, 194, 142, 0.22);
+  border-radius: 205px 205px 7px 7px;
   pointer-events: none;
 }
 
@@ -314,6 +317,47 @@
   content: "";
   background: radial-gradient(circle, rgba(221, 194, 142, 0.07), transparent 48%);
   pointer-events: none;
+}
+
+.scholarImage {
+  object-fit: cover;
+  object-position: center 24%;
+}
+
+.visualVeil {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    linear-gradient(0deg, rgba(35, 21, 16, 0.9), transparent 62%),
+    linear-gradient(90deg, rgba(35, 21, 16, 0.16), rgba(35, 21, 16, 0.36));
+}
+
+.visualStatement {
+  position: absolute;
+  z-index: 3;
+  right: 30px;
+  bottom: 91px;
+  display: grid;
+  max-width: 250px;
+  padding: 14px 16px;
+  grid-template-columns: 31px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  color: #ead09b;
+  border: 1px solid rgba(231, 202, 146, 0.24);
+  border-radius: 9px;
+  background: rgba(39, 24, 18, 0.64);
+  backdrop-filter: blur(9px);
+}
+
+.visualStatement span {
+  color: rgba(255, 248, 235, 0.65);
+  font-size: 11px;
+}
+
+.visualStatement strong {
+  font: 12px "Noto Kufi Arabic Variable", sans-serif;
 }
 
 .visualLabel {

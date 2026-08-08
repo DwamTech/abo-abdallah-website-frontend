@@ -23,97 +23,19 @@ import {
   ScrollText,
   Sparkles,
   University,
-  UserRound,
   UsersRound,
 } from 'lucide-react';
 import SubpageBackdrop from '@/components/layout/SubpageBackdrop/SubpageBackdrop';
 import { toArabicDigits } from '@/lib/arabicNumbers';
 import { AboutMotionController, AnimatedNumber } from './AboutMotion';
+import {
+  academicRanks as sourceAcademicRanks,
+  administrativeRoles as sourceAdministrativeRoles,
+  councilMemberships as sourceCouncilMemberships,
+  qualifications as sourceQualifications,
+  sheikhProfile,
+} from '@/data/about';
 import styles from './AboutPageContent.module.css';
-
-const qualifications = [
-  {
-    year: '١٤٠٧هـ',
-    title: 'البكالوريوس',
-    text: 'كلية الحديث الشريف بالجامعة الإسلامية.',
-  },
-  {
-    year: '١٤١٧هـ',
-    title: 'الماجستير',
-    text: 'كلية الدعوة وأصول الدين بجامعة أم القرى.',
-  },
-  {
-    year: '١٤٢١هـ',
-    title: 'الدكتوراه',
-    text: 'كلية الدعوة وأصول الدين بجامعة أم القرى.',
-  },
-  {
-    year: '١٤٤١هـ – ....؟',
-    title: 'أستاذ غير متفرغ',
-    text: '',
-  },
-];
-
-const academicRanks = [
-  { year: '١٤٠٨هـ', title: 'معيد' },
-  { year: '١٤١٧هـ', title: 'محاضر' },
-  { year: '١٤٢٢هـ', title: 'أستاذ مساعد' },
-  { year: '١٤٢٨هـ', title: 'أستاذ مشارك' },
-  { year: '١٤٣٢هـ', title: 'أستاذ' },
-];
-
-const administrativeRoles = [
-  {
-    period: '١٤٢٢هـ – ١٤٢٦هـ',
-    title: 'رئيس قسم الدراسات الإسلامية',
-    place: 'كلية المعلمين',
-  },
-  {
-    period: '١٤٣٣هـ – ١٤٣٤هـ',
-    title: 'مدير مركز البحث العلمي',
-    place: 'كلية الشريعة',
-  },
-  {
-    period: '١٤٣٤هـ – ١٤٣٥هـ',
-    title: 'رئيس قسم السنة وعلومها',
-    place: 'كلية الشريعة',
-  },
-  {
-    period: '١٤٣٦هـ – ١٤٤١هـ',
-    title: 'المشرف العام على التوعية الفكرية',
-    place: 'الجامعة',
-  },
-];
-
-const councilMemberships = [
-  {
-    title: 'مجلس قسم الدراسات الإسلامية بكلية المعلمين',
-    period: '١٤٢١هـ – ١٤٢٩هـ',
-  },
-  { title: 'مجلس الكلية', period: '١٤٢٢هـ – ١٤٢٦هـ' },
-  {
-    title: 'مجلس قسم السنة وعلومها بكلية الشريعة',
-    period: '١٤٢٩هـ – ٣٠/٦/١٤٤١هـ',
-  },
-  { title: 'مجلس الكلية', period: '١٤٣٤هـ / ١٤٣٥هـ' },
-  {
-    title: 'مجلس إدارة مركز البحث العلمي بالكلية',
-    period: '١٤٣٣هـ / ١٤٣٥هـ',
-  },
-  {
-    title: 'مجلس الجمعية السعودية للسنة وعلومها (سنن)',
-    period: '١٤٢٩هـ – ١٤٣٥هـ',
-  },
-  {
-    title: 'مجلس عمادة البحث العلمي بالجامعة',
-    period: '١٤٣٣هـ – ١٤٣٥هـ',
-  },
-  { title: 'المجلس العلمي بالجامعة', period: '١٤٤٠هـ – ١٤٤١هـ' },
-  {
-    title: 'عضو مجلس إدارة وحدة التوعية الفكرية',
-    period: '١٤٣٩هـ – ١٤٤١هـ',
-  },
-];
 
 const supervisionUniversities = [
   { name: 'الجامعة الإسلامية', count: 16, unit: 'رسالة' },
@@ -251,22 +173,24 @@ export default function AboutPageContent() {
                 الرئيسية
               </Link>
               <ArrowLeft size={13} />
-              <span>عن الشيخ</span>
+              <span>المسيرة العلمية</span>
             </nav>
 
             <span className={styles.kicker}>السيرة العلمية والأكاديمية</span>
             <h1>عن فضيلة الشيخ</h1>
-            <p className={styles.name}>أ.د. يحيى بن عبد الله بن يحيى البكري الشهري</p>
-            <p className={styles.role}>أستاذ الحديث وعلومه بجامعة الملك خالد في أبها</p>
+            <p className={styles.name}>{sheikhProfile.displayName}</p>
+            <p className={styles.role}>
+              {sheikhProfile.academicTitle} سابقًا في {sheikhProfile.university}
+            </p>
             <div className={styles.heroFacts}>
               <span>
                 <CalendarDays size={16} />
-                الميلاد: ١/٧/١٣٨٤هـ
+                الميلاد: {sheikhProfile.birthHijri}
               </span>
               <i />
               <span>
-                <UserRound size={16} />
-                متزوج، أب لولدين وثلاث بنات
+                <MapPinned size={16} />
+                مكان الميلاد: {sheikhProfile.birthPlace}
               </span>
             </div>
           </div>
@@ -292,7 +216,7 @@ export default function AboutPageContent() {
         </div>
       </section>
 
-      <section className={styles.identitySection} hidden>
+      <section className={styles.identitySection}>
         <SubpageBackdrop />
         <div className={styles.identityContainer}>
           <div className={styles.identityCopy}>
@@ -303,7 +227,7 @@ export default function AboutPageContent() {
                 سيرة علمية
               </span>
             </div>
-            <h2>يحيى بن عبد الله بن يحيى البكري الشهري</h2>
+            <h2>{sheikhProfile.fullName}</h2>
             <div className={styles.personalDetails}>
               <article>
                 <span className={styles.detailIcon}>
@@ -311,22 +235,25 @@ export default function AboutPageContent() {
                 </span>
                 <div>
                   <span>الميلاد</span>
-                  <strong>١/٧/١٣٨٤هـ</strong>
+                  <strong>{sheikhProfile.birthHijri}</strong>
+                  <small>الموافق {sheikhProfile.birthGregorian}</small>
                 </div>
               </article>
               <article>
                 <span className={styles.detailIcon}>
-                  <UsersRound size={20} />
+                  <MapPinned size={20} />
                 </span>
                 <div>
-                  <span>الحالة الاجتماعية</span>
-                  <strong>متزوج، أب لولدين وثلاث بنات</strong>
+                  <span>مكان الميلاد</span>
+                  <strong>{sheikhProfile.birthPlace}</strong>
                 </div>
               </article>
             </div>
             <div className={styles.identityNote}>
               <Sparkles size={17} />
-              <span>أستاذ الحديث وعلومه بجامعة الملك خالد في أبها</span>
+              <span>
+                {sheikhProfile.academicTitle} في {sheikhProfile.department}، ومتقاعد منذ {sheikhProfile.retirementDate}
+              </span>
             </div>
           </div>
 
@@ -365,7 +292,7 @@ export default function AboutPageContent() {
                 </div>
               </header>
               <div className={styles.timeline}>
-                {qualifications.map((item, index) => (
+                {sourceQualifications.map((item, index) => (
                   <div
                     className={styles.timelineItem}
                     key={`${item.year}-${item.title}`}
@@ -396,7 +323,7 @@ export default function AboutPageContent() {
                 </div>
               </header>
               <div className={styles.rankTrack}>
-                {academicRanks.map((item, index) => (
+                {sourceAcademicRanks.map((item, index) => (
                   <div
                     className={styles.rankItem}
                     key={item.title}
@@ -433,7 +360,7 @@ export default function AboutPageContent() {
                 <h3>الأعمال الإدارية</h3>
               </div>
               <div className={styles.rolesList}>
-                {administrativeRoles.map((role, index) => (
+                {sourceAdministrativeRoles.map((role, index) => (
                   <article
                     key={role.title}
                     data-about-reveal
@@ -459,10 +386,10 @@ export default function AboutPageContent() {
               <div className={styles.panelTitle}>
                 <Landmark size={22} />
                 <h3>عضوية المجالس</h3>
-                <span>{toArabicDigits(String(councilMemberships.length))}</span>
+                <span>{toArabicDigits(String(sourceCouncilMemberships.length))}</span>
               </div>
               <ul>
-                {councilMemberships.map((membership, index) => (
+                {sourceCouncilMemberships.map((membership, index) => (
                   <li
                     key={`${membership.title}-${membership.period}`}
                     data-about-reveal
@@ -670,7 +597,7 @@ export default function AboutPageContent() {
             <span className={styles.dateOrnament} aria-hidden="true">۞</span>
             <div>
               <span>آخر تحديث للسيرة</span>
-              <time>٨ / ٩ / ١٤٤٦هـ</time>
+              <time>{sheikhProfile.lastUpdated}</time>
             </div>
             <span className={styles.dateOrnament} aria-hidden="true">۞</span>
           </footer>

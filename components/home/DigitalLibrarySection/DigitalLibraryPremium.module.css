@@ -249,3 +249,11 @@
   .headingStats { width: 100%; justify-content: space-around; }
   .shelfHeader { align-items: flex-start; flex-direction: column; gap: 8px; }
 }
+
+@media (min-width: 900px) {
+  .section {
+    height: auto !important;
+    min-height: clamp(700px, var(--desktop-section-height), 940px) !important;
+    padding: clamp(64px, 8vh, 94px) 0 !important;
+  }
+}

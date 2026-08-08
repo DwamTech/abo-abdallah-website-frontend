@@ -1,10 +1,11 @@
 import Link from 'next/link';
-import { ArrowLeft, BookOpenCheck, GraduationCap, Landmark, Sparkles } from 'lucide-react';
-import siteContent from '@/data/site-content.json';
+import Image from 'next/image';
+import { ArrowLeft, BookOpenCheck, GraduationCap, Landmark } from 'lucide-react';
+import { aboutProfilePoints, sheikhProfile } from '@/data/about';
 import styles from './AboutSection.module.css';
 
 const profileIcons = { GraduationCap, BookOpenCheck, Landmark } as const;
-const profilePoints = siteContent.aboutProfilePoints;
+const profilePoints = aboutProfilePoints;
 
 export default function AboutSection() {
   return (
@@ -36,8 +37,8 @@ export default function AboutSection() {
           <div className={styles.intro}>
             <span className={styles.introMark}>“</span>
             <p>
-              فضيلة الأستاذ الدكتور أبو عبد الله يحيى بن عبد الله البكري الشهري، أستاذ الحديث وعلومه
-              بجامعة الملك خالد في أبها.
+              فضيلة الأستاذ الدكتور {sheikhProfile.fullName}، أستاذ الحديث وعلومه
+              سابقًا في قسم السنة وعلومها بجامعة الملك خالد.
             </p>
           </div>
 
@@ -67,36 +68,29 @@ export default function AboutSection() {
           </div>
         </div>
 
-        <div className={styles.visual} aria-hidden="true">
+        <div className={styles.visual}>
+          <Image
+            className={styles.scholarImage}
+            src="/media/images/about_hero.jpg"
+            alt={`فضيلة الأستاذ الدكتور ${sheikhProfile.fullName}`}
+            fill
+            sizes="(max-width: 900px) 100vw, 42vw"
+          />
+          <span className={styles.visualVeil} aria-hidden="true" />
           <span className={styles.visualLabel}>سيرة علمية موثقة</span>
 
-          <div className={styles.orbit}>
-            <span className={`${styles.orbitText} ${styles.orbitTextTop}`}>تحقيق</span>
-            <span className={`${styles.orbitText} ${styles.orbitTextBottom}`}>تعليم</span>
-
-            <div className={styles.knowledgeSeal}>
-              <span className={styles.sealIcon}>
-                <BookOpenCheck size={30} strokeWidth={1.15} />
-              </span>
-              <small>في خدمة</small>
-              <strong>السنة النبوية</strong>
-              <span className={styles.sealRule}>
-                <i />
-                <b>۞</b>
-                <i />
-              </span>
-              <em>علم · تحقيق · تعليم</em>
-            </div>
+          <div className={styles.visualStatement}>
+            <BookOpenCheck size={24} strokeWidth={1.3} />
+            <span>مسيرة أكاديمية بدأت عام</span>
+            <strong>١٤٠٨هـ</strong>
           </div>
 
           <div className={styles.visualCaption}>
-            <span>جامعة الملك خالد · أبها</span>
-            <strong>أستاذ الحديث وعلومه</strong>
+            <span>{sheikhProfile.faculty}</span>
+            <strong>{sheikhProfile.academicTitle}</strong>
           </div>
 
-          <span className={styles.cornerMark}>٠١</span>
-          <span className={styles.sparkOne} />
-          <span className={styles.sparkTwo} />
+          <span className={styles.cornerMark}>١٤٤١هـ · التقاعد</span>
         </div>
       </div>
     </section>

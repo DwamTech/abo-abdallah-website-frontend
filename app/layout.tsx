@@ -3,18 +3,20 @@ import { Suspense } from "react";
 import "@fontsource-variable/noto-kufi-arabic";
 import "@fontsource-variable/noto-naskh-arabic";
 import NewsTicker from "@/components/layout/NewsTicker/NewsTicker";
+import ScrollReveal from "@/components/layout/ScrollReveal/ScrollReveal";
 import ScrollToTop from "@/components/layout/ScrollToTop/ScrollToTop";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "الأستاذ الدكتور أبو عبد الله يحيى البكري الشهري",
-    template: "%s | الموقع الرسمي",
+    default: "يحيى بن عبد الله البكري الشهري | الصفحة الرئيسية",
+    template: "يحيى بن عبد الله البكري الشهري | %s",
   },
+  icons: { icon: "/icon.svg", shortcut: "/icon.svg", apple: "/icon.svg" },
   description:
     "الموقع العلمي الرسمي لفضيلة الأستاذ الدكتور أبو عبد الله يحيى بن عبد الله البكري الشهري، أستاذ الحديث وعلومه بجامعة الملك خالد.",
   keywords: [
-    "أبو عبد الله يحيى البكري الشهري",
+    "يحيى بن عبد الله البكري الشهري",
     "الحديث وعلومه",
     "السنة النبوية",
     "جامعة الملك خالد",
@@ -38,6 +40,7 @@ export default function RootLayout({
           <NewsTicker />
         </Suspense>
         {children}
+        <ScrollReveal />
         <ScrollToTop />
       </body>
     </html>

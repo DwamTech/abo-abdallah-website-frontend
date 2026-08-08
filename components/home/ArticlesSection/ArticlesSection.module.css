@@ -478,3 +478,25 @@
   background: rgba(255, 255, 255, 0.63);
   box-shadow: 0 12px 28px rgba(66, 42, 30, 0.05);
 }
+
+/* Balanced breathing room without locking the editorial layout to 100vh. */
+@media (min-width: 900px) {
+  .section {
+    height: auto;
+    min-height: clamp(650px, 78svh, 840px);
+    padding: clamp(62px, 8vh, 88px) 0;
+  }
+}
+
+@media (max-width: 899px) {
+  .section {
+    min-height: 0;
+    padding-block: clamp(72px, 10vw, 94px);
+  }
+}
+
+@media (max-width: 620px) {
+  .section {
+    padding-block: 66px 74px;
+  }
+}

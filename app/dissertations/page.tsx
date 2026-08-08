@@ -7,7 +7,7 @@ import DissertationIndexContent from "@/components/dissertation/DissertationInde
 export const metadata: Metadata = {
   title: "الإنتاج الأكاديمي والإشراف العلمي",
   description:
-    "قاعدة بيانات الرسائل العلمية التي أشرف عليها أو ناقشها فضيلة الأستاذ الدكتور أبو عبد الله يحيى البكري الشهري.",
+    "قاعدة بيانات الرسائل العلمية التي أشرف عليها أو ناقشها فضيلة الأستاذ الدكتور يحيى بن عبد الله البكري الشهري.",
 };
 
 export default function DissertationsPage() {

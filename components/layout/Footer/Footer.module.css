@@ -134,3 +134,37 @@
     padding-block: 22px;
   }
 }
+
+.telegramChannels {
+  display: flex;
+  width: 100%;
+  margin-top: 7px;
+  align-items: center;
+  gap: 10px;
+}
+
+.telegramChannels a {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: #fff;
+  border: 1px solid rgba(112, 204, 243, 0.35);
+  border-radius: 50%;
+  background: linear-gradient(145deg, #31afe7, #168dcc);
+  box-shadow: 0 8px 20px rgba(34, 158, 217, 0.2);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.telegramChannels a:hover {
+  border-color: rgba(255, 255, 255, 0.65);
+  box-shadow: 0 11px 25px rgba(34, 158, 217, 0.32);
+  transform: translateY(-3px);
+}
+
+.telegramChannels svg {
+  width: 20px;
+  height: 20px;
+  color: inherit;
+}

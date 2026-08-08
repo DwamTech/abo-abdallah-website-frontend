@@ -11,7 +11,7 @@
       transparent 29%
     ),
     linear-gradient(104deg, rgba(33, 21, 16, 0.94), rgba(56, 35, 26, 0.84)),
-    url("/media/images/sub.jpg") center bottom / cover no-repeat;
+    url("/media/images/liberrary/kku-10.jpg") center 48% / cover no-repeat;
 }
 
 .hero::before {

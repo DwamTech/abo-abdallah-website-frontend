@@ -134,7 +134,9 @@ export default function LibraryIndexContent() {
               الرئيسية
             </Link>
             <span>/</span>
-            <strong>المكتبة البكرية</strong>
+            <Link href="/library-indexes">المكتبة البكرية</Link>
+            <span>/</span>
+            <strong>مؤلفات الشيخ</strong>
           </nav>
 
           <div className={styles.heroLayout}>
@@ -144,8 +146,8 @@ export default function LibraryIndexContent() {
                 خزانة العلم المكتوبة
               </span>
               <h1>
-                المصنَّفات
-                <span>والمكتبة البكرية</span>
+                مؤلفات الشيخ
+                <span>ومصنَّفاته العلمية</span>
               </h1>
               <p>
                 الكتب والتحقيقات والأبحاث والمواد المكتوبة في فهرس علمي واحد، مع

@@ -5,9 +5,13 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   ArrowUpLeft,
-  BookOpenText,
+  BookMarked,
+  ChevronDown,
+  GraduationCap,
+  LibraryBig,
   MapPin,
   Menu,
+  MessageCircleQuestion,
   Search,
   Sparkles,
   X,
@@ -18,6 +22,37 @@ import styles from "./Header.module.css";
 import siteContent from "@/data/site-content.json";
 
 const navigation = siteContent.navigation;
+
+const libraryNavigation = [
+  {
+    label: "مؤلفات الشيخ",
+    description: "الكتب والتحقيقات والبحوث المنشورة",
+    href: "/library",
+    icon: BookMarked,
+  },
+  {
+    label: "الإشراف العلمي",
+    description: "الرسائل والمناقشات والإنتاج الأكاديمي",
+    href: "/dissertations",
+    icon: GraduationCap,
+  },
+  {
+    label: "فهارس المكتبة البكرية",
+    description: "السجل والضيوف والفهارس المتخصصة",
+    href: "/library-indexes",
+    icon: LibraryBig,
+  },
+];
+
+const visibleNavigation = navigation.filter(
+  (item) => item.href !== "/dissertations",
+);
+
+function isActivePath(pathname: string, href: string) {
+  return (
+    pathname === href || (href !== "/" && pathname.startsWith(`${href}/`))
+  );
+}
 
 export default function Header() {
   const pathname = usePathname();
@@ -79,20 +114,70 @@ export default function Header() {
           </a>
 
           <nav className={styles.desktopNav} aria-label="التنقل الرئيسي">
-            {navigation.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className={
-                  pathname === item.href ||
-                  (item.href !== "/" && pathname.startsWith(`${item.href}/`))
-                    ? styles.activeLink
-                    : undefined
-                }
-              >
-                {item.label}
-              </a>
-            ))}
+            {visibleNavigation.map((item) =>
+              item.href === "/library" ? (
+                <div
+                  className={`${styles.navDropdown} ${
+                    libraryNavigation.some((entry) =>
+                      isActivePath(pathname, entry.href),
+                    )
+                      ? styles.navDropdownActive
+                      : ""
+                  }`}
+                  key={item.href}
+                >
+                  <button
+                    className={styles.navDropdownTrigger}
+                    type="button"
+                    aria-haspopup="true"
+                  >
+                    {item.label}
+                    <ChevronDown size={14} strokeWidth={1.8} />
+                  </button>
+                  <div className={styles.navDropdownPanel}>
+                    <div className={styles.dropdownHeading}>
+                      <span>المكتبة البكرية</span>
+                      <small>بوابة المعرفة والفهارس العلمية</small>
+                    </div>
+                    {libraryNavigation.map((entry) => {
+                      const Icon = entry.icon;
+                      return (
+                        <a
+                          className={
+                            isActivePath(pathname, entry.href)
+                              ? styles.dropdownActiveLink
+                              : undefined
+                          }
+                          href={entry.href}
+                          key={entry.href}
+                        >
+                          <i>
+                            <Icon size={18} strokeWidth={1.55} />
+                          </i>
+                          <span>
+                            <strong>{entry.label}</strong>
+                            <small>{entry.description}</small>
+                          </span>
+                          <ArrowUpLeft size={15} />
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className={
+                    isActivePath(pathname, item.href)
+                      ? styles.activeLink
+                      : undefined
+                  }
+                >
+                  {item.label}
+                </a>
+              ),
+            )}
           </nav>
 
           <div className={styles.actions}>
@@ -107,9 +192,9 @@ export default function Header() {
 
             <span className={styles.actionDivider} aria-hidden="true" />
 
-            <a className={styles.libraryButton} href="/listening">
-              <BookOpenText size={18} strokeWidth={1.5} />
-              <span>مجالس السماع</span>
+            <a className={styles.libraryButton} href="/fatwas">
+              <MessageCircleQuestion size={18} strokeWidth={1.5} />
+              <span>الفتاوى</span>
               <ArrowUpLeft size={15} strokeWidth={1.7} />
             </a>
 
@@ -165,19 +250,47 @@ export default function Header() {
           </div>
 
           <nav className={styles.mobileNav}>
-            {navigation.map((item, index) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-              >
-                <span className={styles.navNumber}>
-                  {toArabicDigits(String(index + 1).padStart(2, "0"))}
-                </span>
-                <strong>{item.label}</strong>
-                <ArrowUpLeft size={17} />
-              </a>
-            ))}
+            {visibleNavigation.map((item, index) =>
+              item.href === "/library" ? (
+                <div className={styles.mobileLibraryGroup} key={item.href}>
+                  <div className={styles.mobileLibraryTitle}>
+                    <span className={styles.navNumber}>
+                      {toArabicDigits(String(index + 1).padStart(2, "0"))}
+                    </span>
+                    <strong>{item.label}</strong>
+                    <ChevronDown size={17} />
+                  </div>
+                  <div className={styles.mobileLibraryLinks}>
+                    {libraryNavigation.map((entry) => {
+                      const Icon = entry.icon;
+                      return (
+                        <a
+                          href={entry.href}
+                          key={entry.href}
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          <Icon size={16} />
+                          <span>{entry.label}</span>
+                          <ArrowUpLeft size={15} />
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span className={styles.navNumber}>
+                    {toArabicDigits(String(index + 1).padStart(2, "0"))}
+                  </span>
+                  <strong>{item.label}</strong>
+                  <ArrowUpLeft size={17} />
+                </a>
+              ),
+            )}
           </nav>
 
           <div className={styles.drawerFooter}>

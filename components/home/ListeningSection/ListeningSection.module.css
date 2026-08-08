@@ -634,3 +634,25 @@
 .libraryStat span {
   font-size: 14px;
 }
+
+/* Content-driven sizing keeps the full showcase readable on short screens. */
+@media (min-width: 900px) {
+  .section {
+    height: auto;
+    min-height: clamp(680px, var(--desktop-section-height), 920px);
+    padding: clamp(64px, 8vh, 92px) 0;
+  }
+}
+
+@media (max-width: 899px) {
+  .section {
+    min-height: 0;
+    padding-block: clamp(72px, 10vw, 96px);
+  }
+}
+
+@media (max-width: 560px) {
+  .section {
+    padding-block: 66px 74px;
+  }
+}

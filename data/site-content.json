@@ -241,7 +241,7 @@
   ],
   "navigation": [
     { "label": "الرئيسية", "href": "/" },
-    { "label": "عن الشيخ", "href": "/about" },
+    { "label": "المسيرة العلمية", "href": "/about" },
     { "label": "مجالس السماع", "href": "/listening" },
     { "label": "المكتبة البكرية", "href": "/library" },
     { "label": "الإشراف العلمي", "href": "/dissertations" },
@@ -282,7 +282,7 @@
     }
   ],
   "footerQuickLinks": [
-    { "label": "عن الشيخ", "href": "/about" },
+    { "label": "المسيرة العلمية", "href": "/about" },
     { "label": "مجالس السماع", "href": "/listening" },
     { "label": "الكتب والمؤلفات", "href": "/library" },
     { "label": "البحوث والدراسات", "href": "#featured" },
