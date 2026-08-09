@@ -538,6 +538,22 @@
   gap: 20px;
 }
 
+.cardShell {
+  position: relative;
+  min-width: 0;
+}
+
+.cardShell > .card {
+  height: 100%;
+}
+
+.cardShare {
+  position: absolute;
+  z-index: 3;
+  top: 16px;
+  left: 16px;
+}
+
 .card {
   position: relative;
   display: grid;

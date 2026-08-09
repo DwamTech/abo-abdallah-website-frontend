@@ -16,6 +16,8 @@ import {
   type DissertationCard,
 } from "@/lib/api";
 import { toArabicDigits } from "@/lib/arabicNumbers";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
 import styles from "./DissertationSection.module.css";
 
 function dissertationHref(item: DissertationCard) {
@@ -68,10 +70,11 @@ export default async function DissertationSection() {
 
         {featured ? (
           <div className={styles.academicBoard}>
-            <Link
-              className={styles.featuredFile}
-              href={dissertationHref(featured)}
-            >
+            <div className={styles.featuredShell}>
+              <Link
+                className={styles.featuredFile}
+                href={dissertationHref(featured)}
+              >
               <span className={styles.fileEdge} aria-hidden="true" />
 
               <div className={styles.fileHeader}>
@@ -126,12 +129,22 @@ export default async function DissertationSection() {
                   <ClipboardCheck size={16} />
                   {featured.specialization || "دراسة علمية"}
                 </span>
+                <div className={styles.fileViews}>
+                  <ViewCount count={featured.views_count} tone="muted" />
+                </div>
                 <strong>
                   عرض تفاصيل الرسالة
                   <ArrowLeft size={17} />
                 </strong>
               </div>
-            </Link>
+              </Link>
+              <ShareButton
+                className={styles.featuredShare}
+                href={dissertationHref(featured)}
+                iconOnly
+                ariaLabel={`نسخ رابط الرسالة: ${featured.title}`}
+              />
+            </div>
 
             <aside className={styles.registry}>
               <header className={styles.registryHeader}>
@@ -149,28 +162,41 @@ export default async function DissertationSection() {
 
               <div className={styles.timeline}>
                 {recent.slice(0, 3).map((item, index) => (
-                  <Link href={dissertationHref(item)} key={String(item.id)}>
-                    <span className={styles.timelinePoint}>
-                      {toArabicDigits(String(index + 2).padStart(2, "0"))}
-                    </span>
-                    <span className={styles.timelineCopy}>
-                      <small>
-                        {[item.participation_type, item.degree]
-                          .filter(Boolean)
-                          .join(" · ") || "رسالة علمية"}
-                      </small>
-                      <strong>{item.title}</strong>
-                      <em>
-                        {[
-                          item.researcher_name,
-                          item.year ? `${toArabicDigits(item.year)}هـ` : null,
-                        ]
-                          .filter(Boolean)
-                          .join(" · ")}
-                      </em>
-                    </span>
-                    <ArrowLeft size={16} />
-                  </Link>
+                  <div className={styles.timelineItem} key={String(item.id)}>
+                    <Link href={dissertationHref(item)}>
+                      <span className={styles.timelinePoint}>
+                        {toArabicDigits(String(index + 2).padStart(2, "0"))}
+                      </span>
+                      <span className={styles.timelineCopy}>
+                        <small>
+                          {[item.participation_type, item.degree]
+                            .filter(Boolean)
+                            .join(" · ") || "رسالة علمية"}
+                        </small>
+                        <strong>{item.title}</strong>
+                        <span className={styles.timelineMeta}>
+                          <em>
+                            {[
+                              item.researcher_name,
+                              item.year
+                                ? `${toArabicDigits(item.year)}هـ`
+                                : null,
+                            ]
+                              .filter(Boolean)
+                              .join(" · ")}
+                          </em>
+                          <ViewCount count={item.views_count} tone="light" />
+                        </span>
+                      </span>
+                      <ArrowLeft size={16} />
+                    </Link>
+                    <ShareButton
+                      className={styles.timelineShare}
+                      href={dissertationHref(item)}
+                      iconOnly
+                      ariaLabel={`نسخ رابط الرسالة: ${item.title}`}
+                    />
+                  </div>
                 ))}
               </div>
 

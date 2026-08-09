@@ -1,0 +1,110 @@
+.button {
+  --share-button-color: #765038;
+  --share-button-border: rgba(118, 80, 56, 0.24);
+  --share-button-background: rgba(255, 250, 242, 0.92);
+  --share-button-hover-background: #fffaf2;
+  --share-button-focus: rgba(185, 133, 59, 0.35);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.48rem;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.85rem;
+  color: var(--share-button-color);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid var(--share-button-border);
+  border-radius: 999px;
+  background: var(--share-button-background);
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.button:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--share-button-color) 42%, transparent);
+  background: var(--share-button-hover-background);
+  transform: translateY(-1px);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--share-button-focus);
+  outline-offset: 3px;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.button[data-copy-status="copied"] {
+  --share-button-color: #34705b;
+  --share-button-border: rgba(52, 112, 91, 0.3);
+  --share-button-background: rgba(238, 249, 244, 0.95);
+}
+
+.button[data-copy-status="error"] {
+  --share-button-color: #9b443b;
+  --share-button-border: rgba(155, 68, 59, 0.3);
+  --share-button-background: rgba(255, 244, 242, 0.96);
+}
+
+.icon {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+}
+
+.label {
+  min-width: 0;
+}
+
+.iconOnly {
+  width: 2.625rem;
+  min-width: 2.625rem;
+  min-height: 2.625rem;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.iconOnly .label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+  border: 0;
+}
+
+.feedback {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+
+  .button:hover:not(:disabled) {
+    transform: none;
+  }
+}

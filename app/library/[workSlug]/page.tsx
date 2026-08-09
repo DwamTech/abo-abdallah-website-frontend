@@ -6,7 +6,9 @@ import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import LibraryItemContent from "@/components/library/LibraryItemContent/LibraryItemContent";
+import CommentsSection from "@/components/content/CommentsSection/CommentsSection";
 import { ApiError } from "@/lib/api";
+import { commentsModuleEnabled } from "@/lib/commentsFeature";
 import { getScientificLibraryItem } from "@/lib/scientificLibraryApi";
 
 type LibraryItemPageProps = {
@@ -49,6 +51,14 @@ export default async function LibraryItemPage({
       <Header />
       <main>
         <LibraryItemContent initialData={initialData} />
+        {commentsModuleEnabled() && (
+          <CommentsSection
+            target={{
+              type: "scientific_library_item",
+              targetId: String(initialData.item.id),
+            }}
+          />
+        )}
         <SectionDivider variant="manuscript" />
       </main>
       <Footer />

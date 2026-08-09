@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, BookOpenText, Clock3, Feather, Quote } from "lucide-react";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import { getSiteArticlesHome } from "@/lib/siteArticlesApi";
 import styles from "./ArticlesSection.module.css";
@@ -35,45 +37,67 @@ export default async function ArticlesSection() {
 
         {featured ? (
           <div className={styles.editorial}>
-            <Link
-              href={`/articles/${featured.slug}`}
-              className={styles.featured}
-            >
-              <span className={styles.featuredMark}>
-                <Quote size={34} />
-              </span>
-              <div className={styles.featuredBody}>
-                <small>{featured.category} · أحدث المقالات</small>
-                <h3>{featured.title}</h3>
-                <p>{featured.excerpt}</p>
-                <footer>
-                  <span>
-                    <Clock3 size={14} />
-                    {featured.reading_time_label}
-                  </span>
-                  <strong>
-                    اقرأ المقالة <ArrowLeft size={17} />
-                  </strong>
-                </footer>
-              </div>
-              <span className={styles.verticalWord}>مقالة</span>
-            </Link>
+            <div className={styles.featuredShell}>
+              <Link
+                href={`/articles/${featured.slug}`}
+                className={styles.featured}
+              >
+                <span className={styles.featuredMark}>
+                  <Quote size={34} />
+                </span>
+                <div className={styles.featuredBody}>
+                  <small>{featured.category} · أحدث المقالات</small>
+                  <h3>{featured.title}</h3>
+                  <p>{featured.excerpt}</p>
+                  <footer>
+                    <div className={styles.featuredMeta}>
+                      <span>
+                        <Clock3 size={14} />
+                        {featured.reading_time_label}
+                      </span>
+                      <ViewCount count={featured.views_count} tone="light" />
+                    </div>
+                    <strong>
+                      اقرأ المقالة <ArrowLeft size={17} />
+                    </strong>
+                  </footer>
+                </div>
+                <span className={styles.verticalWord}>مقالة</span>
+              </Link>
+              <ShareButton
+                className={styles.featuredShare}
+                href={`/articles/${featured.slug}`}
+                iconOnly
+                ariaLabel={`نسخ رابط المقالة: ${featured.title}`}
+              />
+            </div>
             <div className={styles.stack}>
               {rest.slice(0, 5).map((article, index) => (
-                <Link key={article.slug} href={`/articles/${article.slug}`}>
-                  <span className={styles.number}>
-                    {toArabicDigits(String(index + 2).padStart(2, "0"))}
-                  </span>
-                  <span className={styles.stackIcon}>
-                    <BookOpenText size={19} />
-                  </span>
-                  <div>
-                    <small>{article.category}</small>
-                    <h3>{article.title}</h3>
-                    <p>{article.excerpt}</p>
-                  </div>
-                  <ArrowLeft className={styles.arrow} size={17} />
-                </Link>
+                <div className={styles.stackItem} key={article.slug}>
+                  <Link href={`/articles/${article.slug}`}>
+                    <span className={styles.number}>
+                      {toArabicDigits(String(index + 2).padStart(2, "0"))}
+                    </span>
+                    <span className={styles.stackIcon}>
+                      <BookOpenText size={19} />
+                    </span>
+                    <div>
+                      <span className={styles.stackTopline}>
+                        <small>{article.category}</small>
+                        <ViewCount count={article.views_count} tone="muted" />
+                      </span>
+                      <h3>{article.title}</h3>
+                      <p>{article.excerpt}</p>
+                    </div>
+                    <ArrowLeft className={styles.arrow} size={17} />
+                  </Link>
+                  <ShareButton
+                    className={styles.stackShare}
+                    href={`/articles/${article.slug}`}
+                    iconOnly
+                    ariaLabel={`نسخ رابط المقالة: ${article.title}`}
+                  />
+                </div>
               ))}
             </div>
           </div>

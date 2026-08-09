@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 
 import { toArabicDigits } from "@/lib/arabicNumbers";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
 import { scientificFatwaSubmissionStages } from "@/lib/scientificFatwaPresentation";
 import {
   getScientificFatwaHome,
@@ -66,10 +68,14 @@ export default async function FatwaSection() {
 
         <div className={`${styles.board} ${premium.board}`}>
           {featured ? (
-            <Link
+            <article
               className={`${styles.featured} ${premium.featured}`}
-              href={`/fatwas/${featured.slug}`}
             >
+              <Link
+                aria-label={`قراءة جواب: ${featured.title}`}
+                className={premium.featuredLink}
+                href={`/fatwas/${featured.slug}`}
+              />
               <span className={premium.featuredSeal}>
                 <ShieldCheck size={28} />
                 <small>جواب موثّق</small>
@@ -92,11 +98,18 @@ export default async function FatwaSection() {
                   <BookOpenCheck size={16} />{" "}
                   {toArabicDigits(featured.sources_count)} مراجع
                 </span>
+                <ViewCount count={featured.views_count} tone="muted" />
+                <ShareButton
+                  ariaLabel={`نسخ رابط الفتوى: ${featured.title}`}
+                  className={premium.featuredShare}
+                  href={`/fatwas/${featured.slug}`}
+                  iconOnly
+                />
                 <strong>
                   اقرأ الجواب كاملًا <ArrowLeft size={17} />
                 </strong>
               </footer>
-            </Link>
+            </article>
           ) : (
             <div
               className={`${styles.featured} ${premium.featured} ${premium.emptyFeatured}`}

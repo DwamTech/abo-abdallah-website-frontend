@@ -450,6 +450,18 @@
     transform 180ms ease;
 }
 
+.cardLink {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+}
+
+.cardLink:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--series-accent), transparent 48%);
+  outline-offset: -4px;
+}
+
 .card::before {
   position: absolute;
   top: -105px;
@@ -581,8 +593,22 @@
 
 .cardCopy {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   min-width: 0;
+}
+
+.cardCopy {
+  pointer-events: none;
+}
+
+.cardShare {
+  width: 31px;
+  height: 31px;
+  min-width: 31px !important;
+  min-height: 31px !important;
+  padding: 0 !important;
+  flex: 0 0 auto;
+  pointer-events: auto;
 }
 
 .cardTopline {

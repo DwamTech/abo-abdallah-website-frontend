@@ -3,6 +3,7 @@ import { z } from "zod";
 import { API_BASE_URL, ApiError } from "@/lib/api";
 
 const apiNumber = z.coerce.number();
+const viewCount = z.coerce.number().int().nonnegative().catch(0);
 const nullableText = z.string().nullable().optional();
 const nullableApiNumber = z.preprocess(
   (value) => (value === null || value === "" ? undefined : value),
@@ -18,6 +19,7 @@ export const siteArticleCardSchema = z.object({
   date_label: z.string(),
   reading_minutes: apiNumber,
   reading_time_label: z.string(),
+  views_count: viewCount,
 });
 
 export const siteArticleSchema = siteArticleCardSchema.extend({
@@ -25,7 +27,6 @@ export const siteArticleSchema = siteArticleCardSchema.extend({
   author_name: nullableText,
   featured_image_url: nullableText,
   keywords: z.array(z.string()).default([]),
-  views_count: apiNumber,
   published_at: nullableText,
 });
 

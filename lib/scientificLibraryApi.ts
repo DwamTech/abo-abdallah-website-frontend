@@ -5,6 +5,7 @@ import { filterScientificLibraryCookieHeader } from "@/lib/scientificLibraryCook
 
 const nullableText = z.string().nullable().optional();
 const apiNumber = z.coerce.number();
+const viewCount = z.coerce.number().int().nonnegative().catch(0);
 const nullableApiNumber = z.preprocess(
   (value) => (value === null || value === "" ? undefined : value),
   z.coerce.number().optional(),
@@ -45,7 +46,7 @@ export const scientificLibraryItemSchema = z
     is_featured: apiBoolean,
     is_published: apiBoolean,
     published_at: nullableText,
-    views_count: apiNumber,
+    views_count: viewCount,
   })
   .passthrough();
 
@@ -62,6 +63,7 @@ export const scientificLibraryCardSchema = z.object({
   pages_count: apiNumber,
   reader_available: apiBoolean,
   cover_url: nullableText,
+  views_count: viewCount,
 });
 
 export type ScientificLibraryCard = z.infer<typeof scientificLibraryCardSchema>;

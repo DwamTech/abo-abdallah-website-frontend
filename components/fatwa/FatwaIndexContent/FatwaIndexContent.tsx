@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
 import { ApiError } from "@/lib/api";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import {
@@ -388,12 +390,19 @@ export default function FatwaIndexContent({
                 )}
               </div>
             ) : (
-              pageItems.map((item) => (
-                <Link
+              pageItems.map((item) => {
+                const href = `/fatwas/${item.slug}`;
+
+                return (
+                <article
                   className={`${styles.card} ${enhancements.cardEnhanced}`}
-                  href={`/fatwas/${item.slug}`}
                   key={String(item.id)}
                 >
+                  <Link
+                    aria-label={`قراءة جواب: ${item.title}`}
+                    className={enhancements.cardLink}
+                    href={href}
+                  />
                   <div
                     className={`${styles.cardTop} ${enhancements.cardTopEnhanced}`}
                   >
@@ -412,12 +421,20 @@ export default function FatwaIndexContent({
                       <BookOpenCheck size={15} />
                       {toArabicDigits(item.sources_count)} مراجع
                     </span>
+                    <ViewCount count={item.views_count} tone="muted" />
+                    <ShareButton
+                      ariaLabel={`نسخ رابط الفتوى: ${item.title}`}
+                      className={enhancements.cardShare}
+                      href={href}
+                      iconOnly
+                    />
                     <strong>
                       قراءة الجواب <ArrowLeft size={16} />
                     </strong>
                   </footer>
-                </Link>
-              ))
+                </article>
+                );
+              })
             )}
           </div>
 

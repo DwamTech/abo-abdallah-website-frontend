@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
@@ -60,10 +60,16 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const previousSearchFocus = useRef<HTMLElement | null>(null);
+  const searchWasOpen = useRef(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 24);
     const handleOpenSearch = () => {
+      previousSearchFocus.current =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
       setMenuOpen(false);
       setSearchOpen(true);
     };
@@ -85,6 +91,13 @@ export default function Header() {
       window.removeEventListener("site:open-search", handleOpenSearch);
     };
   }, []);
+
+  useEffect(() => {
+    if (searchWasOpen.current && !searchOpen) {
+      window.requestAnimationFrame(() => previousSearchFocus.current?.focus());
+    }
+    searchWasOpen.current = searchOpen;
+  }, [searchOpen]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen || searchOpen ? "hidden" : "";
@@ -185,7 +198,13 @@ export default function Header() {
             <button
               className={styles.searchButton}
               type="button"
-              onClick={() => setSearchOpen(true)}
+              onClick={() => {
+                previousSearchFocus.current =
+                  document.activeElement instanceof HTMLElement
+                    ? document.activeElement
+                    : null;
+                setSearchOpen(true);
+              }}
               aria-label="فتح البحث"
             >
               <Search size={19} strokeWidth={1.7} />

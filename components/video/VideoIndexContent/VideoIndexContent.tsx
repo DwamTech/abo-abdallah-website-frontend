@@ -12,6 +12,8 @@ import {
   RefreshCcw,
 } from "lucide-react";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import {
   getScientificVideos,
@@ -161,6 +163,13 @@ export default function VideoIndexContent() {
                         {toArabicDigits(item.duration_label)}
                       </span>
                       <span>{item.date_label}</span>
+                      <ViewCount count={item.views_count} tone="muted" />
+                      <ShareButton
+                        ariaLabel={`نسخ رابط المادة المرئية: ${item.title}`}
+                        className={styles.cardShare}
+                        href={`/videos/${item.slug}`}
+                        iconOnly
+                      />
                       <Link href={`/videos/${item.slug}`}>
                         التفاصيل <ArrowLeft size={15} />
                       </Link>

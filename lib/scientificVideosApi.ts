@@ -20,6 +20,7 @@ const apiBoolean = z
     z.literal("1"),
   ])
   .transform((value) => value === true || value === 1 || value === "1");
+const viewCount = z.coerce.number().int().nonnegative().catch(0);
 
 export const scientificVideoCardSchema = z.object({
   id: identifierSchema,
@@ -31,6 +32,7 @@ export const scientificVideoCardSchema = z.object({
   duration_label: z.string().trim().min(1),
   date_label: z.string().trim().min(1),
   thumbnail_url: nullableText,
+  views_count: viewCount,
 });
 
 export type ScientificVideoCard = z.infer<typeof scientificVideoCardSchema>;

@@ -1,0 +1,604 @@
+.hero {
+  position: relative;
+  min-height: 470px;
+  overflow: hidden;
+  color: #fff9ef;
+  background:
+    radial-gradient(circle at 13% 24%, rgba(214, 170, 98, 0.22), transparent 29%),
+    linear-gradient(110deg, rgba(48, 30, 21, 0.97), rgba(81, 49, 31, 0.88)),
+    url("/media/images/sub.jpg") center bottom / cover no-repeat;
+}
+
+.hero::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  opacity: 0.2;
+  background-image: radial-gradient(rgba(221, 194, 142, 0.38) 0.7px, transparent 0.7px);
+  background-size: 17px 17px;
+  mask-image: linear-gradient(90deg, transparent, #000 40%, transparent);
+}
+
+.heroInner,
+.container {
+  position: relative;
+  z-index: 1;
+  width: min(calc(100% - 48px), var(--container));
+  margin-inline: auto;
+}
+
+.heroInner {
+  display: grid;
+  min-height: 470px;
+  padding-top: 88px;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  align-items: center;
+  gap: clamp(40px, 7vw, 92px);
+}
+
+.heroCopy nav {
+  display: flex;
+  margin-bottom: 24px;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 249, 239, 0.48);
+  font: 10px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.heroCopy nav a:hover,
+.heroCopy nav strong,
+.eyebrow {
+  color: var(--gold-300);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: 11px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.hero h1 {
+  max-width: 790px;
+  margin: 7px 0 10px;
+  color: #fffaf1;
+  font: 600 clamp(35px, 4.6vw, 62px) / 1.4 "Noto Kufi Arabic Variable", sans-serif;
+  letter-spacing: -0.045em;
+}
+
+.heroCopy > p {
+  max-width: 700px;
+  margin: 0;
+  color: rgba(255, 250, 241, 0.67);
+  font-size: 17px;
+}
+
+.searchForm {
+  display: grid;
+  width: min(100%, 760px);
+  min-height: 68px;
+  margin-top: 24px;
+  padding: 7px 8px 7px 17px;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  color: var(--gold-600);
+  border: 1px solid rgba(221, 194, 142, 0.65);
+  border-radius: 11px;
+  background: rgba(255, 253, 248, 0.97);
+  box-shadow: 0 18px 45px rgba(21, 12, 8, 0.22);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.searchForm:focus-within {
+  border-color: var(--gold-300);
+  box-shadow: 0 0 0 4px rgba(221, 194, 142, 0.12), 0 22px 55px rgba(21, 12, 8, 0.27);
+}
+
+.searchForm label,
+.searchForm input {
+  width: 100%;
+}
+
+.searchForm input {
+  padding: 5px 0;
+  color: var(--brown-900);
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: 13px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.searchForm input::placeholder {
+  color: #9e9287;
+}
+
+.queryCount {
+  direction: ltr;
+  color: #a89a8c;
+  font: 9px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.searchForm > button {
+  display: inline-flex;
+  min-width: 108px;
+  min-height: 52px;
+  padding-inline: 18px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #fff9ef;
+  border: 0;
+  border-radius: 7px;
+  background: var(--brown-800);
+  font: 11px "Noto Kufi Arabic Variable", sans-serif;
+  cursor: pointer;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.searchForm > button:hover {
+  background: var(--brown-700);
+  transform: translateY(-1px);
+}
+
+.formGuidance {
+  display: block;
+  min-height: 20px;
+  margin-top: 5px;
+  color: rgba(255, 249, 239, 0.48);
+  font-size: 11px;
+}
+
+.formGuidance[role="alert"] {
+  color: #f1c3ad;
+}
+
+.artwork {
+  position: relative;
+  display: grid;
+  width: 238px;
+  height: 238px;
+  justify-self: end;
+  place-items: center;
+  border: 1px solid rgba(221, 194, 142, 0.22);
+  border-radius: 50%;
+  box-shadow: 0 0 0 24px rgba(221, 194, 142, 0.025);
+}
+
+.orbit,
+.orbitInner {
+  position: absolute;
+  border: 1px dashed rgba(221, 194, 142, 0.25);
+  border-radius: 50%;
+  animation: orbit 24s linear infinite;
+}
+
+.orbit { inset: 18px; }
+.orbitInner { inset: 48px; animation-direction: reverse; animation-duration: 17s; }
+.orbit::before,
+.orbitInner::before {
+  position: absolute;
+  top: 12px;
+  right: 37px;
+  width: 6px;
+  height: 6px;
+  content: "";
+  border-radius: 50%;
+  background: var(--gold-300);
+  box-shadow: 0 0 13px var(--gold-300);
+}
+
+.artworkIcon {
+  display: grid;
+  width: 104px;
+  height: 104px;
+  place-items: center;
+  color: var(--gold-300);
+  border: 1px solid rgba(221, 194, 142, 0.34);
+  border-radius: 31px 8px 31px 8px;
+  background: rgba(42, 26, 19, 0.72);
+  box-shadow: 0 20px 42px rgba(13, 7, 5, 0.26);
+  animation: float 4.2s ease-in-out infinite;
+}
+
+.sparkOne,
+.sparkTwo {
+  position: absolute;
+  color: var(--gold-300);
+  font-size: 14px;
+}
+.sparkOne { top: 19px; left: 23px; }
+.sparkTwo { right: 18px; bottom: 38px; font-size: 9px; }
+
+.resultsSection {
+  position: relative;
+  min-height: 640px;
+  padding: 82px 0 105px;
+  overflow: hidden;
+  outline: 0;
+  background: #fdfaf4;
+  scroll-margin-top: 90px;
+}
+
+.resultsHeader {
+  display: flex;
+  margin-bottom: 22px;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.resultsHeader span {
+  color: var(--gold-600);
+  font: 11px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.resultsHeader h2 {
+  margin: 3px 0 0;
+  color: var(--brown-900);
+  font: 620 clamp(27px, 3vw, 41px) / 1.45 "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.resultsHeader > strong {
+  flex: 0 0 auto;
+  padding: 7px 13px;
+  color: var(--brown-700);
+  border: 1px solid var(--cream-300);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  font: 10px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.filters {
+  display: flex;
+  margin-bottom: 28px;
+  padding-bottom: 4px;
+  overflow-x: auto;
+  gap: 7px;
+  scrollbar-width: thin;
+}
+
+.filters button {
+  display: inline-flex;
+  min-height: 38px;
+  padding: 7px 12px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  color: #746355;
+  border: 1px solid #dfcfb7;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.72);
+  font: 9px "Noto Kufi Arabic Variable", sans-serif;
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.filters button:hover:not(:disabled) {
+  border-color: var(--gold-500);
+  transform: translateY(-1px);
+}
+
+.filters button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.filters button b {
+  display: grid;
+  min-width: 20px;
+  height: 20px;
+  padding-inline: 4px;
+  place-items: center;
+  color: var(--gold-600);
+  border-radius: 12px;
+  background: var(--cream-100);
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.filters .activeFilter {
+  color: #fff9ef;
+  border-color: var(--brown-700);
+  background: var(--brown-700);
+  box-shadow: 0 8px 20px rgba(75, 51, 40, 0.15);
+}
+
+.filters .activeFilter b {
+  color: var(--brown-800);
+  background: var(--gold-300);
+}
+
+.stateRegion { min-height: 420px; }
+
+.grid,
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.card {
+  position: relative;
+  min-width: 0;
+  min-height: 270px;
+  overflow: hidden;
+  border: 1px solid #e1d0b8;
+  border-radius: 6px 32px 6px 6px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(247, 239, 226, 0.68));
+  box-shadow: 0 17px 38px rgba(70, 45, 33, 0.055);
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+
+.card:nth-child(2n) { border-radius: 32px 6px 6px; }
+
+.card::before {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 28px;
+  width: 70px;
+  height: 3px;
+  content: "";
+  background: linear-gradient(90deg, var(--gold-600), var(--gold-300));
+}
+
+.card:hover {
+  border-color: #c6924d;
+  box-shadow: 0 26px 55px rgba(70, 45, 33, 0.12);
+  transform: translateY(-5px);
+}
+
+.card > a {
+  display: flex;
+  min-height: 270px;
+  padding: 25px 27px 20px;
+  flex-direction: column;
+}
+
+.cardTop {
+  display: flex;
+  min-height: 39px;
+  align-items: center;
+  gap: 9px;
+}
+
+.moduleIcon {
+  display: grid;
+  width: 37px;
+  height: 37px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--gold-600);
+  border: 1px solid #e2ceb0;
+  border-radius: 50%;
+  background: #fffaf1;
+}
+
+.moduleLabel {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--gold-600);
+  font: 9px / 1.55 "Noto Kufi Arabic Variable", sans-serif;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.number {
+  margin-right: auto;
+  direction: ltr;
+  color: #baa07e;
+  font: 10px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.card h3 {
+  display: -webkit-box;
+  margin: 16px 0 8px;
+  overflow: hidden;
+  color: var(--brown-900);
+  font: 610 clamp(18px, 2vw, 22px) / 1.65 "Noto Kufi Arabic Variable", sans-serif;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.card p {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: var(--ink-muted);
+  font-size: 14px;
+  line-height: 1.85;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.card footer {
+  display: flex;
+  min-height: 43px;
+  margin-top: auto;
+  padding-top: 14px;
+  align-items: center;
+  gap: 12px;
+  color: #95816e;
+  border-top: 1px dashed #e5d7c1;
+  font-size: 10px;
+}
+
+.card footer time { white-space: nowrap; }
+
+.card footer strong {
+  display: inline-flex;
+  margin-right: auto;
+  align-items: center;
+  gap: 5px;
+  color: var(--gold-600);
+  font: 9px "Noto Kufi Arabic Variable", sans-serif;
+  white-space: nowrap;
+}
+
+.emptyState {
+  display: flex;
+  min-height: 390px;
+  padding: 36px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  border: 1px dashed #ddc9ab;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.emptyState > span {
+  display: grid;
+  width: 70px;
+  height: 70px;
+  margin-bottom: 14px;
+  place-items: center;
+  color: var(--gold-600);
+  border: 1px solid #dfc9a8;
+  border-radius: 50%;
+  background: #fffaf1;
+}
+
+.emptyState h3 {
+  margin: 0 0 5px;
+  color: var(--brown-900);
+  font: 610 24px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.emptyState p {
+  max-width: 520px;
+  margin: 0 0 15px;
+  color: var(--ink-muted);
+  font-size: 15px;
+}
+
+.emptyState button {
+  padding: 9px 17px;
+  color: #fff9ef;
+  border: 1px solid var(--brown-700);
+  border-radius: 21px;
+  background: var(--brown-700);
+  font: 10px "Noto Kufi Arabic Variable", sans-serif;
+  cursor: pointer;
+}
+
+.skeleton {
+  min-height: 270px;
+  padding: 27px;
+  border: 1px solid #eadbc4;
+  border-radius: 7px 30px 7px 7px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.skeleton i {
+  display: block;
+  height: 15px;
+  margin-bottom: 16px;
+  border-radius: 9px;
+  background: linear-gradient(90deg, #eee4d2 25%, #f7efe2 50%, #eee4d2 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.35s linear infinite;
+}
+.skeleton i:first-child { width: 34%; height: 37px; }
+.skeleton i:nth-child(2) { width: 78%; margin-top: 31px; }
+.skeleton i:nth-child(3) { width: 94%; }
+
+.pagination {
+  display: grid;
+  width: min(100%, 600px);
+  margin: 40px auto 0;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 14px;
+}
+
+.pagination button {
+  display: inline-flex;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: #6b4934;
+  border: 1px solid #dfcbae;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.75);
+  font: 10px "Noto Kufi Arabic Variable", sans-serif;
+  cursor: pointer;
+  transition: color 180ms ease, background 180ms ease;
+}
+.pagination > button { padding-inline: 17px; }
+.pagination > button:first-child { justify-self: start; }
+.pagination > button:last-child { justify-self: end; }
+.pagination button:disabled { cursor: not-allowed; opacity: 0.38; }
+.pagination > div { display: flex; gap: 7px; }
+.pagination > div button { width: 42px; }
+.pagination .activePage { color: #fff8ed; border-color: #6b4934; background: #513526; }
+.pageSlot { display: flex; align-items: center; gap: 7px; }
+.pageSlot i { color: #9e8872; font-style: normal; }
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  border: 0;
+  white-space: nowrap;
+}
+
+@keyframes orbit { to { transform: rotate(360deg); } }
+@keyframes float { 50% { transform: translateY(-8px) rotate(-2deg); } }
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+@media (max-width: 900px) {
+  .heroInner { grid-template-columns: minmax(0, 1fr) 190px; gap: 35px; }
+  .artwork { width: 175px; height: 175px; }
+  .artworkIcon { width: 78px; height: 78px; }
+  .orbitInner { inset: 36px; }
+  .card footer time { display: none; }
+}
+
+@media (max-width: 680px) {
+  .heroInner,
+  .container { width: min(calc(100% - 32px), var(--container)); }
+  .heroInner { min-height: 545px; padding: 78px 0 40px; grid-template-columns: 1fr; gap: 24px; }
+  .heroCopy { text-align: center; }
+  .heroCopy nav { justify-content: center; }
+  .hero h1 { font-size: clamp(31px, 9vw, 42px); }
+  .heroCopy > p { font-size: 15px; }
+  .artwork { display: none; }
+  .searchForm { min-height: 61px; padding: 6px 7px 6px 12px; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; text-align: right; }
+  .searchForm > button { min-width: 50px; min-height: 48px; padding-inline: 13px; }
+  .searchForm > button span,
+  .queryCount { display: none; }
+  .formGuidance { text-align: right; }
+  .resultsSection { padding: 64px 0 82px; }
+  .resultsHeader { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .resultsHeader h2 { font-size: 27px; overflow-wrap: anywhere; }
+  .grid,
+  .skeletonGrid { grid-template-columns: 1fr; }
+  .card,
+  .card:nth-child(2n) { border-radius: 6px 28px 6px 6px; }
+  .card > a { padding: 22px 20px 18px; }
+  .card footer { gap: 8px; }
+  .card footer > span { max-width: 48%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pagination { gap: 7px; }
+  .pagination > button { width: 43px; padding: 0; }
+  .pagination > button span { display: none; }
+  .pageSlot:not(:first-child):not(:last-child):not(.currentPageSlot) { display: none; }
+  .emptyState { min-height: 330px; padding: 25px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit,
+  .orbitInner,
+  .artworkIcon,
+  .skeleton i { animation: none; }
+  .card:hover,
+  .filters button:hover,
+  .searchForm > button:hover { transform: none; }
+}

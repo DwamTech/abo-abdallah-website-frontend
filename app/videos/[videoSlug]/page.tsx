@@ -4,6 +4,8 @@ import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import VideoDetailContent from "@/components/video/VideoDetailContent/VideoDetailContent";
+import CommentsSection from "@/components/content/CommentsSection/CommentsSection";
+import { commentsModuleEnabled } from "@/lib/commentsFeature";
 import {
   getScientificVideoDetail,
   ScientificVideosApiError,
@@ -41,6 +43,14 @@ export default async function VideoPage({ params }: Props) {
           video={detail.item}
           related={detail.related_items}
         />
+        {commentsModuleEnabled() && (
+          <CommentsSection
+            target={{
+              type: "scientific_video",
+              targetId: String(detail.item.id),
+            }}
+          />
+        )}
         <SectionDivider variant="manuscript" />
       </main>
       <Footer />

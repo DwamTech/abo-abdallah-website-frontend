@@ -76,6 +76,7 @@
 }
 
 .card {
+  position: relative;
   display: flex;
   min-height: 260px !important;
   padding: 21px 21px 0 !important;
@@ -86,6 +87,37 @@
   background: rgba(255, 255, 255, 0.8) !important;
   box-shadow: 0 13px 34px rgba(75, 51, 40, 0.055);
   transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s !important;
+}
+
+.cardLink {
+  position: absolute !important;
+  inset: 0;
+  z-index: 2;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.cardLink:focus-visible {
+  outline: 3px solid rgba(166, 122, 53, .45);
+  outline-offset: -4px;
+}
+
+.card .cardLink:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.cardShare {
+  position: relative;
+  z-index: 3;
+  width: 32px;
+  height: 32px;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  padding: 0 !important;
+  flex: 0 0 auto;
 }
 
 .card::before {

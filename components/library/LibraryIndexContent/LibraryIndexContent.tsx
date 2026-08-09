@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
 import LibraryWorkIcon from "@/components/library/LibraryWorkIcon/LibraryWorkIcon";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
 import { apiErrorMessage } from "@/lib/api";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import {
@@ -276,69 +278,80 @@ export default function LibraryIndexContent() {
                 const coverUrl = resolveScientificLibraryUrl(item.cover_url);
 
                 return (
-                  <Link
-                    className={styles.card}
-                    href={`/library/${item.slug}`}
+                  <article
+                    className={styles.cardShell}
                     key={String(item.id)}
-                    prefetch={false}
                     style={{ "--work-accent": accent } as React.CSSProperties}
                   >
-                    <div className={styles.coverStage}>
-                      <span className={styles.cardNumber}>
-                        {toArabicDigits(
-                          String((meta?.from ?? 1) + index).padStart(2, "0"),
-                        )}
-                      </span>
-                      <div className={styles.cover}>
-                        {coverUrl && (
-                          <img
-                            className={styles.coverImage}
-                            src={coverUrl}
-                            alt=""
-                          />
-                        )}
-                        {!coverUrl && (
-                          <>
-                            <small>المكتبة البكرية</small>
-                            <LibraryWorkIcon
-                              type={item.content_type}
-                              size={46}
+                    <Link
+                      className={styles.card}
+                      href={`/library/${item.slug}`}
+                      prefetch={false}
+                    >
+                      <div className={styles.coverStage}>
+                        <span className={styles.cardNumber}>
+                          {toArabicDigits(
+                            String((meta?.from ?? 1) + index).padStart(2, "0"),
+                          )}
+                        </span>
+                        <div className={styles.cover}>
+                          {coverUrl && (
+                            <img
+                              className={styles.coverImage}
+                              src={coverUrl}
+                              alt=""
                             />
-                            <strong>{shortTitle}</strong>
-                            <i />
-                          </>
-                        )}
-                        <b className={styles.bookBottom} aria-hidden="true" />
+                          )}
+                          {!coverUrl && (
+                            <>
+                              <small>المكتبة البكرية</small>
+                              <LibraryWorkIcon
+                                type={item.content_type}
+                                size={46}
+                              />
+                              <strong>{shortTitle}</strong>
+                              <i />
+                            </>
+                          )}
+                          <b className={styles.bookBottom} aria-hidden="true" />
+                        </div>
+                        <span className={styles.readStatus}>
+                          <i />
+                          {item.reader_available
+                            ? "قراءة داخلية متاحة"
+                            : "صفحة المصنَّف متاحة"}
+                        </span>
                       </div>
-                      <span className={styles.readStatus}>
-                        <i />
-                        {item.reader_available
-                          ? "قراءة داخلية متاحة"
-                          : "صفحة المصنَّف متاحة"}
-                      </span>
-                    </div>
 
-                    <div className={styles.cardCopy}>
-                      <h3>{item.title}</h3>
-                      {item.description && <p>{item.description}</p>}
-                      <div className={styles.cardMeta}>
-                        {item.pages_count !== undefined && (
-                          <span>
-                            <Files size={14} />
-                            {toArabicDigits(item.pages_count)} صفحة
-                          </span>
-                        )}
-                        <span>{item.scientific_field}</span>
+                      <div className={styles.cardCopy}>
+                        <h3>{item.title}</h3>
+                        {item.description && <p>{item.description}</p>}
+                        <div className={styles.cardMeta}>
+                          {item.pages_count !== undefined && (
+                            <span>
+                              <Files size={14} />
+                              {toArabicDigits(item.pages_count)} صفحة
+                            </span>
+                          )}
+                          <span>{item.scientific_field}</span>
+                          <ViewCount count={item.views_count} tone="muted" />
+                        </div>
+                        <span className={styles.openWork}>
+                          <i>
+                            <BookOpen size={15} />
+                          </i>
+                          صفحة المصنَّف
+                          <ArrowLeft size={16} />
+                        </span>
                       </div>
-                      <span className={styles.openWork}>
-                        <i>
-                          <BookOpen size={15} />
-                        </i>
-                        صفحة المصنَّف
-                        <ArrowLeft size={16} />
-                      </span>
-                    </div>
-                  </Link>
+                    </Link>
+                    <ShareButton
+                      className={styles.cardShare}
+                      href={`/library/${item.slug}`}
+                      iconOnly
+                      ariaLabel={`نسخ رابط المصنَّف: ${item.title}`}
+                    />
+                  </article>
                 );
               })
             )}

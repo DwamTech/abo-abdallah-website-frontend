@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import { getSiteArticles, type SiteArticleIndex } from "@/lib/siteArticlesApi";
 import styles from "@/components/content/ContentIndex/ContentIndex.module.css";
@@ -137,6 +139,12 @@ export default function ArticleIndexContent({
                     <span className={styles.number}>
                       {toArabicDigits(String(itemNumber).padStart(2, "0"))}
                     </span>
+                    <ShareButton
+                      className={localStyles.cardShare}
+                      href={`/articles/${article.slug}`}
+                      iconOnly
+                      ariaLabel={`نسخ رابط المقالة: ${article.title}`}
+                    />
                     <small>{article.category}</small>
                     <h3>{article.title}</h3>
                     <p>{article.excerpt}</p>
@@ -145,6 +153,7 @@ export default function ArticleIndexContent({
                         <Clock3 size={15} /> {article.reading_time_label}
                       </span>
                       <span>{article.date_label}</span>
+                      <ViewCount count={article.views_count} tone="muted" />
                       <Link href={`/articles/${article.slug}`}>
                         التفاصيل <ArrowLeft size={15} />
                       </Link>

@@ -131,6 +131,29 @@
   border-top: 1px solid rgba(166, 122, 53, 0.13);
 }
 
+.featuredLink {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+}
+
+.featuredLink:focus-visible {
+  outline: 3px solid rgba(166, 122, 53, .45);
+  outline-offset: -5px;
+}
+
+.featuredShare {
+  position: relative;
+  z-index: 4;
+  width: 34px;
+  height: 34px;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  padding: 0 !important;
+  flex: 0 0 auto;
+}
+
 .sidePanel {
   gap: 16px !important;
 }

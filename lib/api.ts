@@ -13,6 +13,7 @@ export const BACKEND_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, "");
 
 const nullableText = z.string().nullable().optional();
 const apiNumber = z.coerce.number();
+const viewCount = z.coerce.number().int().nonnegative().catch(0);
 const nullableApiNumber = z.preprocess(
   (value) => (value === null || value === "" ? undefined : value),
   z.coerce.number().optional(),
@@ -116,6 +117,7 @@ export const dissertationSchema = z
     is_published: apiBoolean.optional().default(true),
     status: z.enum(["draft", "scheduled", "published"]).optional(),
     published_at: nullableText,
+    views_count: viewCount,
   })
   .passthrough();
 
@@ -134,6 +136,7 @@ export const dissertationCardSchema = dissertationSchema
     participation_type: true,
     degree: true,
     abstract: true,
+    views_count: true,
   })
   .strip();
 
@@ -217,6 +220,7 @@ export const listeningSessionSchema = z
     audio_url: nullableText,
     audio_download_allowed: apiBoolean.optional().default(false),
     published_at: nullableText,
+    views_count: viewCount,
   })
   .passthrough();
 
@@ -233,6 +237,7 @@ export const listeningSeriesCardSchema = z.object({
   visual_variant: nullableText,
   sessions_count: apiNumber.optional().default(0),
   first_session_slug: nullableText,
+  views_count: viewCount,
 });
 
 export type ListeningSeriesCard = z.infer<typeof listeningSeriesCardSchema>;

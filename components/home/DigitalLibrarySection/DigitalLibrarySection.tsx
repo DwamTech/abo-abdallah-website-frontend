@@ -15,6 +15,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import LibraryWorkIcon from "@/components/library/LibraryWorkIcon/LibraryWorkIcon";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
 import { apiErrorMessage } from "@/lib/api";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import {
@@ -180,40 +182,59 @@ export default function DigitalLibrarySection() {
               {items.map((item, index) => {
                 const coverUrl = resolveScientificLibraryUrl(item.cover_url);
                 return (
-                  <Link
-                    className={`${styles.workCard} ${premium.workCard}`}
-                    href={`/library/${item.slug}`}
+                  <div
+                    className={`${styles.workCardShell} ${premium.workCardShell}`}
                     key={String(item.id)}
-                    prefetch={false}
                     style={
                       {
                         "--work-accent": workAccent(item),
                       } as React.CSSProperties
                     }
                   >
-                    <span className={styles.workNumber}>
-                      {toArabicDigits(String(index + 2).padStart(2, "0"))}
-                    </span>
-                    <span className={`${styles.workIcon} ${premium.workIcon}`}>
-                      {coverUrl ? (
-                        <img
-                          className={styles.workCoverImage}
-                          src={coverUrl}
-                          alt=""
-                        />
-                      ) : (
-                        <LibraryWorkIcon type={item.content_type} size={24} />
-                      )}
-                    </span>
-                    <span className={`${styles.workCopy} ${premium.workCopy}`}>
-                      <small>{item.content_type}</small>
-                      <strong>{item.short_title || item.title}</strong>
-                      <span>{item.scientific_field}</span>
-                    </span>
-                    <span className={styles.workArrow}>
-                      <ArrowLeft size={17} />
-                    </span>
-                  </Link>
+                    <Link
+                      className={`${styles.workCard} ${premium.workCard}`}
+                      href={`/library/${item.slug}`}
+                      prefetch={false}
+                    >
+                      <span className={styles.workNumber}>
+                        {toArabicDigits(String(index + 2).padStart(2, "0"))}
+                      </span>
+                      <span
+                        className={`${styles.workIcon} ${premium.workIcon}`}
+                      >
+                        {coverUrl ? (
+                          <img
+                            className={styles.workCoverImage}
+                            src={coverUrl}
+                            alt=""
+                          />
+                        ) : (
+                          <LibraryWorkIcon type={item.content_type} size={24} />
+                        )}
+                      </span>
+                      <span className={`${styles.workCopy} ${premium.workCopy}`}>
+                        <small>{item.content_type}</small>
+                        <strong>{item.short_title || item.title}</strong>
+                        <span className={styles.workDetails}>
+                          <span>{item.scientific_field}</span>
+                          <ViewCount
+                            className={styles.compactViews}
+                            count={item.views_count}
+                            tone="muted"
+                          />
+                        </span>
+                      </span>
+                      <span className={styles.workArrow}>
+                        <ArrowLeft size={17} />
+                      </span>
+                    </Link>
+                    <ShareButton
+                      className={styles.workShare}
+                      href={`/library/${item.slug}`}
+                      iconOnly
+                      ariaLabel={`نسخ رابط المصنَّف: ${item.title}`}
+                    />
+                  </div>
                 );
               })}
 
@@ -262,12 +283,15 @@ function FeaturedWork({ item }: { item: ScientificLibraryCard }) {
   const coverUrl = resolveScientificLibraryUrl(item.cover_url);
 
   return (
-    <Link
-      className={`${styles.featured} ${premium.featured}`}
-      href={`/library/${item.slug}`}
-      prefetch={false}
+    <div
+      className={styles.featuredShell}
       style={{ "--work-accent": workAccent(item) } as React.CSSProperties}
     >
+      <Link
+        className={`${styles.featured} ${premium.featured}`}
+        href={`/library/${item.slug}`}
+        prefetch={false}
+      >
       <div className={`${styles.featuredCover} ${premium.featuredCover}`}>
         {coverUrl ? (
           <img
@@ -307,6 +331,7 @@ function FeaturedWork({ item }: { item: ScientificLibraryCard }) {
             <BookOpen size={15} />
             {item.reader_available ? "قارئ رقمي مدمج" : "صفحة المصنَّف"}
           </span>
+          <ViewCount count={item.views_count} tone="muted" />
         </div>
 
         <span className={styles.openAction}>
@@ -317,6 +342,13 @@ function FeaturedWork({ item }: { item: ScientificLibraryCard }) {
           <ArrowLeft size={17} />
         </span>
       </div>
-    </Link>
+      </Link>
+      <ShareButton
+        className={styles.featuredShare}
+        href={`/library/${item.slug}`}
+        iconOnly
+        ariaLabel={`نسخ رابط المصنَّف: ${item.title}`}
+      />
+    </div>
   );
 }

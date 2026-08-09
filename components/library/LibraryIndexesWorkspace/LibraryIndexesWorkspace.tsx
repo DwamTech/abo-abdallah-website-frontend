@@ -9,6 +9,7 @@ import {
   Database,
   ImagePlus,
   ListOrdered,
+  LoaderCircle,
   Search,
   SearchCheck,
   Send,
@@ -19,25 +20,36 @@ import {
 } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { toArabicDigits } from "@/lib/arabicNumbers";
+import {
+  getLibraryIndexRecords,
+  getLibraryIndexSummary,
+  submitGoldenVisit,
+  submitGuestVisit,
+  type GoldenVisitCollection,
+  type GoldenVisitRecord,
+  type GuestVisitCollection,
+  type LibraryIndexCollection,
+  type LibraryIndexSummary,
+} from "@/lib/libraryIndexesApi";
 import { subjectIndexEntries } from "@/data/subject-index";
 import styles from "./LibraryIndexesWorkspace.module.css";
 
-type GoldenVisitor = {
-  id: string;
-  name: string;
-  visitedAt: string;
-  image: string;
+type RegistryKind = "golden" | "guests";
+
+type RegistryRequestState = {
+  result: LibraryIndexCollection | null;
+  loading: boolean;
+  error: string;
 };
 
-type Guest = {
-  id: string;
-  name: string;
-  title: string;
-  visitedAt: string;
+const emptyRegistryState: RegistryRequestState = {
+  result: null,
+  loading: false,
+  error: "",
 };
 
-const GOLDEN_STORAGE_KEY = "bakri-library-golden-visitors-v1";
-const GUEST_STORAGE_KEY = "bakri-library-guests-v1";
+const ALLOWED_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+const MAX_IMAGE_SIZE = 8 * 1024 * 1024;
 
 function normalizeArabic(value: string) {
   return value
@@ -67,56 +79,22 @@ function smartMatch(query: string, ...values: Array<string | number>) {
 }
 
 function formatVisitDate(value: string) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(value);
+  if (!match) return value;
+  const [, year, month, day] = match;
   return new Intl.DateTimeFormat("ar-EG", {
     dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(value));
-}
-
-function createId() {
-  return globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-}
-
-function resolveVisitTimestamp(selectedDate: string) {
-  if (!selectedDate) return new Date().toISOString();
-
-  const [year, month, day] = selectedDate.split("-").map(Number);
-  const timestamp = new Date();
-  timestamp.setFullYear(year, month - 1, day);
-  return timestamp.toISOString();
-}
-
-function fileToOptimizedDataUrl(file: File) {
-  return new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onerror = () => reject(new Error("تعذّرت قراءة الصورة."));
-    reader.onload = () => {
-      const image = document.createElement("img");
-      image.onerror = () => reject(new Error("ملف الصورة غير صالح."));
-      image.onload = () => {
-        const maxSide = 960;
-        const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
-        const canvas = document.createElement("canvas");
-        canvas.width = Math.max(1, Math.round(image.width * scale));
-        canvas.height = Math.max(1, Math.round(image.height * scale));
-        const context = canvas.getContext("2d");
-        if (!context) {
-          reject(new Error("تعذّر تجهيز الصورة."));
-          return;
-        }
-        context.drawImage(image, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL("image/jpeg", 0.82));
-      };
-      image.src = String(reader.result);
-    };
-    reader.readAsDataURL(file);
-  });
+    timeZone: "UTC",
+  }).format(new Date(Date.UTC(Number(year), Number(month) - 1, Number(day))));
 }
 
 export default function LibraryIndexesWorkspace() {
-  const [goldenVisitors, setGoldenVisitors] = useState<GoldenVisitor[]>([]);
-  const [guests, setGuests] = useState<Guest[]>([]);
-  const [storageReady, setStorageReady] = useState(false);
+  const [summary, setSummary] = useState<LibraryIndexSummary | null>(null);
+  const [summaryError, setSummaryError] = useState("");
+  const [goldenRegistry, setGoldenRegistry] =
+    useState<RegistryRequestState>(emptyRegistryState);
+  const [guestRegistry, setGuestRegistry] =
+    useState<RegistryRequestState>(emptyRegistryState);
   const [goldenName, setGoldenName] = useState("");
   const [goldenVisitDate, setGoldenVisitDate] = useState("");
   const [guestName, setGuestName] = useState("");
@@ -131,44 +109,34 @@ export default function LibraryIndexesWorkspace() {
   const [goldenMessage, setGoldenMessage] = useState("");
   const [guestMessage, setGuestMessage] = useState("");
   const [formError, setFormError] = useState("");
+  const [goldenSubmitting, setGoldenSubmitting] = useState(false);
+  const [guestSubmitting, setGuestSubmitting] = useState(false);
+  const [goldenPage, setGoldenPage] = useState(1);
+  const [guestPage, setGuestPage] = useState(1);
+  const [requestVersion, setRequestVersion] = useState(0);
   const [activeTable, setActiveTable] = useState<
     "golden" | "guests" | "subjects" | "alphabetical" | null
   >(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const modalBodyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    try {
-      const savedGolden = window.localStorage.getItem(GOLDEN_STORAGE_KEY);
-      const savedGuests = window.localStorage.getItem(GUEST_STORAGE_KEY);
-      if (savedGolden) setGoldenVisitors(JSON.parse(savedGolden));
-      if (savedGuests) setGuests(JSON.parse(savedGuests));
-    } catch {
-      setFormError("تعذّر قراءة السجلات المحفوظة على هذا المتصفح.");
-    } finally {
-      setStorageReady(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!storageReady) return;
-    try {
-      window.localStorage.setItem(
-        GOLDEN_STORAGE_KEY,
-        JSON.stringify(goldenVisitors),
-      );
-    } catch {
-      setFormError("مساحة الحفظ ممتلئة؛ استخدم صورة أصغر ثم حاول مرة أخرى.");
-    }
-  }, [goldenVisitors, storageReady]);
-
-  useEffect(() => {
-    if (!storageReady) return;
-    try {
-      window.localStorage.setItem(GUEST_STORAGE_KEY, JSON.stringify(guests));
-    } catch {
-      setFormError("تعذّر حفظ سجل الضيوف على هذا المتصفح.");
-    }
-  }, [guests, storageReady]);
+    const controller = new AbortController();
+    getLibraryIndexSummary(controller.signal)
+      .then((value) => {
+        setSummary(value);
+        setSummaryError("");
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setSummaryError(
+          error instanceof Error
+            ? error.message
+            : "تعذّر تحميل أعداد سجلات المكتبة.",
+        );
+      });
+    return () => controller.abort();
+  }, [requestVersion]);
 
   useEffect(() => {
     if (!selectedFile) {
@@ -194,26 +162,49 @@ export default function LibraryIndexesWorkspace() {
     };
   }, [activeTable]);
 
-  const filteredGoldenVisitors = useMemo(
-    () =>
-      goldenVisitors.filter((visitor) =>
-        smartMatch(goldenSearch, visitor.name, formatVisitDate(visitor.visitedAt)),
-      ),
-    [goldenSearch, goldenVisitors],
-  );
+  useEffect(() => {
+    if (activeTable !== "golden" && activeTable !== "guests") return;
 
-  const filteredGuests = useMemo(
-    () =>
-      guests.filter((guest) =>
-        smartMatch(
-          guestSearch,
-          guest.name,
-          guest.title,
-          formatVisitDate(guest.visitedAt),
-        ),
-      ),
-    [guestSearch, guests],
-  );
+    const kind: RegistryKind = activeTable;
+    const search = kind === "golden" ? goldenSearch : guestSearch;
+    const page = kind === "golden" ? goldenPage : guestPage;
+    const setRegistry = kind === "golden" ? setGoldenRegistry : setGuestRegistry;
+    const controller = new AbortController();
+    const delay = search ? 320 : 0;
+
+    setRegistry((current) => ({ ...current, loading: true, error: "" }));
+    const timer = window.setTimeout(() => {
+      getLibraryIndexRecords(
+        kind === "golden" ? "golden-visits" : "guests",
+        { search, page, per_page: 12 },
+        controller.signal,
+      )
+        .then((result) => setRegistry({ result, loading: false, error: "" }))
+        .catch((error: unknown) => {
+          if (error instanceof DOMException && error.name === "AbortError") return;
+          setRegistry((current) => ({
+            ...current,
+            loading: false,
+            error:
+              error instanceof Error
+                ? error.message
+                : "تعذّر تحميل سجل المكتبة.",
+          }));
+        });
+    }, delay);
+
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [
+    activeTable,
+    goldenPage,
+    goldenSearch,
+    guestPage,
+    guestSearch,
+    requestVersion,
+  ]);
 
   const filteredSubjects = useMemo(
     () =>
@@ -235,29 +226,30 @@ export default function LibraryIndexesWorkspace() {
       setFormError("حجم الصورة يجب ألا يتجاوز ٨ ميجابايت.");
       return;
     }
-
+    if (!ALLOWED_IMAGE_TYPES.has(selectedFile.type)) {
+      setFormError("صيغة الصورة يجب أن تكون JPG أو PNG أو WebP.");
+      return;
+    }
+    setGoldenSubmitting(true);
     try {
-      const image = await fileToOptimizedDataUrl(selectedFile);
-      setGoldenVisitors((current) => [
-        {
-          id: createId(),
-          name: goldenName.trim(),
-          visitedAt: resolveVisitTimestamp(goldenVisitDate),
-          image,
-        },
-        ...current,
-      ]);
+      await submitGoldenVisit({
+        name: goldenName,
+        visitDate: goldenVisitDate || undefined,
+        image: selectedFile,
+      });
       setGoldenName("");
       setGoldenVisitDate("");
       setSelectedFile(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
-      setGoldenMessage("تم تسجيل الزيارة وحفظها بنجاح.");
+      setGoldenMessage("تم إرسال طلب الزيارة للمراجعة، وسيظهر في السجل بعد اعتماده.");
     } catch (error) {
-      setFormError(error instanceof Error ? error.message : "تعذّر حفظ الزيارة.");
+      setFormError(error instanceof Error ? error.message : "تعذّر إرسال الزيارة.");
+    } finally {
+      setGoldenSubmitting(false);
     }
   };
 
-  const submitGuest = (event: FormEvent<HTMLFormElement>) => {
+  const submitGuest = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setGuestMessage("");
     setFormError("");
@@ -265,28 +257,41 @@ export default function LibraryIndexesWorkspace() {
       setFormError("أدخل اسم الضيف وصفته أولًا.");
       return;
     }
-    setGuests((current) => [
-      {
-        id: createId(),
-        name: guestName.trim(),
-        title: guestTitle.trim(),
-        visitedAt: resolveVisitTimestamp(guestVisitDate),
-      },
-      ...current,
-    ]);
-    setGuestName("");
-    setGuestTitle("");
-    setGuestVisitDate("");
-    setGuestMessage("تم تسجيل الضيف وحفظ بياناته بنجاح.");
+    setGuestSubmitting(true);
+    try {
+      await submitGuestVisit({
+        name: guestName,
+        title: guestTitle,
+        ...(guestVisitDate ? { visit_date: guestVisitDate } : {}),
+      });
+      setGuestName("");
+      setGuestTitle("");
+      setGuestVisitDate("");
+      setGuestMessage("تم إرسال طلب الضيف للمراجعة، وسيظهر في السجل بعد اعتماده.");
+    } catch (error) {
+      setFormError(error instanceof Error ? error.message : "تعذّر إرسال الضيف.");
+    } finally {
+      setGuestSubmitting(false);
+    }
   };
 
+  const globalError = formError || summaryError;
+  const goldenResult = goldenRegistry.result as GoldenVisitCollection | null;
+  const guestResult = guestRegistry.result as GuestVisitCollection | null;
   return (
     <div className={styles.workspace}>
-      {formError && (
+      {globalError && (
         <div className={styles.globalAlert} role="alert">
           <X size={17} />
-          {formError}
-          <button type="button" onClick={() => setFormError("")} aria-label="إغلاق">
+          {globalError}
+          <button
+            type="button"
+            onClick={() => {
+              setFormError("");
+              setSummaryError("");
+            }}
+            aria-label="إغلاق"
+          >
             <X size={15} />
           </button>
         </div>
@@ -327,7 +332,7 @@ export default function LibraryIndexesWorkspace() {
             </div>
             <label className={styles.field}>
               <span>اسم الزائر</span>
-              <div><UserRound size={18} /><input value={goldenName} onChange={(e) => setGoldenName(e.target.value)} placeholder="الاسم الكامل" /></div>
+              <div><UserRound size={18} /><input value={goldenName} onChange={(e) => setGoldenName(e.target.value)} placeholder="الاسم الكامل" required minLength={2} maxLength={180} disabled={goldenSubmitting} /></div>
             </label>
             <label className={`${styles.field} ${styles.dateField}`}>
               <span>تاريخ الزيارة <small>اختياري — الافتراضي اليوم</small></span>
@@ -338,11 +343,36 @@ export default function LibraryIndexesWorkspace() {
                   value={goldenVisitDate}
                   onChange={(event) => setGoldenVisitDate(event.target.value)}
                   aria-label="تاريخ زيارة السجل الذهبي"
+                  disabled={goldenSubmitting}
                 />
               </div>
             </label>
             <label className={styles.uploadField}>
-              <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => setSelectedFile(e.target.files?.[0] ?? null)} />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                required
+                disabled={goldenSubmitting}
+                onChange={(event) => {
+                  setGoldenMessage("");
+                  setFormError("");
+                  const file = event.target.files?.[0] ?? null;
+                  if (file && file.size > MAX_IMAGE_SIZE) {
+                    setSelectedFile(null);
+                    event.target.value = "";
+                    setFormError("حجم الصورة يجب ألا يتجاوز ٨ ميجابايت.");
+                    return;
+                  }
+                  if (file && !ALLOWED_IMAGE_TYPES.has(file.type)) {
+                    setSelectedFile(null);
+                    event.target.value = "";
+                    setFormError("صيغة الصورة يجب أن تكون JPG أو PNG أو WebP.");
+                    return;
+                  }
+                  setSelectedFile(file);
+                }}
+              />
               {previewUrl ? (
                 <span className={styles.imagePreview} style={{ backgroundImage: `url(${previewUrl})` }} />
               ) : (
@@ -350,13 +380,16 @@ export default function LibraryIndexesWorkspace() {
               )}
               <span><strong>{selectedFile ? selectedFile.name : "رفع صورة الزائر"}</strong><small>JPG أو PNG أو WebP — بحد أقصى ٨ ميجابايت</small></span>
             </label>
-            <button className={styles.submitButton} type="submit"><Send size={16} /> تسجيل الزيارة</button>
-            {goldenMessage && <p className={styles.successMessage}><CheckCircle2 size={16} />{goldenMessage}</p>}
+            <button className={styles.submitButton} type="submit" disabled={goldenSubmitting} aria-busy={goldenSubmitting}>
+              {goldenSubmitting ? <LoaderCircle className={styles.spinner} size={16} /> : <Send size={16} />}
+              {goldenSubmitting ? "جارٍ إرسال الطلب..." : "تسجيل الزيارة"}
+            </button>
+            {goldenMessage && <p className={styles.successMessage} role="status"><CheckCircle2 size={16} />{goldenMessage}</p>}
           </form>
         </div>
 
         <TableLauncher
-          count={goldenVisitors.length}
+          count={summary?.golden_visits ?? null}
           description="استعرض صور كبار الزوار وتواريخ زياراتهم وابحث داخل السجل."
           onClick={() => setActiveTable("golden")}
           title="فتح سجل الزيارات"
@@ -383,8 +416,8 @@ export default function LibraryIndexesWorkspace() {
         </div>
         <div className={styles.guestFormWrap}>
           <form className={styles.guestForm} onSubmit={submitGuest}>
-            <label className={styles.field}><span>اسم الضيف</span><div><UserRound size={18} /><input value={guestName} onChange={(e) => setGuestName(e.target.value)} placeholder="الاسم الكامل" /></div></label>
-            <label className={styles.field}><span>الصفة</span><div><Sparkles size={18} /><input value={guestTitle} onChange={(e) => setGuestTitle(e.target.value)} placeholder="مثال: أستاذ الحديث وعلومه" /></div></label>
+            <label className={styles.field}><span>اسم الضيف</span><div><UserRound size={18} /><input value={guestName} onChange={(e) => setGuestName(e.target.value)} placeholder="الاسم الكامل" required minLength={2} maxLength={180} disabled={guestSubmitting} /></div></label>
+            <label className={styles.field}><span>الصفة</span><div><Sparkles size={18} /><input value={guestTitle} onChange={(e) => setGuestTitle(e.target.value)} placeholder="مثال: أستاذ الحديث وعلومه" required minLength={2} maxLength={180} disabled={guestSubmitting} /></div></label>
             <label className={`${styles.field} ${styles.dateField}`}>
               <span>تاريخ الزيارة <small>اختياري</small></span>
               <div>
@@ -395,15 +428,19 @@ export default function LibraryIndexesWorkspace() {
                   onChange={(event) => setGuestVisitDate(event.target.value)}
                   aria-label="تاريخ زيارة الضيف"
                   title="اترك التاريخ فارغًا لاستخدام تاريخ اليوم تلقائيًا"
+                  disabled={guestSubmitting}
                 />
               </div>
             </label>
-            <button className={styles.submitButton} type="submit"><Send size={16} /> إضافة الضيف</button>
+            <button className={styles.submitButton} type="submit" disabled={guestSubmitting} aria-busy={guestSubmitting}>
+              {guestSubmitting ? <LoaderCircle className={styles.spinner} size={16} /> : <Send size={16} />}
+              {guestSubmitting ? "جارٍ إرسال الطلب..." : "إضافة الضيف"}
+            </button>
           </form>
-          {guestMessage && <p className={styles.successMessage}><CheckCircle2 size={16} />{guestMessage}</p>}
+          {guestMessage && <p className={styles.successMessage} role="status"><CheckCircle2 size={16} />{guestMessage}</p>}
         </div>
         <TableLauncher
-          count={guests.length}
+          count={summary?.guests ?? null}
           description="شاهد أسماء الضيوف وصفاتهم وتواريخ حضورهم في نافذة منظمة."
           onClick={() => setActiveTable("guests")}
           title="فتح سجل الضيوف"
@@ -490,12 +527,13 @@ export default function LibraryIndexesWorkspace() {
                         : "الفهرس الألف بائي"}
                 </h2>
               </div>
-              <button type="button" onClick={() => setActiveTable(null)} aria-label="إغلاق النافذة">
+              <button type="button" onClick={() => setActiveTable(null)} aria-label="إغلاق النافذة" autoFocus>
                 <X size={20} />
               </button>
             </header>
 
             <div
+              ref={modalBodyRef}
               className={`${styles.modalBody} ${
                 activeTable === "subjects" || activeTable === "alphabetical"
                   ? styles.subjectModalBody
@@ -504,35 +542,123 @@ export default function LibraryIndexesWorkspace() {
             >
               {activeTable === "golden" && (
                 <>
-                  <RegistryTableHeader title="سجل الزيارات" count={filteredGoldenVisitors.length} query={goldenSearch} onQueryChange={setGoldenSearch} placeholder="ابحث باسم الزائر أو التاريخ..." />
-                  <div className={styles.tableShell}>
-                    <table>
-                      <thead><tr><th>الصورة</th><th>اسم الزائر</th><th>تاريخ الزيارة</th></tr></thead>
-                      <tbody>
-                        {filteredGoldenVisitors.map((visitor) => (
-                          <tr key={visitor.id}>
-                            <td data-label="الصورة"><span className={styles.avatar}><img src={visitor.image} alt="" /></span></td>
-                            <td data-label="اسم الزائر"><strong>{visitor.name}</strong><small>زائر السجل الذهبي</small></td>
-                            <td data-label="تاريخ الزيارة">{formatVisitDate(visitor.visitedAt)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    {!filteredGoldenVisitors.length && <EmptyTable search={goldenSearch} label="لا توجد زيارات مسجلة حتى الآن" />}
+                  <RegistryTableHeader
+                    title="سجل الزيارات"
+                    count={goldenResult?.meta.total ?? null}
+                    loading={goldenRegistry.loading}
+                    query={goldenSearch}
+                    onQueryChange={(value) => {
+                      setGoldenSearch(value);
+                      setGoldenPage(1);
+                    }}
+                    placeholder="ابحث باسم الزائر أو التاريخ..."
+                  />
+                  <div className={styles.tableShell} aria-busy={goldenRegistry.loading}>
+                    {goldenRegistry.loading && !goldenResult ? (
+                      <TableLoading label="جارٍ تحميل سجل الزيارات..." />
+                    ) : goldenRegistry.error && !goldenResult ? (
+                      <TableError
+                        message={goldenRegistry.error}
+                        onRetry={() => setRequestVersion((value) => value + 1)}
+                      />
+                    ) : (
+                      <>
+                        <table>
+                          <thead><tr><th>الصورة</th><th>اسم الزائر</th><th>تاريخ الزيارة</th></tr></thead>
+                          <tbody>
+                            {(goldenResult?.data ?? []).map((visitor) => (
+                              <tr key={visitor.id}>
+                                <td data-label="الصورة">
+                                  <VisitorAvatar visitor={visitor} />
+                                </td>
+                                <td data-label="اسم الزائر"><strong>{visitor.name}</strong><small>زائر السجل الذهبي</small></td>
+                                <td data-label="تاريخ الزيارة">{formatVisitDate(visitor.visit_date)}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                        {!goldenRegistry.loading && !(goldenResult?.data.length ?? 0) && (
+                          <EmptyTable search={goldenSearch} label="لا توجد زيارات معتمدة حتى الآن" />
+                        )}
+                        {goldenRegistry.loading && <TableProgress />}
+                      </>
+                    )}
                   </div>
+                  {goldenRegistry.error && goldenResult && (
+                    <InlineTableError
+                      message={goldenRegistry.error}
+                      onRetry={() => setRequestVersion((value) => value + 1)}
+                    />
+                  )}
+                  <RegistryPagination
+                    current={goldenResult?.meta.current_page ?? 1}
+                    last={goldenResult?.meta.last_page ?? 1}
+                    loading={goldenRegistry.loading}
+                    onPageChange={(page) => {
+                      setGoldenPage(page);
+                      modalBodyRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                  />
                 </>
               )}
 
               {activeTable === "guests" && (
                 <>
-                  <RegistryTableHeader title="الضيوف المسجلون" count={filteredGuests.length} query={guestSearch} onQueryChange={setGuestSearch} placeholder="ابحث بالاسم أو الصفة أو التاريخ..." />
-                  <div className={styles.tableShell}>
-                    <table>
-                      <thead><tr><th>الاسم</th><th>الصفة</th><th>تاريخ الزيارة</th></tr></thead>
-                      <tbody>{filteredGuests.map((guest) => <tr key={guest.id}><td data-label="الاسم"><strong>{guest.name}</strong></td><td data-label="الصفة">{guest.title}</td><td data-label="تاريخ الزيارة">{formatVisitDate(guest.visitedAt)}</td></tr>)}</tbody>
-                    </table>
-                    {!filteredGuests.length && <EmptyTable search={guestSearch} label="لا يوجد ضيوف مسجلون حتى الآن" />}
+                  <RegistryTableHeader
+                    title="الضيوف المسجلون"
+                    count={guestResult?.meta.total ?? null}
+                    loading={guestRegistry.loading}
+                    query={guestSearch}
+                    onQueryChange={(value) => {
+                      setGuestSearch(value);
+                      setGuestPage(1);
+                    }}
+                    placeholder="ابحث بالاسم أو الصفة أو التاريخ..."
+                  />
+                  <div className={styles.tableShell} aria-busy={guestRegistry.loading}>
+                    {guestRegistry.loading && !guestResult ? (
+                      <TableLoading label="جارٍ تحميل سجل الضيوف..." />
+                    ) : guestRegistry.error && !guestResult ? (
+                      <TableError
+                        message={guestRegistry.error}
+                        onRetry={() => setRequestVersion((value) => value + 1)}
+                      />
+                    ) : (
+                      <>
+                        <table>
+                          <thead><tr><th>الاسم</th><th>الصفة</th><th>تاريخ الزيارة</th></tr></thead>
+                          <tbody>
+                            {(guestResult?.data ?? []).map((guest) => (
+                              <tr key={guest.id}>
+                                <td data-label="الاسم"><strong>{guest.name}</strong></td>
+                                <td data-label="الصفة">{guest.title ?? "—"}</td>
+                                <td data-label="تاريخ الزيارة">{formatVisitDate(guest.visit_date)}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                        {!guestRegistry.loading && !(guestResult?.data.length ?? 0) && (
+                          <EmptyTable search={guestSearch} label="لا يوجد ضيوف معتمدون حتى الآن" />
+                        )}
+                        {guestRegistry.loading && <TableProgress />}
+                      </>
+                    )}
                   </div>
+                  {guestRegistry.error && guestResult && (
+                    <InlineTableError
+                      message={guestRegistry.error}
+                      onRetry={() => setRequestVersion((value) => value + 1)}
+                    />
+                  )}
+                  <RegistryPagination
+                    current={guestResult?.meta.current_page ?? 1}
+                    last={guestResult?.meta.last_page ?? 1}
+                    loading={guestRegistry.loading}
+                    onPageChange={(page) => {
+                      setGuestPage(page);
+                      modalBodyRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                  />
                 </>
               )}
 
@@ -590,14 +716,53 @@ export default function LibraryIndexesWorkspace() {
   );
 }
 
-function RegistryTableHeader({ title, count, query, onQueryChange, placeholder }: { title: string; count: number; query: string; onQueryChange: (value: string) => void; placeholder: string }) {
-  return <div className={styles.tableHeader}><div><span>قاعدة البيانات</span><h3>{title}</h3></div><label><Search size={18} /><input value={query} onChange={(e) => onQueryChange(e.target.value)} placeholder={placeholder} />{query && <button type="button" onClick={() => onQueryChange("")} aria-label="مسح البحث"><X size={15} /></button>}</label><span className={styles.resultPill}>{toArabicDigits(count)} سجل</span></div>;
+function RegistryTableHeader({ title, count, loading, query, onQueryChange, placeholder }: { title: string; count: number | null; loading: boolean; query: string; onQueryChange: (value: string) => void; placeholder: string }) {
+  return <div className={styles.tableHeader}><div><span>قاعدة البيانات</span><h3>{title}</h3></div><label><Search size={18} /><input value={query} onChange={(e) => onQueryChange(e.target.value)} placeholder={placeholder} />{query && <button type="button" onClick={() => onQueryChange("")} aria-label="مسح البحث"><X size={15} /></button>}</label><span className={styles.resultPill}>{loading ? "—" : toArabicDigits(count ?? 0)} سجل</span></div>;
 }
 
 function EmptyTable({ search, label }: { search: string; label: string }) {
-  return <div className={styles.emptyTable}><Search size={23} /><strong>{search ? "لا توجد نتائج مطابقة" : label}</strong><p>{search ? "جرّب البحث بكلمات أقصر أو مختلفة." : "ستظهر البيانات هنا فور إضافتها من النموذج."}</p></div>;
+  return <div className={styles.emptyTable}><Search size={23} /><strong>{search ? "لا توجد نتائج مطابقة" : label}</strong><p>{search ? "جرّب البحث بكلمات أقصر أو مختلفة." : "ستظهر البيانات هنا بعد اعتمادها من إدارة المكتبة."}</p></div>;
 }
 
-function TableLauncher({ title, description, count, onClick }: { title: string; description: string; count: number; onClick: () => void }) {
-  return <div className={styles.tableLauncher}><span className={styles.launcherIcon}><Table2 size={24} /></span><div><small>عرض قاعدة البيانات</small><h3>{title}</h3><p>{description}</p></div><span className={styles.launcherCount}><strong>{toArabicDigits(count)}</strong><small>سجل</small></span><button type="button" onClick={onClick}>فتح الجدول<Table2 size={16} /></button></div>;
+function TableLoading({ label }: { label: string }) {
+  return <div className={styles.tableState} role="status"><LoaderCircle className={styles.spinner} size={24} /><strong>{label}</strong><p>يتم جلب السجلات المعتمدة من قاعدة البيانات.</p></div>;
+}
+
+function TableError({ message, onRetry }: { message: string; onRetry: () => void }) {
+  return <div className={`${styles.tableState} ${styles.tableError}`} role="alert"><X size={23} /><strong>تعذّر فتح السجل</strong><p>{message}</p><button type="button" onClick={onRetry}>إعادة المحاولة</button></div>;
+}
+
+function InlineTableError({ message, onRetry }: { message: string; onRetry: () => void }) {
+  return <div className={styles.inlineTableError} role="alert"><span>{message}</span><button type="button" onClick={onRetry}>إعادة المحاولة</button></div>;
+}
+
+function TableProgress() {
+  return <span className={styles.tableProgress} role="status"><LoaderCircle className={styles.spinner} size={14} /> جارٍ تحديث النتائج...</span>;
+}
+
+function VisitorAvatar({ visitor }: { visitor: GoldenVisitRecord }) {
+  return (
+    <span className={styles.avatar}>
+      {visitor.image_url ? (
+        <img src={visitor.image_url} alt={`صورة الزائر ${visitor.name}`} loading="lazy" />
+      ) : (
+        <UserRound aria-hidden="true" size={21} />
+      )}
+    </span>
+  );
+}
+
+function RegistryPagination({ current, last, loading, onPageChange }: { current: number; last: number; loading: boolean; onPageChange: (page: number) => void }) {
+  if (last <= 1) return null;
+  return (
+    <nav className={styles.registryPagination} aria-label="صفحات السجل">
+      <button type="button" disabled={current <= 1 || loading} onClick={() => onPageChange(current - 1)}>السابق</button>
+      <span>صفحة <strong>{toArabicDigits(current)}</strong> من {toArabicDigits(last)}</span>
+      <button type="button" disabled={current >= last || loading} onClick={() => onPageChange(current + 1)}>التالي</button>
+    </nav>
+  );
+}
+
+function TableLauncher({ title, description, count, onClick }: { title: string; description: string; count: number | null; onClick: () => void }) {
+  return <div className={styles.tableLauncher}><span className={styles.launcherIcon}><Table2 size={24} /></span><div><small>عرض قاعدة البيانات</small><h3>{title}</h3><p>{description}</p></div><span className={styles.launcherCount}><strong>{count === null ? "—" : toArabicDigits(count)}</strong><small>سجل</small></span><button type="button" onClick={onClick}>فتح الجدول<Table2 size={16} /></button></div>;
 }

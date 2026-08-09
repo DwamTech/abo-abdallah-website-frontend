@@ -12,13 +12,15 @@ import {
   ListMusic,
   Play,
   Radio,
-  Share2,
 } from "lucide-react";
 import { resolveReaderSource, type ListeningSeriesDetail } from "@/lib/api";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import { getListeningVisual } from "@/lib/listeningVisuals";
 import SeriesIcon from "@/components/listening/SeriesIcon/SeriesIcon";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
+import TrackedViewCount from "@/components/content/ViewCount/TrackedViewCount";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
 import styles from "./SeriesPageContent.module.css";
 
 type SeriesPageContentProps = {
@@ -104,6 +106,11 @@ export default function SeriesPageContent({ series }: SeriesPageContentProps) {
                   <small>المادة العلمية</small>
                   <strong>{bookSource ? "كتاب مرتبط" : "غير مرفق"}</strong>
                 </span>
+                <TrackedViewCount
+                  endpoint={`/api/listening/series/${encodeURIComponent(series.slug)}/view`}
+                  initialCount={series.views_count}
+                  tone="light"
+                />
               </div>
 
               <div className={styles.actions}>
@@ -124,9 +131,13 @@ export default function SeriesPageContent({ series }: SeriesPageContentProps) {
                     لا توجد مجالس منشورة
                   </span>
                 )}
-                <button type="button" aria-label="مشاركة السلسلة">
-                  <Share2 size={17} />
-                </button>
+                <ShareButton
+                  ariaLabel="نسخ رابط السلسلة"
+                  copiedLabel="تم نسخ الرابط"
+                  href={`/listening/${series.slug}`}
+                  iconOnly
+                  label="نسخ الرابط"
+                />
                 {bookSource && series.book_download_allowed ? (
                   <a
                     className={styles.iconAction}
@@ -175,12 +186,19 @@ export default function SeriesPageContent({ series }: SeriesPageContentProps) {
             </header>
 
             <div className={styles.learningPath}>
-              {series.sessions.map((session, index) => (
-                <Link
+              {series.sessions.map((session, index) => {
+                const href = `/listening/${series.slug}/${session.slug}`;
+
+                return (
+                <article
                   className={styles.sessionCard}
-                  href={`/listening/${series.slug}/${session.slug}`}
                   key={session.slug}
                 >
+                  <Link
+                    aria-label={`فتح المجلس: ${session.title}`}
+                    className={styles.sessionLink}
+                    href={href}
+                  />
                   <span className={styles.pathStep}>
                     <small>المجلس</small>
                     <strong>
@@ -200,6 +218,12 @@ export default function SeriesPageContent({ series }: SeriesPageContentProps) {
                             ? "ختام السلسلة"
                             : "ضمن مسار السلسلة"}
                       </small>
+                      <ShareButton
+                        ariaLabel={`نسخ رابط المجلس: ${session.title}`}
+                        className={styles.sessionShare}
+                        href={href}
+                        iconOnly
+                      />
                     </span>
                     <strong>{session.title}</strong>
                     <p>
@@ -215,6 +239,7 @@ export default function SeriesPageContent({ series }: SeriesPageContentProps) {
                       <i />
                       {session.date_label || "—"}
                     </span>
+                    <ViewCount count={session.views_count} tone="muted" />
                   </span>
 
                   <span className={styles.miniWave} aria-hidden="true">
@@ -228,8 +253,9 @@ export default function SeriesPageContent({ series }: SeriesPageContentProps) {
                       <Play size={16} fill="currentColor" />
                     </b>
                   </span>
-                </Link>
-              ))}
+                </article>
+                );
+              })}
               {series.sessions.length === 0 && (
                 <div className={styles.emptySessions}>
                   <Headphones size={24} />

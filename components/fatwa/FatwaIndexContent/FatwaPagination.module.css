@@ -155,6 +155,29 @@
 .cardEnhanced:hover::after { height: 100%; }
 .cardEnhanced:hover { border-color: rgba(166, 122, 53, 0.48); }
 
+.cardLink {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+}
+
+.cardLink:focus-visible {
+  outline: 3px solid rgba(166, 122, 53, .42);
+  outline-offset: -4px;
+}
+
+.cardShare {
+  position: relative;
+  z-index: 3;
+  width: 32px;
+  height: 32px;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  padding: 0 !important;
+  flex: 0 0 auto;
+}
+
 .cardIcon {
   display: grid;
   width: 34px;

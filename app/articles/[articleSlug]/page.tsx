@@ -5,7 +5,9 @@ import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import ArticleDetailContent from "@/components/article/ArticleDetailContent/ArticleDetailContent";
+import CommentsSection from "@/components/content/CommentsSection/CommentsSection";
 import { ApiError } from "@/lib/api";
+import { commentsModuleEnabled } from "@/lib/commentsFeature";
 import { getSiteArticle } from "@/lib/siteArticlesApi";
 
 type Props = { params: Promise<{ articleSlug: string }> };
@@ -40,6 +42,11 @@ export default async function ArticlePage({ params }: Props) {
           article={detail.data}
           related={detail.related_articles}
         />
+        {commentsModuleEnabled() && (
+          <CommentsSection
+            target={{ type: "site_article", targetId: String(detail.data.id) }}
+          />
+        )}
         <SectionDivider variant="manuscript" />
       </main>
       <Footer />

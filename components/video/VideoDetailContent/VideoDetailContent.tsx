@@ -15,6 +15,9 @@ import {
   type ScientificVideoItem,
 } from "@/lib/scientificVideosApi";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
+import TrackedViewCount from "@/components/content/ViewCount/TrackedViewCount";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
 import VideoEngagement from "./VideoEngagement";
 import styles from "./VideoDetailContent.module.css";
 import playerStyles from "./VideoPlayerState.module.css";
@@ -57,6 +60,12 @@ export default function VideoDetailContent({
               <CalendarDays size={15} />
               {video.date_label}
             </span>
+            <i />
+            <TrackedViewCount
+              endpoint={`/api/scientific-videos/items/${encodeURIComponent(video.slug)}/view`}
+              initialCount={video.views_count}
+              tone="light"
+            />
           </div>
         </div>
       </section>
@@ -70,11 +79,7 @@ export default function VideoDetailContent({
                 <span>المشاهدة الآن</span>
                 <h2>{video.title}</h2>
               </div>
-              <VideoEngagement
-                slug={video.slug}
-                title={video.title}
-                downloadUrl={video.download_url}
-              />
+              <VideoEngagement downloadUrl={video.download_url} />
             </header>
             <div className={styles.player}>
               {playback.kind === "video" ? (
@@ -149,8 +154,16 @@ export default function VideoDetailContent({
               <h2>مرئيات قد تهمك</h2>
             </header>
             <div>
-              {related.map((item) => (
-                <Link href={`/videos/${item.slug}`} key={item.slug}>
+              {related.map((item) => {
+                const href = `/videos/${item.slug}`;
+
+                return (
+                <article className={styles.relatedCard} key={item.slug}>
+                  <Link
+                    aria-label={`مشاهدة المادة: ${item.title}`}
+                    className={styles.relatedLink}
+                    href={href}
+                  />
                   <span className={styles.relatedPlay}>
                     <Play size={18} fill="currentColor" />
                   </span>
@@ -158,10 +171,18 @@ export default function VideoDetailContent({
                   <h3>{item.title}</h3>
                   <footer>
                     <span>{toArabicDigits(item.duration_label)}</span>
+                    <ViewCount count={item.views_count} tone="light" />
+                    <ShareButton
+                      ariaLabel={`نسخ رابط المادة المرئية: ${item.title}`}
+                      className={styles.relatedShare}
+                      href={href}
+                      iconOnly
+                    />
                     <ArrowLeft size={16} />
                   </footer>
-                </Link>
-              ))}
+                </article>
+                );
+              })}
             </div>
           </div>
         )}
