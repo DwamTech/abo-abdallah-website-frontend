@@ -4,7 +4,9 @@ import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import SeriesPageContent from "@/components/listening/SeriesPageContent/SeriesPageContent";
+import CommentsSection from "@/components/content/CommentsSection/CommentsSection";
 import { ApiError, getListeningSeriesDetail } from "@/lib/api";
+import { commentsModuleEnabled } from "@/lib/commentsFeature";
 
 type SeriesPageProps = {
   params: Promise<{ seriesSlug: string }>;
@@ -43,6 +45,11 @@ export default async function SeriesPage({ params }: SeriesPageProps) {
       <Header />
       <main>
         <SeriesPageContent series={series} />
+        {commentsModuleEnabled() && (
+          <CommentsSection
+            target={{ type: "listening_series", targetId: String(series.id) }}
+          />
+        )}
         <SectionDivider variant="manuscript" />
       </main>
       <Footer />

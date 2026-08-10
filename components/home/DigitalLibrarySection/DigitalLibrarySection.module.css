@@ -111,6 +111,33 @@
   gap: 20px;
 }
 
+.featuredShell,
+.workCardShell {
+  position: relative;
+  min-width: 0;
+}
+
+.featuredShell > .featured,
+.workCardShell > .workCard {
+  height: 100%;
+}
+
+.featuredShare,
+.workShare {
+  position: absolute;
+  z-index: 3;
+}
+
+.featuredShare {
+  top: 18px;
+  left: 18px;
+}
+
+.workShare {
+  top: calc(50% - 21px);
+  left: 4px;
+}
+
 .featured {
   position: relative;
   display: grid;
@@ -391,7 +418,7 @@
   position: relative;
   display: grid;
   min-height: 105px;
-  padding: 14px 16px;
+  padding: 14px 16px 14px 48px;
   grid-template-columns: 24px 58px 1fr 31px;
   align-items: center;
   gap: 12px;
@@ -490,6 +517,16 @@
 .workCopy span {
   color: #948375;
   font-size: 12px;
+}
+.workDetails {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 7px;
+}
+.compactViews {
+  padding: 2px 6px;
+  font-size: 9px;
 }
 
 .workArrow {

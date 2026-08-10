@@ -805,6 +805,29 @@
     transform 200ms ease;
 }
 
+.sessionLink {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+}
+
+.sessionLink:focus-visible {
+  outline: 3px solid rgba(166, 122, 53, .45);
+  outline-offset: -4px;
+}
+
+.sessionShare {
+  position: relative;
+  z-index: 3;
+  width: 30px;
+  height: 30px;
+  min-width: 30px !important;
+  min-height: 30px !important;
+  padding: 0 !important;
+  flex: 0 0 auto;
+}
+
 .sessionCard::after {
   position: absolute;
   top: 0;

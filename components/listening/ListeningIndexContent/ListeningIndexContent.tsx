@@ -26,6 +26,8 @@ import { toArabicDigits } from "@/lib/arabicNumbers";
 import { getListeningVisual } from "@/lib/listeningVisuals";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
 import SeriesIcon from "@/components/listening/SeriesIcon/SeriesIcon";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
 import styles from "./ListeningIndexContent.module.css";
 
 function visiblePages(current: number, last: number) {
@@ -243,9 +245,8 @@ export default function ListeningIndexContent() {
                 const visual = getListeningVisual(series.visual_variant);
 
                 return (
-                  <Link
+                  <article
                     className={styles.card}
-                    href={`/listening/${series.slug}`}
                     key={series.slug}
                     style={
                       {
@@ -253,6 +254,11 @@ export default function ListeningIndexContent() {
                       } as React.CSSProperties
                     }
                   >
+                    <Link
+                      aria-label={`فتح السلسلة: ${series.title}`}
+                      className={styles.cardLink}
+                      href={`/listening/${series.slug}`}
+                    />
                     <div className={styles.cover}>
                       <span className={styles.coverIndex}>
                         {toArabicDigits(
@@ -296,7 +302,14 @@ export default function ListeningIndexContent() {
                             <CalendarDays size={14} />
                             {series.period_label || "—"}
                           </span>
+                          <ViewCount count={series.views_count} tone="muted" />
                         </div>
+                        <ShareButton
+                          ariaLabel={`نسخ رابط السلسلة: ${series.title}`}
+                          className={styles.cardShare}
+                          href={`/listening/${series.slug}`}
+                          iconOnly
+                        />
                         <span className={styles.openSeries}>
                           <i>
                             <Play size={14} fill="currentColor" />
@@ -306,7 +319,7 @@ export default function ListeningIndexContent() {
                         </span>
                       </div>
                     </div>
-                  </Link>
+                  </article>
                 );
               })
             ) : (

@@ -267,7 +267,19 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
 }
+.relatedItem {
+  position: relative;
+  min-width: 0;
+}
+.relatedShare {
+  position: absolute;
+  z-index: 2;
+  top: 17px;
+  left: 17px;
+}
 .related a {
+  display: block;
+  height: 100%;
   position: relative;
   min-height: 250px;
   padding: 25px;

@@ -241,6 +241,13 @@
   cursor: pointer;
 }
 
+.sectionActions > .shareAction {
+  color: #5f725e;
+  border-color: rgba(95, 114, 94, 0.2);
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: none;
+}
+
 .studyGrid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -541,7 +548,20 @@
   gap: 12px;
 }
 
+.relatedItem {
+  position: relative;
+  min-width: 0;
+}
+
+.relatedShare {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  left: 12px;
+}
+
 .related a {
+  height: 100%;
   display: grid;
   min-height: 120px;
   padding: 16px;

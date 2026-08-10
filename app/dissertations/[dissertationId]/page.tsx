@@ -5,7 +5,9 @@ import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import DissertationDetailContent from "@/components/dissertation/DissertationDetailContent/DissertationDetailContent";
+import CommentsSection from "@/components/content/CommentsSection/CommentsSection";
 import { ApiError, getDissertation } from "@/lib/api";
+import { commentsModuleEnabled } from "@/lib/commentsFeature";
 
 type DissertationPageProps = {
   params: Promise<{ dissertationId: string }>;
@@ -46,6 +48,14 @@ export default async function DissertationPage({
       <Header />
       <main>
         <DissertationDetailContent initialData={initialData} />
+        {commentsModuleEnabled() && (
+          <CommentsSection
+            target={{
+              type: "dissertation",
+              targetId: String(initialData.data.id),
+            }}
+          />
+        )}
         <SectionDivider variant="manuscript" />
       </main>
       <Footer />

@@ -173,6 +173,18 @@
   box-shadow: 0 2px 0 var(--cream-300);
 }
 
+.srSubmit {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  border: 0;
+  white-space: nowrap;
+}
+
 /* ─── Spinner ─── */
 .spinner {
   display: block;
@@ -405,6 +417,61 @@
 .resultCard:hover .cardArrow {
   color: var(--brown-800);
   transform: translate(-2px, -2px);
+}
+
+.allResults {
+  display: flex;
+  min-height: 66px;
+  margin-top: 4px;
+  padding: 11px 16px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: #fff9ef;
+  border: 1px solid rgba(221, 194, 142, 0.28);
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(221, 194, 142, 0.13), transparent 35%),
+    var(--brown-900);
+  box-shadow: 0 12px 30px rgba(57, 39, 31, 0.16);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.allResults:hover {
+  border-color: rgba(221, 194, 142, 0.7);
+  box-shadow: 0 16px 38px rgba(57, 39, 31, 0.22);
+  transform: translateY(-2px);
+}
+
+.allResults > span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.allResults strong {
+  color: #fff9ef;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.allResults small {
+  color: rgba(255, 249, 239, 0.6);
+  font-size: 11px;
+}
+
+.allResults > svg {
+  flex: 0 0 auto;
+  color: var(--gold-300);
+  transition: transform 180ms ease;
+}
+
+.allResults:hover > svg {
+  transform: translateX(-3px);
 }
 
 /* ─── Skeleton ─── */

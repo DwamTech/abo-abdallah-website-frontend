@@ -30,6 +30,8 @@ import {
 } from "@/lib/api";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
 import styles from "./DissertationIndexContent.module.css";
 
 function visiblePages(current: number, last: number) {
@@ -421,65 +423,76 @@ export default function DissertationIndexContent() {
               </div>
             ) : (
               items.map((item) => (
-                <Link
-                  className={styles.card}
+                <article
+                  className={styles.cardShell}
                   key={String(item.id)}
-                  href={`/dissertations/${item.slug || item.id}`}
                 >
-                  <div className={styles.cardMetaTop}>
-                    {item.participation_type && (
-                      <span>{item.participation_type}</span>
-                    )}
-                    {item.degree && <small>{item.degree}</small>}
-                  </div>
+                  <Link
+                    className={styles.card}
+                    href={`/dissertations/${item.slug || item.id}`}
+                  >
+                    <div className={styles.cardMetaTop}>
+                      {item.participation_type && (
+                        <span>{item.participation_type}</span>
+                      )}
+                      {item.degree && <small>{item.degree}</small>}
+                    </div>
 
-                  <h3>{item.title}</h3>
+                    <h3>{item.title}</h3>
 
-                  <div className={styles.cardMeta}>
-                    {item.researcher_name && (
-                      <span>
-                        <User size={14} />
-                        {item.researcher_name}
-                      </span>
-                    )}
-                    {item.university && (
-                      <span>
-                        <University size={14} />
-                        {item.university}
-                      </span>
-                    )}
-                    {item.college && (
-                      <span>
-                        <BookOpen size={14} />
-                        {item.college}
-                      </span>
-                    )}
-                    {item.year !== undefined && (
-                      <span>
-                        <Calendar size={14} />
-                        {toArabicDigits(item.year)}هـ
-                      </span>
-                    )}
-                    {item.specialization && (
-                      <span>
-                        <GraduationCap size={14} />
-                        {item.specialization}
-                      </span>
-                    )}
-                  </div>
+                    <div className={styles.cardMeta}>
+                      {item.researcher_name && (
+                        <span>
+                          <User size={14} />
+                          {item.researcher_name}
+                        </span>
+                      )}
+                      {item.university && (
+                        <span>
+                          <University size={14} />
+                          {item.university}
+                        </span>
+                      )}
+                      {item.college && (
+                        <span>
+                          <BookOpen size={14} />
+                          {item.college}
+                        </span>
+                      )}
+                      {item.year !== undefined && (
+                        <span>
+                          <Calendar size={14} />
+                          {toArabicDigits(item.year)}هـ
+                        </span>
+                      )}
+                      {item.specialization && (
+                        <span>
+                          <GraduationCap size={14} />
+                          {item.specialization}
+                        </span>
+                      )}
+                      <ViewCount count={item.views_count} tone="muted" />
+                    </div>
 
-                  {item.abstract && (
-                    <p className={styles.abstract}>{item.abstract}</p>
-                  )}
+                    {item.abstract && (
+                      <p className={styles.abstract}>{item.abstract}</p>
+                    )}
 
-                  <span className={styles.openWork}>
-                    <i>
-                      <BookOpen size={17} />
-                    </i>
-                    عرض ملف الرسالة
-                    <ArrowLeft size={17} />
-                  </span>
-                </Link>
+                    <span className={styles.openWork}>
+                      <i>
+                        <BookOpen size={17} />
+                      </i>
+                      عرض ملف الرسالة
+                      <ArrowLeft size={17} />
+                    </span>
+                  </Link>
+                  <ShareButton
+                    className={styles.cardShare}
+                    href={`/dissertations/${item.slug || item.id}`}
+                    iconOnly
+                    ariaLabel={`نسخ رابط الرسالة: ${item.title}`}
+                  />
+                </article>
               ))
             )}
           </div>

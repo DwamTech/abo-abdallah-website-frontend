@@ -8,6 +8,7 @@ import {
 } from "@/lib/scientificFatwaOptions";
 
 const apiNumber = z.coerce.number();
+const viewCount = z.coerce.number().int().nonnegative().catch(0);
 const nullableApiNumber = z.preprocess(
   (value) => (value === null || value === "" ? undefined : value),
   z.coerce.number().optional(),
@@ -34,6 +35,7 @@ export const scientificFatwaItemSchema = z.object({
   keywords: z.array(z.string()).default([]),
   is_featured: apiBoolean,
   published_at: z.string().nullable().optional(),
+  views_count: viewCount,
 });
 
 export type ScientificFatwaItem = z.infer<typeof scientificFatwaItemSchema>;
@@ -49,6 +51,7 @@ export const scientificFatwaCardSchema = z.object({
   sources_count: apiNumber,
   is_featured: apiBoolean,
   published_at: z.string().nullable().optional(),
+  views_count: viewCount,
 });
 
 export type ScientificFatwaCard = z.infer<typeof scientificFatwaCardSchema>;

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bookmark, Share2 } from "lucide-react";
+import { Bookmark } from "lucide-react";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
 
 const STORAGE_KEY = "saved-site-articles";
 
@@ -20,12 +21,10 @@ function readSavedArticles(): string[] {
 
 export default function ArticleActions({
   slug,
-  title,
   className,
   feedbackClassName,
 }: {
   slug: string;
-  title: string;
   className: string;
   feedbackClassName: string;
 }) {
@@ -56,32 +55,17 @@ export default function ArticleActions({
     }
   };
 
-  const share = async () => {
-    const url = window.location.href;
-    try {
-      if (navigator.share) {
-        await navigator.share({ title, url });
-        setFeedback("تمت مشاركة رابط المقالة.");
-        return;
-      }
-      await navigator.clipboard.writeText(url);
-      setFeedback("تم نسخ رابط المقالة.");
-    } catch (error) {
-      if (error instanceof DOMException && error.name === "AbortError") return;
-      setFeedback("تعذّرت المشاركة؛ يمكنك نسخ الرابط من شريط العنوان.");
-    }
-  };
-
   return (
     <div className={className}>
       <button type="button" onClick={toggleSaved} aria-pressed={saved}>
         <Bookmark size={18} fill={saved ? "currentColor" : "none"} />
         {saved ? "محفوظة" : "حفظ المقالة"}
       </button>
-      <button type="button" onClick={() => void share()}>
-        <Share2 size={18} />
-        مشاركة
-      </button>
+      <ShareButton
+        label="نسخ الرابط"
+        copiedLabel="تم نسخ الرابط"
+        ariaLabel="نسخ رابط المقالة"
+      />
       <p className={feedbackClassName} aria-live="polite">
         {feedback}
       </p>

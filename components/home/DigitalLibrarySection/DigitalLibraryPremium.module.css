@@ -94,6 +94,11 @@
   background: rgba(255,255,255,.72) !important;
 }
 
+.workCardShell > .workCard {
+  height: 100%;
+  padding-left: 48px !important;
+}
+
 .workCard:hover { border-color: color-mix(in srgb, var(--work-accent), #fff 45%) !important; background: #fff !important; box-shadow: 0 17px 38px rgba(75,51,40,.11) !important; }
 
 .libraryTools {

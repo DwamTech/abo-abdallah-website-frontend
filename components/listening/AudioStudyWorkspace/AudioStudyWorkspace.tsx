@@ -19,7 +19,6 @@ import {
   Play,
   RotateCcw,
   RotateCw,
-  Share2,
   Volume2,
 } from "lucide-react";
 import {
@@ -33,6 +32,8 @@ import { getListeningVisual } from "@/lib/listeningVisuals";
 import { isDirectPlayableAudioUrl } from "@/lib/listeningAudioUrl";
 import SeriesIcon from "@/components/listening/SeriesIcon/SeriesIcon";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
+import TrackedViewCount from "@/components/content/ViewCount/TrackedViewCount";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
 import styles from "./AudioStudyWorkspace.module.css";
 
 type AudioStudyWorkspaceProps = {
@@ -171,12 +172,22 @@ export default function AudioStudyWorkspace({
                 <span>{session.date_label || "—"}</span>
                 <i />
                 <span>مادة صوتية مرتبطة بالكتاب</span>
+                <i />
+                <TrackedViewCount
+                  endpoint={`/api/listening/series/${encodeURIComponent(series.slug)}/sessions/${encodeURIComponent(session.slug)}/view`}
+                  initialCount={session.views_count}
+                  tone="light"
+                />
               </div>
             </div>
             <div className={styles.introActions}>
-              <button type="button" aria-label="مشاركة المجلس">
-                <Share2 size={17} />
-              </button>
+              <ShareButton
+                ariaLabel="نسخ رابط المجلس"
+                copiedLabel="تم نسخ الرابط"
+                href={`/listening/${series.slug}/${session.slug}`}
+                iconOnly
+                label="نسخ الرابط"
+              />
               {audioUrl && session.audio_download_allowed ? (
                 <a
                   href={audioUrl}

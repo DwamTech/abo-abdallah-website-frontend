@@ -12,6 +12,11 @@
     "test:scientific-fatwas": "node --test lib/fatwaBffProxyHeaders.test.mjs lib/scientificFatwaMarkup.test.mjs lib/scientificFatwaOptions.test.mjs lib/sameOriginRequest.test.mjs",
     "test:dissertations": "node --test lib/dissertationProxy.test.mjs",
     "test:news-ticker": "node --test lib/newsTickerContract.test.mjs lib/newsTickerMarkup.test.mjs",
+    "test:public-views": "node --test lib/publicViewProxy.test.mjs lib/publicViewsMarkup.test.mjs",
+    "test:library-indexes": "node --test lib/libraryIndexesBffProxyHeaders.test.mjs lib/libraryIndexesContract.test.mjs",
+    "test:share-links": "node --test lib/shareLink.test.mjs lib/shareMediaModulesMarkup.test.mjs lib/publicShareCoreModulesMarkup.test.mjs",
+    "test:comments": "node --test lib/commentsContract.test.mjs lib/commentsBffProxyHeaders.test.mjs lib/commentsMarkup.test.mjs",
+    "test:search": "node --test lib/searchContract.test.mjs",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

@@ -13,6 +13,14 @@
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.72);
 }
+.cardShare {
+  width: 31px;
+  height: 31px;
+  min-width: 31px !important;
+  min-height: 31px !important;
+  padding: 0 !important;
+  flex: 0 0 auto;
+}
 .state svg {
   margin-bottom: 15px;
   color: #a87335;

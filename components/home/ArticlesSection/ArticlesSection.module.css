@@ -83,6 +83,14 @@
   grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
   gap: 16px;
 }
+.featuredShell,
+.stackItem {
+  position: relative;
+  min-width: 0;
+}
+.featuredShell {
+  height: 100%;
+}
 .featured {
   position: relative;
   display: grid;
@@ -103,6 +111,22 @@
     ),
     linear-gradient(145deg, #4a3024, #211510);
   box-shadow: 0 27px 58px rgba(62, 38, 27, 0.17);
+}
+.featuredShell > .featured {
+  height: 100%;
+}
+.featuredShare,
+.stackShare {
+  position: absolute;
+  z-index: 3;
+}
+.featuredShare {
+  top: 22px;
+  left: 22px;
+}
+.stackShare {
+  top: calc(50% - 21px);
+  left: 4px;
 }
 .featured:before {
   position: absolute;
@@ -173,6 +197,18 @@
     11px "Noto Kufi Arabic Variable",
     sans-serif;
 }
+.featuredMeta,
+.stackTopline {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.stackTopline {
+  justify-content: space-between;
+}
+.stackTopline > span {
+  padding-block: 0.22rem;
+}
 .verticalWord {
   position: absolute;
   left: -11px;
@@ -187,11 +223,11 @@
   display: grid;
   gap: 10px;
 }
-.stack > a {
+.stackItem > a {
   position: relative;
   display: grid;
   min-height: 137px;
-  padding: 18px;
+  padding: 18px 18px 18px 50px;
   grid-template-columns: 28px 43px 1fr 20px;
   align-items: center;
   gap: 10px;
@@ -202,7 +238,7 @@
   box-shadow: 0 12px 28px rgba(66, 42, 30, 0.05);
   transition: 0.22s;
 }
-.stack > a:hover {
+.stackItem > a:hover {
   border-color: #bd8b49;
   background: #fffaf1;
   transform: translateX(-5px);
@@ -256,7 +292,7 @@
   .featured {
     min-height: 400px;
   }
-  .stack > a {
+  .stackItem > a {
     min-height: 126px;
   }
 }
@@ -295,7 +331,7 @@
   .featured h3 {
     font-size: 23px;
   }
-  .stack > a {
+  .stackItem > a {
     grid-template-columns: 24px 1fr 18px;
   }
   .stackIcon {
@@ -323,9 +359,9 @@
   .stack {
     gap: 7px;
   }
-  .stack > a {
+  .stackItem > a {
     min-height: 72px;
-    padding: 7px 13px;
+    padding: 7px 13px 7px 45px;
     grid-template-columns: 23px 35px 1fr 17px;
     gap: 8px;
   }
@@ -365,7 +401,7 @@
   .stack {
     grid-template-rows: repeat(5, minmax(0, 1fr));
   }
-  .stack > a {
+  .stackItem > a {
     min-height: 0;
   }
   .featured {
@@ -401,7 +437,7 @@
     grid-template-rows: repeat(5, 64px);
     align-content: center;
   }
-  .stack > a {
+  .stackItem > a {
     height: 64px;
     padding-block: 5px;
   }

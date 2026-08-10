@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowLeft, Play, Video } from "lucide-react";
 import { toArabicDigits } from "@/lib/arabicNumbers";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
 import {
   getScientificVideosHome,
   scientificVideosErrorMessage,
@@ -34,7 +36,12 @@ export default async function VideosSection() {
         </header>
         {featured ? (
           <div className={styles.stage}>
-            <Link href={`/videos/${featured.slug}`} className={styles.featured}>
+            <article className={styles.featured}>
+              <Link
+                aria-label={`مشاهدة المادة: ${featured.title}`}
+                className={styles.cardLink}
+                href={`/videos/${featured.slug}`}
+              />
               <span className={styles.play}>
                 <Play fill="currentColor" size={28} />
               </span>
@@ -45,12 +52,27 @@ export default async function VideosSection() {
                 <strong>
                   شاهد المادة <ArrowLeft size={17} />
                 </strong>
+                <ViewCount count={featured.views_count} tone="light" />
               </div>
+              <ShareButton
+                ariaLabel={`نسخ رابط المادة المرئية: ${featured.title}`}
+                className={styles.featuredShare}
+                href={`/videos/${featured.slug}`}
+                iconOnly
+              />
               <i>{toArabicDigits(featured.duration_label)}</i>
-            </Link>
+            </article>
             <div className={styles.list}>
-              {videos.slice(1, 6).map((video, index) => (
-                <Link key={video.slug} href={`/videos/${video.slug}`}>
+              {videos.slice(1, 6).map((video, index) => {
+                const href = `/videos/${video.slug}`;
+
+                return (
+                <article className={styles.videoCard} key={video.slug}>
+                  <Link
+                    aria-label={`مشاهدة المادة: ${video.title}`}
+                    className={styles.cardLink}
+                    href={href}
+                  />
                   <span>
                     {toArabicDigits(String(index + 2).padStart(2, "0"))}
                   </span>
@@ -58,10 +80,18 @@ export default async function VideosSection() {
                   <div>
                     <small>{video.category}</small>
                     <h3>{video.title}</h3>
+                    <ViewCount count={video.views_count} tone="light" />
                   </div>
+                  <ShareButton
+                    ariaLabel={`نسخ رابط المادة المرئية: ${video.title}`}
+                    className={styles.listShare}
+                    href={href}
+                    iconOnly
+                  />
                   <em>{toArabicDigits(video.duration_label)}</em>
-                </Link>
-              ))}
+                </article>
+                );
+              })}
             </div>
           </div>
         ) : (

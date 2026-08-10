@@ -470,6 +470,17 @@
   transform: translateY(-2px);
 }
 
+.submitButton:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  box-shadow: none;
+  transform: none;
+}
+
+.spinner {
+  animation: registrySpin 850ms linear infinite;
+}
+
 .successMessage {
   display: flex;
   margin: 12px 0 0;
@@ -813,10 +824,12 @@
 }
 
 .avatar {
-  display: block;
+  display: grid;
   width: 48px;
   height: 48px;
   overflow: hidden;
+  place-items: center;
+  color: #8c755f;
   border: 2px solid #fff;
   border-radius: 14px;
   background: #e7dac8;
@@ -862,6 +875,104 @@
   margin: 3px 0 0;
   color: #948275;
   font-size: 13px;
+}
+
+.tableState {
+  display: flex;
+  min-height: 260px;
+  padding: 35px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: var(--gold-600);
+  text-align: center;
+}
+
+.tableState strong {
+  margin-top: 10px;
+  color: var(--brown-800);
+  font-size: 16px;
+}
+
+.tableState p {
+  margin: 4px 0 0;
+  color: #948275;
+  font-size: 13px;
+}
+
+.tableError {
+  color: #9b4038;
+}
+
+.tableState button,
+.inlineTableError button,
+.registryPagination button {
+  min-height: 38px;
+  padding-inline: 14px;
+  color: #fff8eb;
+  border: 0;
+  border-radius: 8px;
+  background: #4b3328;
+  font: 9px "Noto Kufi Arabic Variable", sans-serif;
+  cursor: pointer;
+}
+
+.tableState button {
+  margin-top: 14px;
+}
+
+.inlineTableError {
+  display: flex;
+  min-height: 48px;
+  margin-top: 10px;
+  padding: 7px 12px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #873c36;
+  border: 1px solid #e1b9b3;
+  border-radius: 10px;
+  background: #fff7f5;
+  font-size: 12px;
+}
+
+.tableProgress {
+  position: absolute;
+  z-index: 5;
+  right: 12px;
+  bottom: 10px;
+  display: inline-flex;
+  padding: 7px 10px;
+  align-items: center;
+  gap: 6px;
+  color: #765e4e;
+  border: 1px solid #d9c8ae;
+  border-radius: 999px;
+  background: rgba(255, 253, 248, 0.94);
+  box-shadow: 0 8px 20px rgba(67, 43, 32, 0.1);
+  font-size: 10px;
+}
+
+.registryPagination {
+  display: flex;
+  margin-top: 15px;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+}
+
+.registryPagination span {
+  color: #826f61;
+  font-size: 12px;
+}
+
+.registryPagination span strong {
+  color: var(--brown-900);
+}
+
+.registryPagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
 }
 
 .guestSection {
@@ -1550,7 +1661,7 @@
 
   .tableLauncher {
     padding: 18px;
-    grid-template-columns: 48px minmax(0, 1fr);
+    grid-template-columns: 64px minmax(0, 1fr);
     gap: 12px;
   }
 
@@ -1569,7 +1680,21 @@
   }
 
   .launcherCount {
-    display: none;
+    display: flex;
+    min-width: 0;
+    min-height: 48px;
+    grid-row: 2;
+    grid-column: 1;
+    justify-content: center;
+    border: 1px solid #ded0bc;
+    border-radius: 9px;
+    background: rgba(248, 241, 229, 0.76);
+  }
+
+  .tableLauncher > button {
+    width: 100%;
+    grid-row: 2;
+    grid-column: 2;
   }
 
   .modalOverlay {
@@ -1691,6 +1816,15 @@
   .tableHeader h3 {
     font-size: 20px;
   }
+
+  .inlineTableError {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .registryPagination {
+    justify-content: space-between;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1701,4 +1835,12 @@
     transition: none;
     animation: none;
   }
+
+  .spinner {
+    animation-duration: 1.8s;
+  }
+}
+
+@keyframes registrySpin {
+  to { transform: rotate(360deg); }
 }

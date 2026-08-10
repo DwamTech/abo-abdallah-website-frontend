@@ -10,6 +10,9 @@ import {
   Tags,
 } from "lucide-react";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
+import TrackedViewCount from "@/components/content/ViewCount/TrackedViewCount";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
 import type {
   ScientificFatwaCard,
   ScientificFatwaItem,
@@ -55,6 +58,20 @@ export default function FatwaDetailContent({
               <BookOpenCheck size={16} />
               {toArabicDigits(fatwa.sources.length)} مراجع
             </span>
+            <i />
+            <TrackedViewCount
+              endpoint={`/api/scientific-fatwas/items/${encodeURIComponent(fatwa.slug)}/view`}
+              initialCount={fatwa.views_count}
+              tone="light"
+            />
+            <i />
+            <ShareButton
+              ariaLabel="نسخ رابط الفتوى"
+              className={styles.shareButton}
+              copiedLabel="تم نسخ الرابط"
+              href={`/fatwas/${fatwa.slug}`}
+              label="نسخ الرابط"
+            />
           </div>
         </div>
       </section>
@@ -154,12 +171,19 @@ export default function FatwaDetailContent({
               </Link>
             </header>
             <div className={relatedStyles.grid}>
-              {related.map((item) => (
-                <Link
+              {related.map((item) => {
+                const href = `/fatwas/${item.slug}`;
+
+                return (
+                <article
                   className={relatedStyles.card}
-                  href={`/fatwas/${item.slug}`}
                   key={item.slug}
                 >
+                  <Link
+                    aria-label={`قراءة جواب: ${item.title}`}
+                    className={relatedStyles.cardLink}
+                    href={href}
+                  />
                   <div className={relatedStyles.cardTop}>
                     <span>{item.category}</span>
                     <i>
@@ -173,12 +197,20 @@ export default function FatwaDetailContent({
                       <CalendarDays size={14} />
                       {item.date_label}
                     </span>
+                    <ViewCount count={item.views_count} tone="muted" />
+                    <ShareButton
+                      ariaLabel={`نسخ رابط الفتوى: ${item.title}`}
+                      className={relatedStyles.cardShare}
+                      href={href}
+                      iconOnly
+                    />
                     <b>
                       قراءة الجواب <ArrowLeft size={15} />
                     </b>
                   </footer>
-                </Link>
-              ))}
+                </article>
+                );
+              })}
             </div>
           </section>
         </div>

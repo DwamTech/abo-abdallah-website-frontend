@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import {
   AudioLines,
   ArrowUpLeft,
@@ -16,43 +16,39 @@ import {
   Search,
   Sparkles,
   X,
-} from "lucide-react";
-import { toArabicDigits } from "@/lib/arabicNumbers";
-import SmartSearchOverlay from "@/components/search/SmartSearchOverlay";
-import styles from "./Header.module.css";
-import siteContent from "@/data/site-content.json";
+} from 'lucide-react';
+import { toArabicDigits } from '@/lib/arabicNumbers';
+import SmartSearchOverlay from '@/components/search/SmartSearchOverlay';
+import styles from './Header.module.css';
+import siteContent from '@/data/site-content.json';
 
 const navigation = siteContent.navigation;
 
 const libraryNavigation = [
   {
-    label: "مؤلفات الشيخ",
-    description: "الكتب والتحقيقات والبحوث المنشورة",
-    href: "/library",
+    label: 'مؤلفات الشيخ',
+    description: 'الكتب والتحقيقات والبحوث المنشورة',
+    href: '/library',
     icon: BookMarked,
   },
   {
-    label: "الإشراف العلمي",
-    description: "الرسائل والمناقشات والإنتاج الأكاديمي",
-    href: "/dissertations",
+    label: 'الإشراف العلمي',
+    description: 'الرسائل والمناقشات والإنتاج الأكاديمي',
+    href: '/dissertations',
     icon: GraduationCap,
   },
   {
-    label: "فهارس المكتبة البكرية",
-    description: "السجل والضيوف والفهارس المتخصصة",
-    href: "/library-indexes",
+    label: 'فهارس المكتبة البكرية',
+    description: 'السجل والضيوف والفهارس المتخصصة',
+    href: '/library-indexes',
     icon: LibraryBig,
   },
 ];
 
-const visibleNavigation = navigation.filter(
-  (item) => item.href !== "/dissertations",
-);
+const visibleNavigation = navigation.filter((item) => item.href !== '/dissertations');
 
 function isActivePath(pathname: string, href: string) {
-  return (
-    pathname === href || (href !== "/" && pathname.startsWith(`${href}/`))
-  );
+  return pathname === href || (href !== '/' && pathname.startsWith(`${href}/`));
 }
 
 export default function Header() {
@@ -60,50 +56,55 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const previousSearchFocus = useRef<HTMLElement | null>(null);
+  const searchWasOpen = useRef(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 24);
     const handleOpenSearch = () => {
+      previousSearchFocus.current =
+        document.activeElement instanceof HTMLElement ? document.activeElement : null;
       setMenuOpen(false);
       setSearchOpen(true);
     };
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         setMenuOpen(false);
         setSearchOpen(false);
       }
     };
 
     handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("site:open-search", handleOpenSearch);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('site:open-search', handleOpenSearch);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("site:open-search", handleOpenSearch);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('site:open-search', handleOpenSearch);
     };
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen || searchOpen ? "hidden" : "";
+    if (searchWasOpen.current && !searchOpen) {
+      window.requestAnimationFrame(() => previousSearchFocus.current?.focus());
+    }
+    searchWasOpen.current = searchOpen;
+  }, [searchOpen]);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen || searchOpen ? 'hidden' : '';
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = '';
     };
   }, [menuOpen, searchOpen]);
 
   return (
     <>
-      <header
-        className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}
-      >
+      <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
         <div className={styles.navShell}>
-          <a
-            className={styles.brand}
-            href="/"
-            aria-label="الانتقال إلى الصفحة الرئيسية"
-          >
+          <a className={styles.brand} href="/" aria-label="الانتقال إلى الصفحة الرئيسية">
             <Image
               className={styles.brandLogo}
               src="/media/images/real-logo-transparent.png"
@@ -116,22 +117,16 @@ export default function Header() {
 
           <nav className={styles.desktopNav} aria-label="التنقل الرئيسي">
             {visibleNavigation.map((item) =>
-              item.href === "/library" ? (
+              item.href === '/library' ? (
                 <div
                   className={`${styles.navDropdown} ${
-                    libraryNavigation.some((entry) =>
-                      isActivePath(pathname, entry.href),
-                    )
+                    libraryNavigation.some((entry) => isActivePath(pathname, entry.href))
                       ? styles.navDropdownActive
-                      : ""
+                      : ''
                   }`}
                   key={item.href}
                 >
-                  <button
-                    className={styles.navDropdownTrigger}
-                    type="button"
-                    aria-haspopup="true"
-                  >
+                  <button className={styles.navDropdownTrigger} type="button" aria-haspopup="true">
                     {item.label}
                     <ChevronDown size={14} strokeWidth={1.8} />
                   </button>
@@ -169,11 +164,7 @@ export default function Header() {
                 <a
                   key={item.href}
                   href={item.href}
-                  className={
-                    isActivePath(pathname, item.href)
-                      ? styles.activeLink
-                      : undefined
-                  }
+                  className={isActivePath(pathname, item.href) ? styles.activeLink : undefined}
                 >
                   {item.label}
                 </a>
@@ -185,7 +176,11 @@ export default function Header() {
             <button
               className={styles.searchButton}
               type="button"
-              onClick={() => setSearchOpen(true)}
+              onClick={() => {
+                previousSearchFocus.current =
+                  document.activeElement instanceof HTMLElement ? document.activeElement : null;
+                setSearchOpen(true);
+              }}
               aria-label="فتح البحث"
             >
               <Search size={19} strokeWidth={1.7} />
@@ -198,7 +193,7 @@ export default function Header() {
                 <BookOpen size={20} strokeWidth={1.45} />
                 <AudioLines size={10} strokeWidth={2} />
               </span>
-              <span>المقرأة الصوتية</span>
+              <span>المكتبة الصوتية</span>
               <ArrowUpLeft size={15} strokeWidth={1.7} />
             </a>
 
@@ -217,17 +212,13 @@ export default function Header() {
       </header>
 
       <div
-        className={`${styles.drawerLayer} ${menuOpen ? styles.drawerLayerOpen : ""}`}
+        className={`${styles.drawerLayer} ${menuOpen ? styles.drawerLayerOpen : ''}`}
         aria-hidden={!menuOpen}
         onMouseDown={(event) => {
           if (event.currentTarget === event.target) setMenuOpen(false);
         }}
       >
-        <aside
-          id="mobile-navigation"
-          className={styles.drawer}
-          aria-label="التنقل على الجوال"
-        >
+        <aside id="mobile-navigation" className={styles.drawer} aria-label="التنقل على الجوال">
           <div className={styles.drawerHead}>
             <Image
               className={styles.drawerLogo}
@@ -236,11 +227,7 @@ export default function Header() {
               width={1600}
               height={561}
             />
-            <button
-              type="button"
-              onClick={() => setMenuOpen(false)}
-              aria-label="إغلاق القائمة"
-            >
+            <button type="button" onClick={() => setMenuOpen(false)} aria-label="إغلاق القائمة">
               <X size={21} />
             </button>
           </div>
@@ -255,11 +242,11 @@ export default function Header() {
 
           <nav className={styles.mobileNav}>
             {visibleNavigation.map((item, index) =>
-              item.href === "/library" ? (
+              item.href === '/library' ? (
                 <div className={styles.mobileLibraryGroup} key={item.href}>
                   <div className={styles.mobileLibraryTitle}>
                     <span className={styles.navNumber}>
-                      {toArabicDigits(String(index + 1).padStart(2, "0"))}
+                      {toArabicDigits(String(index + 1).padStart(2, '0'))}
                     </span>
                     <strong>{item.label}</strong>
                     <ChevronDown size={17} />
@@ -268,11 +255,7 @@ export default function Header() {
                     {libraryNavigation.map((entry) => {
                       const Icon = entry.icon;
                       return (
-                        <a
-                          href={entry.href}
-                          key={entry.href}
-                          onClick={() => setMenuOpen(false)}
-                        >
+                        <a href={entry.href} key={entry.href} onClick={() => setMenuOpen(false)}>
                           <Icon size={16} />
                           <span>{entry.label}</span>
                           <ArrowUpLeft size={15} />
@@ -282,13 +265,9 @@ export default function Header() {
                   </div>
                 </div>
               ) : (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                >
+                <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>
                   <span className={styles.navNumber}>
-                    {toArabicDigits(String(index + 1).padStart(2, "0"))}
+                    {toArabicDigits(String(index + 1).padStart(2, '0'))}
                   </span>
                   <strong>{item.label}</strong>
                   <ArrowUpLeft size={17} />
@@ -304,9 +283,7 @@ export default function Header() {
         </aside>
       </div>
 
-      {searchOpen && (
-        <SmartSearchOverlay onClose={() => setSearchOpen(false)} />
-      )}
+      {searchOpen && <SmartSearchOverlay onClose={() => setSearchOpen(false)} />}
     </>
   );
 }

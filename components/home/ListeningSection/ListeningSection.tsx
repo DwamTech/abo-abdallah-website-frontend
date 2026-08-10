@@ -8,6 +8,8 @@ import {
   Play,
 } from "lucide-react";
 import SeriesIcon from "@/components/listening/SeriesIcon/SeriesIcon";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import { apiErrorMessage, getListeningHome } from "@/lib/api";
 import { toArabicDigits } from "@/lib/arabicNumbers";
@@ -66,10 +68,12 @@ export default async function ListeningSection() {
 
         <div className={styles.showcase}>
           {featured ? (
-            <Link
-              className={styles.featured}
-              href={`/listening/${featured.slug}`}
-            >
+            <article className={styles.featured}>
+              <Link
+                aria-label={`فتح السلسلة: ${featured.title}`}
+                className={styles.cardLink}
+                href={`/listening/${featured.slug}`}
+              />
               <div className={styles.cover}>
                 <span className={styles.coverTop}>مجالس السماع</span>
                 <SeriesIcon
@@ -108,6 +112,7 @@ export default async function ListeningSection() {
                     <BookOpen size={15} />
                     قراءة واستماع
                   </span>
+                  <ViewCount count={featured.views_count} tone="light" />
                 </div>
 
                 <span className={styles.playAction}>
@@ -118,7 +123,13 @@ export default async function ListeningSection() {
                   <ArrowLeft size={17} />
                 </span>
               </div>
-            </Link>
+              <ShareButton
+                ariaLabel={`نسخ رابط السلسلة: ${featured.title}`}
+                className={styles.featuredShare}
+                href={`/listening/${featured.slug}`}
+                iconOnly
+              />
+            </article>
           ) : (
             <div
               className={styles.sectionState}
@@ -141,11 +152,15 @@ export default async function ListeningSection() {
                 const visual = getListeningVisual(series.visual_variant);
 
                 return (
-                  <Link
+                  <article
                     key={series.slug}
                     className={styles.seriesCard}
-                    href={`/listening/${series.slug}`}
                   >
+                    <Link
+                      aria-label={`فتح السلسلة: ${series.title}`}
+                      className={styles.cardLink}
+                      href={`/listening/${series.slug}`}
+                    />
                     <span className={styles.seriesIndex}>
                       {toArabicDigits(String(index + 2).padStart(2, "0"))}
                     </span>
@@ -165,14 +180,23 @@ export default async function ListeningSection() {
                     <span className={styles.seriesCopy}>
                       <small>{series.category}</small>
                       <strong>{series.short_title}</strong>
-                      <span>
-                        {toArabicDigits(series.sessions_count)} مجالس مرتبة
+                      <span className={styles.seriesDetails}>
+                        <span>
+                          {toArabicDigits(series.sessions_count)} مجالس مرتبة
+                        </span>
+                        <ViewCount count={series.views_count} tone="light" />
+                        <ShareButton
+                          ariaLabel={`نسخ رابط السلسلة: ${series.title}`}
+                          className={styles.seriesShare}
+                          href={`/listening/${series.slug}`}
+                          iconOnly
+                        />
                       </span>
                     </span>
                     <span className={styles.cardArrow}>
                       <ArrowLeft size={17} />
                     </span>
-                  </Link>
+                  </article>
                 );
               })}
 

@@ -3,10 +3,12 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 
 import FatwaDetailContent from "@/components/fatwa/FatwaDetailContent/FatwaDetailContent";
+import CommentsSection from "@/components/content/CommentsSection/CommentsSection";
 import Footer from "@/components/layout/Footer/Footer";
 import Header from "@/components/layout/Header/Header";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import { ApiError } from "@/lib/api";
+import { commentsModuleEnabled } from "@/lib/commentsFeature";
 import { getScientificFatwaItem } from "@/lib/scientificFatwaApi";
 
 type Props = { params: Promise<{ fatwaSlug: string }> };
@@ -49,6 +51,14 @@ export default async function FatwaPage({ params }: Props) {
       <Header />
       <main>
         <FatwaDetailContent fatwa={detail.data} related={detail.related} />
+        {commentsModuleEnabled() && (
+          <CommentsSection
+            target={{
+              type: "scientific_fatwa",
+              targetId: String(detail.data.id),
+            }}
+          />
+        )}
         <SectionDivider variant="manuscript" />
       </main>
       <Footer />

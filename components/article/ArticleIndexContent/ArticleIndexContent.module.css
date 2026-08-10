@@ -34,6 +34,12 @@
   opacity: 0.55;
   transition: opacity 0.18s;
 }
+.cardShare {
+  position: absolute;
+  z-index: 2;
+  top: 15px;
+  left: 52px;
+}
 .pageSlot {
   display: flex !important;
   align-items: center;

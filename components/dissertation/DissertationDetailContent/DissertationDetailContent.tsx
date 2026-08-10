@@ -19,6 +19,9 @@ import {
   X,
 } from "lucide-react";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
+import TrackedViewCount from "@/components/content/ViewCount/TrackedViewCount";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
 import { resolveReaderSource, type DissertationDetail } from "@/lib/api";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import styles from "./DissertationDetailContent.module.css";
@@ -115,6 +118,11 @@ export default function DissertationDetailContent({
                     <strong>{toArabicDigits(dissertation.year)}هـ</strong>
                   </span>
                 )}
+                <TrackedViewCount
+                  endpoint={`/api/dissertations/${encodeURIComponent(dissertation.slug || String(dissertation.id))}/view`}
+                  initialCount={dissertation.views_count}
+                  tone="light"
+                />
               </div>
             </div>
           </div>
@@ -150,6 +158,12 @@ export default function DissertationDetailContent({
                   فتح الملف
                 </a>
               )}
+              <ShareButton
+                className={styles.shareAction}
+                label="نسخ الرابط"
+                copiedLabel="تم نسخ الرابط"
+                ariaLabel="نسخ رابط الرسالة العلمية"
+              />
               <Link href="/dissertations">
                 العودة إلى جميع الرسائل
                 <ArrowLeft size={16} />
@@ -242,26 +256,35 @@ export default function DissertationDetailContent({
               </header>
               <div>
                 {related.map((item) => (
-                  <Link
-                    href={`/dissertations/${item.slug || item.id}`}
+                  <article
+                    className={styles.relatedItem}
                     key={String(item.id)}
                   >
-                    <span className={styles.relatedIcon}>
-                      <GraduationCap size={23} />
-                    </span>
-                    <span>
-                      {(item.participation_type || item.degree) && (
-                        <small>
-                          {[item.participation_type, item.degree]
-                            .filter(Boolean)
-                            .join(" · ")}
-                        </small>
-                      )}
-                      <strong>{item.title}</strong>
-                      {item.specialization && <em>{item.specialization}</em>}
-                    </span>
-                    <ArrowLeft size={17} />
-                  </Link>
+                    <Link href={`/dissertations/${item.slug || item.id}`}>
+                      <span className={styles.relatedIcon}>
+                        <GraduationCap size={23} />
+                      </span>
+                      <span>
+                        {(item.participation_type || item.degree) && (
+                          <small>
+                            {[item.participation_type, item.degree]
+                              .filter(Boolean)
+                              .join(" · ")}
+                          </small>
+                        )}
+                        <strong>{item.title}</strong>
+                        {item.specialization && <em>{item.specialization}</em>}
+                        <ViewCount count={item.views_count} tone="muted" />
+                      </span>
+                      <ArrowLeft size={17} />
+                    </Link>
+                    <ShareButton
+                      className={styles.relatedShare}
+                      href={`/dissertations/${item.slug || item.id}`}
+                      iconOnly
+                      ariaLabel={`نسخ رابط الرسالة: ${item.title}`}
+                    />
+                  </article>
                 ))}
               </div>
             </section>

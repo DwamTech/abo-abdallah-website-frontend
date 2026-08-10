@@ -12,16 +12,17 @@ import {
   FileText,
   Home,
   Library,
-  Share2,
   Sparkles,
   Tags,
   X,
 } from "lucide-react";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
 import LibraryWorkIcon from "@/components/library/LibraryWorkIcon/LibraryWorkIcon";
+import TrackedViewCount from "@/components/content/ViewCount/TrackedViewCount";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import {
-  recordScientificLibraryView,
   resolveScientificLibraryReader,
   resolveScientificLibraryUrl,
   type ScientificLibraryDetail,
@@ -47,17 +48,6 @@ export default function LibraryItemContent({
   const readerTriggerRef = useRef<HTMLButtonElement>(null);
   const closeReaderRef = useRef<HTMLButtonElement>(null);
   const fullReaderFrameRef = useRef<HTMLIFrameElement>(null);
-  const viewedSlugsRef = useRef(new Set<string>());
-
-  useEffect(() => {
-    const slug = item.slug;
-    if (viewedSlugsRef.current.has(slug)) return;
-
-    viewedSlugsRef.current.add(slug);
-    void recordScientificLibraryView(slug).catch(() => {
-      // Reading the page must stay available when analytics are unavailable.
-    });
-  }, [item.slug]);
 
   useEffect(() => {
     if (!readerOpen) return;
@@ -88,18 +78,6 @@ export default function LibraryItemContent({
     item.keywords.length > 0 ||
     reader.downloadUrl,
   );
-
-  const share = async () => {
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: item.title, url: window.location.href });
-      } else {
-        await navigator.clipboard.writeText(window.location.href);
-      }
-    } catch {
-      // The user may cancel the native share dialog.
-    }
-  };
 
   return (
     <>
@@ -170,6 +148,11 @@ export default function LibraryItemContent({
                   <small>التصنيف العلمي</small>
                   <strong>{item.scientific_field}</strong>
                 </span>
+                <TrackedViewCount
+                  endpoint={`/api/scientific-library/items/${encodeURIComponent(item.slug)}/view`}
+                  initialCount={item.views_count}
+                  tone="light"
+                />
               </div>
 
               <div className={styles.actions}>
@@ -202,13 +185,11 @@ export default function LibraryItemContent({
                     تحميل المصنَّف
                   </a>
                 )}
-                <button
-                  type="button"
-                  aria-label="مشاركة المصنف"
-                  onClick={share}
-                >
-                  <Share2 size={17} />
-                </button>
+                <ShareButton
+                  iconOnly
+                  ariaLabel="نسخ رابط المصنَّف"
+                  copiedLabel="تم نسخ الرابط"
+                />
               </div>
             </div>
           </div>
@@ -382,29 +363,43 @@ export default function LibraryItemContent({
               </header>
               <div>
                 {relatedItems.map((relatedItem) => (
-                  <Link
-                    href={`/library/${relatedItem.slug}`}
+                  <article
+                    className={styles.relatedItem}
                     key={String(relatedItem.id)}
-                    prefetch={false}
                     style={
                       {
                         "--work-accent": workAccent(relatedItem),
                       } as React.CSSProperties
                     }
                   >
-                    <span className={styles.relatedIcon}>
-                      <LibraryWorkIcon
-                        type={relatedItem.content_type}
-                        size={25}
-                      />
-                    </span>
-                    <span>
-                      <small>{relatedItem.content_type}</small>
-                      <strong>{relatedItem.title}</strong>
-                      <em>{relatedItem.scientific_field}</em>
-                    </span>
-                    <ArrowLeft size={17} />
-                  </Link>
+                    <Link
+                      href={`/library/${relatedItem.slug}`}
+                      prefetch={false}
+                    >
+                      <span className={styles.relatedIcon}>
+                        <LibraryWorkIcon
+                          type={relatedItem.content_type}
+                          size={25}
+                        />
+                      </span>
+                      <span>
+                        <small>{relatedItem.content_type}</small>
+                        <strong>{relatedItem.title}</strong>
+                        <em>{relatedItem.scientific_field}</em>
+                        <ViewCount
+                          count={relatedItem.views_count}
+                          tone="muted"
+                        />
+                      </span>
+                      <ArrowLeft size={17} />
+                    </Link>
+                    <ShareButton
+                      className={styles.relatedShare}
+                      href={`/library/${relatedItem.slug}`}
+                      iconOnly
+                      ariaLabel={`نسخ رابط المصنَّف: ${relatedItem.title}`}
+                    />
+                  </article>
                 ))}
               </div>
             </section>

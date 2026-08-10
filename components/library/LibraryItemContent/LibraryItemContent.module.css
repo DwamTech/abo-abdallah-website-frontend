@@ -819,7 +819,20 @@
   gap: 12px;
 }
 
+.relatedItem {
+  position: relative;
+  min-width: 0;
+}
+
+.relatedShare {
+  position: absolute;
+  z-index: 2;
+  top: 13px;
+  left: 13px;
+}
+
 .related a {
+  height: 100%;
   display: grid;
   min-height: 110px;
   padding: 15px;

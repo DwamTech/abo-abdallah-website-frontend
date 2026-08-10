@@ -9,7 +9,10 @@ import {
 } from "lucide-react";
 import type { SiteArticle, SiteArticleCard } from "@/lib/siteArticlesApi";
 import ArticleActions from "@/components/article/ArticleActions/ArticleActions";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
+import TrackedViewCount from "@/components/content/ViewCount/TrackedViewCount";
+import ViewCount from "@/components/content/ViewCount/ViewCount";
 import styles from "./ArticleDetailContent.module.css";
 
 export default function ArticleDetailContent({
@@ -49,6 +52,12 @@ export default function ArticleDetailContent({
               <CalendarDays size={15} />
               {article.date_label}
             </span>
+            <i />
+            <TrackedViewCount
+              endpoint={`/api/site-articles/items/${encodeURIComponent(article.slug)}/view`}
+              initialCount={article.views_count}
+              tone="light"
+            />
           </div>
         </div>
       </section>
@@ -81,7 +90,6 @@ export default function ArticleDetailContent({
           <aside>
             <ArticleActions
               slug={article.slug}
-              title={article.title}
               className={styles.actions}
               feedbackClassName={styles.actionFeedback}
             />
@@ -102,15 +110,24 @@ export default function ArticleDetailContent({
             </header>
             <div>
               {related.map((item) => (
-                <Link href={`/articles/${item.slug}`} key={item.slug}>
-                  <small>{item.category}</small>
-                  <h3>{item.title}</h3>
-                  <p>{item.excerpt}</p>
-                  <footer>
-                    <span>{item.reading_time_label}</span>
-                    <ArrowLeft size={16} />
-                  </footer>
-                </Link>
+                <article className={styles.relatedItem} key={item.slug}>
+                  <Link href={`/articles/${item.slug}`}>
+                    <small>{item.category}</small>
+                    <h3>{item.title}</h3>
+                    <p>{item.excerpt}</p>
+                    <footer>
+                      <span>{item.reading_time_label}</span>
+                      <ViewCount count={item.views_count} tone="muted" />
+                      <ArrowLeft size={16} />
+                    </footer>
+                  </Link>
+                  <ShareButton
+                    className={styles.relatedShare}
+                    href={`/articles/${item.slug}`}
+                    iconOnly
+                    ariaLabel={`نسخ رابط المقالة: ${item.title}`}
+                  />
+                </article>
               ))}
             </div>
           </div>
