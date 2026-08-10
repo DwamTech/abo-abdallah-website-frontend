@@ -20,6 +20,7 @@ export const SEARCH_RESULT_TYPES = [
   "listening_session",
   "scientific_fatwa",
   "scientific_video",
+  "hadith_card_project",
 ] as const;
 
 export type SearchResultType = (typeof SEARCH_RESULT_TYPES)[number];
@@ -32,6 +33,7 @@ export const SEARCH_MODULES = [
   "listening",
   "fatwas",
   "videos",
+  "hadith_cards",
 ] as const;
 
 export type SearchModule = (typeof SEARCH_MODULES)[number];
@@ -52,6 +54,7 @@ const RESULT_PATHS: Record<SearchResultType, RegExp> = {
   ),
   scientific_fatwa: new RegExp(`^/fatwas/${ROUTE_SEGMENT}/?$`, "u"),
   scientific_video: new RegExp(`^/videos/${ROUTE_SEGMENT}/?$`, "u"),
+  hadith_card_project: new RegExp(`^/hadith-cards#[^/?#\\\\]+$`, "u"),
 };
 
 const PREVIEW_TYPE_TO_RESULT_TYPE: Record<string, SearchResultType> = {
@@ -67,6 +70,7 @@ const PREVIEW_TYPE_TO_RESULT_TYPE: Record<string, SearchResultType> = {
   scientific_fatwa: "scientific_fatwa",
   video: "scientific_video",
   scientific_video: "scientific_video",
+  hadith_card_project: "hadith_card_project",
 };
 
 const RESULT_TYPE_MODULE: Record<SearchResultType, SearchModule> = {
@@ -77,6 +81,7 @@ const RESULT_TYPE_MODULE: Record<SearchResultType, SearchModule> = {
   listening_session: "listening",
   scientific_fatwa: "fatwas",
   scientific_video: "videos",
+  hadith_card_project: "hadith_cards",
 };
 
 function hasUnsafeEncodedOctet(path: string) {
@@ -93,7 +98,7 @@ export function isSafeSearchResultPath(
     !path.startsWith("/") ||
     path.startsWith("//") ||
     path.includes("?") ||
-    path.includes("#") ||
+    (type !== "hadith_card_project" && path.includes("#")) ||
     path.includes("\\") ||
     /[\u0000-\u001f\u007f]/u.test(path) ||
     hasUnsafeEncodedOctet(path)
@@ -130,6 +135,7 @@ function isSafeModulePath(path: string) {
         "/listening",
         "/fatwas",
         "/videos",
+        "/hadith-cards",
       ].includes(url.pathname.replace(/\/$/, ""))
     );
   } catch {
@@ -255,4 +261,5 @@ export const SEARCH_MODULE_ORDER = [
   "dissertations",
   "videos",
   "articles",
+  "hadith_cards",
 ] as const satisfies readonly SearchPreviewModule[];

@@ -13,8 +13,9 @@
 .heroMeta i { width: 1px; height: 27px; background: rgba(229,198,129,.25); }
 .heroStack { position: relative; min-height: 470px; }
 .stackCard { position: absolute; top: 20px; right: 50%; width: 260px; height: 365px; overflow: hidden; border: 8px solid rgba(255,255,255,.92); border-radius: 10px; background: #fff; box-shadow: 0 35px 70px rgba(0,0,0,.35); transform: translateX(14%) rotate(7deg); }
-.stackCard:last-child { top: 75px; right: 8%; z-index: 2; transform: rotate(-6deg); }
+.stackCardSecondary { top: 75px; right: 8%; z-index: 2; transform: rotate(-6deg); }
 .stackCard img { object-fit: cover; object-position: top; }
+.stackEmpty { position: absolute; top: 70px; right: 18%; width: 250px; height: 350px; border: 1px solid rgba(229,198,129,.25); border-radius: 10px; background: linear-gradient(145deg, rgba(229,198,129,.12), rgba(255,255,255,.02)); box-shadow: 0 30px 65px rgba(0,0,0,.16); transform: rotate(-6deg); }
 .projectsSection { position: relative; padding: clamp(82px, 9vw, 130px) 0; overflow: hidden; background: radial-gradient(circle at 90% 8%, rgba(45,84,117,.09), transparent 24%), #faf6ee; }
 .projectsInner { width: min(calc(100% - 48px), var(--container)); margin: auto; }
 .sectionHeading { max-width: 760px; margin: 0 auto 60px; text-align: center; }
@@ -42,7 +43,7 @@
 .backHome { display: flex; width: max-content; margin: 55px auto 0; padding: 13px 20px; align-items: center; gap: 8px; color: #fff; border-radius: 26px; background: #4a3126; font: 10px "Noto Kufi Arabic Variable", sans-serif; }
 
 @media (max-width: 950px) { .heroInner { grid-template-columns: 1fr; text-align: center; } .heroCopy { margin: auto; } .heroMeta { justify-content: center; } .heroStack { width: min(100%, 520px); margin: auto; } .project { grid-template-columns: 1fr; } .project:nth-child(even) .projectImage { order: 0; } .projectImage { width: min(100%, 570px); margin: auto; } .projectCopy { margin: auto; text-align: center; } .features { width: max-content; max-width: 100%; margin-inline: auto; text-align: right; } }
-@media (max-width: 620px) { .hero { min-height: 0; padding: 115px 0 65px; } .heroInner, .projectsInner { width: min(calc(100% - 30px), var(--container)); } .heroCopy > p { font-size: 16px; } .heroStack { min-height: 360px; transform: scale(.78); transform-origin: top center; margin-bottom: -70px; } .stackCard { right: 42%; } .stackCard:last-child { right: 0; } .project { padding: 13px; border-radius: 22px 6px; } .projectImage { height: 490px; min-height: 0; } .projectCopy { padding: 15px 8px 25px; } }
+@media (max-width: 620px) { .hero { min-height: 0; padding: 115px 0 65px; } .heroInner, .projectsInner { width: min(calc(100% - 30px), var(--container)); } .heroCopy > p { font-size: 16px; } .heroStack { min-height: 360px; transform: scale(.78); transform-origin: top center; margin-bottom: -70px; } .stackCard { right: 42%; } .stackCardSecondary { right: 0; } .stackEmpty { right: 14%; } .project { padding: 13px; border-radius: 22px 6px; } .projectImage { height: 490px; min-height: 0; } .projectCopy { padding: 15px 8px 25px; } }
 
 /* Each project is an independent section with an expandable card gallery. */
 .project {
@@ -107,6 +108,21 @@
   height: 100%;
   object-fit: cover;
   object-position: top center;
+}
+
+.cardImageMissing {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 22px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 9px;
+  color: #92785c;
+  text-align: center;
+  font: 9px "Noto Kufi Arabic Variable", sans-serif;
+  background: linear-gradient(145deg, #f4eadc, #eadbc5);
 }
 
 .cardItem figcaption {
@@ -197,6 +213,11 @@
 .projectFooter span { display: inline-flex; align-items: center; gap: 7px; }
 .projectFooter svg { color: #a57a3f; }
 .blue .projectFooter svg { color: #275d80; }
+.cardsEmpty { display: flex; min-height: 180px; padding: 26px; align-items: center; justify-content: center; color: #8a7665; border: 1px dashed #d8c4a7; border-radius: 16px 5px 16px 5px; background: rgba(252,247,239,.75); font-size: 13px; text-align: center; grid-column: 1 / -1; }
+.projectsState { display: flex; min-height: 260px; padding: 34px; align-items: center; justify-content: center; flex-direction: column; gap: 10px; color: #806d5d; border: 1px dashed #d9c8ae; border-radius: 26px 7px 26px 7px; background: rgba(255,255,255,.62); text-align: center; }
+.projectsState svg { color: #a57a3f; }
+.projectsState strong { color: #573d2e; font: 600 14px "Noto Kufi Arabic Variable", sans-serif; }
+.projectsState p { max-width: 520px; margin: 0; font-size: 13px; line-height: 1.9; }
 .uploadError { width: min(100%, 720px); margin: 28px auto 0; padding: 13px 18px; text-align: center; color: #8c3f34; border: 1px solid #eccbc4; border-radius: 12px; background: #fff5f2; }
 
 @media (max-width: 900px) {
@@ -210,4 +231,513 @@
   .cardsGallery { grid-template-columns: 1fr; }
   .uploadCard { min-height: 330px; }
   .projectFooter { align-items: flex-start; flex-direction: column; }
+}
+
+/* Project cover + progressive gallery -------------------------------------------------- */
+.project {
+  display: grid;
+  padding: clamp(20px, 4vw, 46px);
+  grid-template-columns: minmax(220px, 0.64fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(28px, 6vw, 84px);
+}
+
+.project:nth-child(even) .projectCoverColumn { order: 2; }
+
+.projectCoverColumn {
+  width: min(100%, 410px);
+  margin-inline: auto;
+}
+
+.projectCoverButton {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  aspect-ratio: 0.704;
+  color: #fff;
+  cursor: pointer;
+  border: 6px solid rgba(255, 255, 255, 0.94);
+  border-radius: 22px 6px 22px 6px;
+  background: #e9ddcb;
+  box-shadow: 0 26px 58px rgba(52, 34, 25, 0.19);
+  isolation: isolate;
+  transition: transform 240ms ease, box-shadow 240ms ease;
+}
+
+.projectCoverButton::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: "";
+  opacity: 0.28;
+  background: linear-gradient(180deg, transparent 43%, rgba(26, 17, 12, 0.92));
+  transition: opacity 240ms ease;
+}
+
+.projectCoverButton:hover:not(:disabled) {
+  box-shadow: 0 34px 70px rgba(52, 34, 25, 0.27);
+  transform: translateY(-5px) rotate(-0.35deg);
+}
+
+.projectCoverButton:hover:not(:disabled)::after { opacity: 0.48; }
+
+.projectCoverButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.68;
+}
+
+.projectCoverButton img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 500ms ease;
+}
+
+.projectCoverButton:hover:not(:disabled) img { transform: scale(1.028); }
+
+.projectCoverMissing {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 28px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  color: #896f59;
+  text-align: center;
+  font: 10px/1.9 "Noto Kufi Arabic Variable", sans-serif;
+  background: linear-gradient(145deg, #f4e9da, #e7d5bd);
+}
+
+.coverAction {
+  position: absolute;
+  z-index: 2;
+  right: 17px;
+  bottom: 17px;
+  display: inline-flex;
+  padding: 9px 12px;
+  align-items: center;
+  gap: 7px;
+  color: #fffdf7;
+  border: 1px solid rgba(255, 239, 204, 0.34);
+  border-radius: 999px;
+  background: rgba(48, 31, 23, 0.72);
+  backdrop-filter: blur(9px);
+  font: 9px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.projectCopy {
+  max-width: 650px;
+  padding: 10px 0;
+}
+
+.projectCopy > small {
+  display: block;
+  margin-top: 21px;
+  color: #9b713a;
+  font: 10px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.projectCopy h2 {
+  margin: 8px 0 15px;
+  color: #3b2a20;
+  font: 600 clamp(27px, 3.8vw, 47px)/1.5 "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.projectCopy > p {
+  max-width: 610px;
+  margin: 0;
+  color: #77695d;
+  font-size: 16px;
+  line-height: 2;
+}
+
+.projectPreview {
+  display: flex;
+  margin-top: 28px;
+  align-items: center;
+  gap: 9px;
+}
+
+.projectPreview button {
+  width: clamp(50px, 7vw, 72px);
+  padding: 0;
+  overflow: hidden;
+  aspect-ratio: 0.7;
+  cursor: pointer;
+  color: #856c57;
+  border: 1px solid #dcc9ae;
+  border-radius: 9px 3px 9px 3px;
+  background: #f2e5d5;
+  box-shadow: 0 8px 20px rgba(64, 42, 29, 0.1);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.projectPreview button:hover {
+  border-color: #a8793c;
+  box-shadow: 0 12px 25px rgba(64, 42, 29, 0.15);
+  transform: translateY(-3px);
+}
+
+.projectPreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.projectActions {
+  display: flex;
+  margin-top: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.openGalleryButton {
+  display: inline-flex;
+  min-height: 46px;
+  padding: 10px 15px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #fffdf8;
+  cursor: pointer;
+  border: 1px solid #765039;
+  border-radius: 13px 4px 13px 4px;
+  background: #765039;
+  box-shadow: 0 10px 25px rgba(90, 58, 40, 0.18);
+  font: 10px "Noto Kufi Arabic Variable", sans-serif;
+  transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+
+.openGalleryButton:hover:not(:disabled) {
+  background: #5e3c2c;
+  box-shadow: 0 15px 31px rgba(90, 58, 40, 0.26);
+  transform: translateY(-2px);
+}
+
+.openGalleryButton:disabled { cursor: not-allowed; opacity: 0.58; }
+
+.projectActions > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #806f61;
+  font-size: 12px;
+}
+
+.projectActions > span svg { color: #a57a3f; }
+
+.projectFooter {
+  justify-content: flex-start;
+  margin-top: 25px;
+}
+
+.blue .projectCoverButton { box-shadow: 0 26px 58px rgba(26, 71, 101, 0.2); }
+.blue .projectCopy > small, .blue .projectActions > span svg { color: #275d80; }
+.blue .openGalleryButton { border-color: #1e587c; background: #1e587c; }
+.blue .openGalleryButton:hover:not(:disabled) { background: #17476b; }
+.blue .projectPreview button:hover { border-color: #2c6687; }
+
+.projectCoverButton:focus-visible,
+.projectPreview button:focus-visible,
+.openGalleryButton:focus-visible,
+.lightbox button:focus-visible {
+  outline: 3px solid rgba(202, 151, 63, 0.55);
+  outline-offset: 3px;
+}
+
+/* The dialog is portalled to document.body so it is never clipped by a card. */
+.lightboxOverlay {
+  position: fixed;
+  z-index: 500;
+  inset: 0;
+  display: grid;
+  padding: clamp(12px, 3vw, 38px);
+  place-items: center;
+  background: rgba(24, 15, 11, 0.84);
+  backdrop-filter: blur(13px) saturate(108%);
+  animation: lightboxOverlayIn 180ms ease both;
+}
+
+.lightbox {
+  display: flex;
+  width: min(100%, 1100px);
+  max-height: calc(100dvh - clamp(24px, 6vw, 76px));
+  overflow: hidden;
+  flex-direction: column;
+  color: #f9f2e8;
+  border: 1px solid rgba(233, 205, 146, 0.42);
+  border-radius: 24px 7px 24px 7px;
+  background: linear-gradient(145deg, #3b261c, #17100d 68%);
+  box-shadow: 0 35px 110px rgba(0, 0, 0, 0.52);
+  animation: lightboxIn 250ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.lightboxHeader {
+  display: flex;
+  padding: clamp(18px, 2.8vw, 27px) clamp(18px, 3.4vw, 35px);
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid rgba(235, 205, 147, 0.16);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.lightboxHeader > div > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #e6c67f;
+  font: 9px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.lightboxHeader h2 {
+  margin: 6px 0 0;
+  color: #fff8ed;
+  font: 600 clamp(18px, 3vw, 29px)/1.55 "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.closeLightbox {
+  display: grid;
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  padding: 0;
+  place-items: center;
+  color: #fffaf2;
+  cursor: pointer;
+  border: 1px solid rgba(255, 242, 212, 0.24);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.closeLightbox:hover { background: rgba(216, 125, 96, 0.35); transform: rotate(4deg); }
+
+.lightboxBody {
+  padding: clamp(15px, 3vw, 30px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.lightboxStage {
+  display: grid;
+  min-height: min(58dvh, 660px);
+  grid-template-columns: 50px minmax(0, 1fr) 50px;
+  align-items: center;
+  gap: clamp(8px, 2vw, 22px);
+}
+
+.galleryNav {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  place-items: center;
+  color: #f7ddb0;
+  cursor: pointer;
+  border: 1px solid rgba(242, 209, 147, 0.25);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.055);
+  transition: color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.galleryNav:hover:not(:disabled) { color: #3e261a; background: #efd293; transform: scale(1.06); }
+.galleryNav:disabled { cursor: not-allowed; opacity: 0.27; }
+
+.activeCard {
+  display: grid;
+  min-width: 0;
+  min-height: min(54dvh, 620px);
+  margin: 0;
+  overflow: hidden;
+  align-items: center;
+  justify-items: center;
+  border: 1px solid rgba(244, 220, 169, 0.17);
+  border-radius: 17px 5px 17px 5px;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(229, 189, 113, 0.1), transparent 35%),
+    #140e0b;
+}
+
+.activeCard img {
+  display: block;
+  max-width: 100%;
+  max-height: min(53dvh, 600px);
+  object-fit: contain;
+}
+
+.activeCard figcaption {
+  width: 100%;
+  padding: 10px 14px;
+  color: rgba(255, 247, 235, 0.72);
+  border-top: 1px solid rgba(244, 220, 169, 0.13);
+  background: rgba(0, 0, 0, 0.24);
+  font: 9px/1.8 "Noto Kufi Arabic Variable", sans-serif;
+  text-align: center;
+}
+
+.activeCardMissing {
+  display: flex;
+  min-height: 260px;
+  padding: 30px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  color: rgba(248, 229, 194, 0.68);
+  font: 10px/1.9 "Noto Kufi Arabic Variable", sans-serif;
+  text-align: center;
+}
+
+.galleryProgress {
+  display: flex;
+  min-height: 27px;
+  margin-top: 13px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: rgba(253, 243, 226, 0.67);
+  font: 9px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.gallerySpinner { animation: gallerySpin 800ms linear infinite; }
+
+.galleryThumbnails {
+  display: flex;
+  max-width: 100%;
+  margin-top: 15px;
+  padding: 4px 2px 8px;
+  overflow-x: auto;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(229, 193, 121, 0.42) transparent;
+}
+
+.galleryThumbnails button {
+  display: grid;
+  width: 54px;
+  min-width: 54px;
+  padding: 0;
+  overflow: hidden;
+  aspect-ratio: 0.7;
+  place-items: center;
+  color: #e4c47f;
+  cursor: pointer;
+  border: 1px solid rgba(245, 218, 161, 0.22);
+  border-radius: 7px 2px 7px 2px;
+  background: rgba(255, 255, 255, 0.06);
+  opacity: 0.68;
+  transition: opacity 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.galleryThumbnails button:hover,
+.galleryThumbnails .thumbnailActive {
+  border-color: #e6c477;
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.galleryThumbnails img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.galleryMore {
+  display: flex;
+  margin-top: 8px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.galleryMore p {
+  max-width: 620px;
+  margin: 0;
+  color: #f3b6a7;
+  font-size: 12px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.galleryMore button {
+  display: inline-flex;
+  min-height: 39px;
+  padding: 8px 13px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: #f7dfad;
+  cursor: pointer;
+  border: 1px solid rgba(242, 209, 147, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.055);
+  font: 9px "Noto Kufi Arabic Variable", sans-serif;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.galleryMore button:hover:not(:disabled) { color: #3d261b; background: #efd293; }
+.galleryMore button:disabled { cursor: wait; opacity: 0.58; }
+
+@keyframes gallerySpin { to { transform: rotate(360deg); } }
+@keyframes lightboxOverlayIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes lightboxIn { from { opacity: 0; transform: translateY(12px) scale(0.985); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 900px) {
+  .project { grid-template-columns: minmax(210px, 0.63fr) minmax(0, 1fr); gap: 30px; }
+  .projectCopy h2 { font-size: clamp(25px, 4vw, 37px); }
+}
+
+@media (max-width: 700px) {
+  .project { grid-template-columns: 1fr; }
+  .project:nth-child(even) .projectCoverColumn { order: 0; }
+  .projectCoverColumn { width: min(100%, 355px); }
+  .projectCopy { margin-inline: auto; text-align: center; }
+  .projectPreview, .projectActions, .projectFooter { justify-content: center; }
+  .lightboxOverlay { padding: 8px; }
+  .lightbox { max-height: calc(100dvh - 16px); border-radius: 17px 4px 17px 4px; }
+  .lightboxHeader { padding: 16px 17px; }
+  .lightboxBody { padding: 14px 10px 17px; }
+  .lightboxStage { min-height: min(58dvh, 550px); grid-template-columns: 40px minmax(0, 1fr) 40px; gap: 6px; }
+  .galleryNav { width: 38px; height: 38px; }
+  .activeCard { min-height: min(54dvh, 500px); }
+  .activeCard img { max-height: min(53dvh, 475px); }
+}
+
+@media (max-width: 430px) {
+  .project { padding: 13px; }
+  .projectCopy > p { font-size: 14px; }
+  .projectPreview { gap: 7px; }
+  .projectActions { gap: 9px; }
+  .openGalleryButton { flex: 1; }
+  .projectActions > span { font-size: 11px; }
+  .lightboxHeader h2 { font-size: 17px; }
+  .lightboxStage { grid-template-columns: 33px minmax(0, 1fr) 33px; gap: 3px; }
+  .galleryNav { width: 32px; height: 32px; }
+  .galleryNav svg { width: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projectCoverButton,
+  .projectCoverButton::after,
+  .projectCoverButton img,
+  .projectPreview button,
+  .openGalleryButton,
+  .galleryNav,
+  .closeLightbox,
+  .galleryThumbnails button,
+  .lightboxOverlay,
+  .lightbox { transition: none; animation: none; }
 }

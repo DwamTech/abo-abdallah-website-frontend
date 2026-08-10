@@ -14,6 +14,7 @@ const PREVIEW_MODULES = [
   "fatwas",
   "videos",
   "articles",
+  "hadith_cards",
 ] as const satisfies readonly SearchPreviewModule[];
 
 const PREVIEW_MODULE_SET = new Set<string>(PREVIEW_MODULES);

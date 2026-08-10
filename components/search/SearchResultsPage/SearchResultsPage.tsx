@@ -18,6 +18,7 @@ import {
   GraduationCap,
   Headphones,
   MessageCircleQuestion,
+  PanelsTopLeft,
   RefreshCw,
   Search,
   SearchX,
@@ -80,6 +81,11 @@ const MODULE_PRESENTATION: Record<SearchModule, ModulePresentation> = {
     label: "المرئيات واللقاءات العلمية",
     description: "الدروس واللقاءات المرئية",
     icon: Video,
+  },
+  hadith_cards: {
+    label: "البطاقات الحديثية",
+    description: "مشروعات البطاقات والمصوّرات العلمية",
+    icon: PanelsTopLeft,
   },
 };
 
@@ -286,7 +292,7 @@ export default function SearchResultsPage() {
             <h1>ابحث في جميع المواد العلمية</h1>
             <p>
               بحث موحّد في عناوين المصنّفات والمقالات والرسائل والمجالس
-              والفتاوى والمرئيات.
+              والفتاوى والمرئيات والبطاقات الحديثية.
             </p>
 
             <form
