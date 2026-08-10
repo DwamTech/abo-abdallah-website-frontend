@@ -26,10 +26,10 @@ export default function HeroSection() {
             </span>
             <Image
               className={styles.calligraphy}
-              src="/media/images/hero_logo.png"
+              src="/media/images/real-hero-logo-transparent2.png"
               alt=""
-              width={866}
-              height={288}
+              width={1600}
+              height={533}
               priority
             />
              <span className={styles.englishName} lang="en" dir="ltr">
