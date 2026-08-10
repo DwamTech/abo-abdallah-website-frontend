@@ -107,10 +107,10 @@ export default function Header() {
           <a className={styles.brand} href="/" aria-label="الانتقال إلى الصفحة الرئيسية">
             <Image
               className={styles.brandLogo}
-              src="/media/images/Header_logo.png"
+              src="/media/images/real-logo-transparent.png"
               alt="أبو عبد الله يحيى بن عبد الله البكري الشهري"
-              width={866}
-              height={288}
+              width={1600}
+              height={561}
               priority
             />
           </a>
@@ -222,10 +222,10 @@ export default function Header() {
           <div className={styles.drawerHead}>
             <Image
               className={styles.drawerLogo}
-              src="/media/images/Header_logo.png"
+              src="/media/images/real-logo-transparent.png"
               alt=""
-              width={866}
-              height={288}
+              width={1600}
+              height={561}
             />
             <button type="button" onClick={() => setMenuOpen(false)} aria-label="إغلاق القائمة">
               <X size={21} />
