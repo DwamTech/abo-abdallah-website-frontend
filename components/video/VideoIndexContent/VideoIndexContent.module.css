@@ -21,6 +21,50 @@
   padding: 0 !important;
   flex: 0 0 auto;
 }
+.videoCard {
+  isolation: isolate;
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    border-color 0.28s ease;
+}
+.videoCard:hover {
+  border-color: rgba(226, 184, 116, 0.58) !important;
+  box-shadow: 0 25px 52px rgba(59, 34, 24, 0.2) !important;
+  transform: translateY(-6px);
+}
+.cardPreview {
+  z-index: 0;
+  opacity: 0.82;
+  transition:
+    transform 0.8s ease,
+    opacity 0.35s ease;
+}
+.videoCard:hover .cardPreview {
+  opacity: 1;
+  transform: scale(1.035);
+}
+.cardCopy,
+.videoCard > footer,
+.videoCard > span,
+.cardPlay {
+  z-index: 1;
+}
+.cardPlay {
+  position: relative;
+}
+.cardCopy {
+  position: relative;
+}
+.cardCopy h3 {
+  text-shadow: 0 2px 18px rgba(12, 7, 5, 0.42);
+}
+.cardCopy p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
 .state svg {
   margin-bottom: 15px;
   color: #a87335;
@@ -76,5 +120,9 @@
 @media (prefers-reduced-motion: reduce) {
   .spinner {
     animation: none;
+  }
+  .videoCard,
+  .cardPreview {
+    transition: none;
   }
 }

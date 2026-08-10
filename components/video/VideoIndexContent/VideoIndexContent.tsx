@@ -14,6 +14,7 @@ import {
 import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop";
 import { ShareButton } from "@/components/content/ShareButton/ShareButton";
 import ViewCount from "@/components/content/ViewCount/ViewCount";
+import VideoPreview from "@/components/video/VideoPreview/VideoPreview";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import {
   getScientificVideos,
@@ -147,16 +148,29 @@ export default function VideoIndexContent() {
               {items.map((item, index) => {
                 const itemNumber = (page - 1) * ITEMS_PER_PAGE + index + 1;
                 return (
-                  <article id={item.slug} key={item.slug}>
+                  <article
+                    className={styles.videoCard}
+                    id={item.slug}
+                    key={item.slug}
+                  >
+                    <VideoPreview
+                      className={styles.cardPreview}
+                      previewUrl={item.preview_url}
+                      posterUrl={item.thumbnail_url}
+                    />
                     <span className={sharedStyles.number}>
                       {toArabicDigits(String(itemNumber).padStart(2, "0"))}
                     </span>
-                    <span className={sharedStyles.playIcon}>
+                    <span
+                      className={`${sharedStyles.playIcon} ${styles.cardPlay}`}
+                    >
                       <PlayCircle size={30} />
                     </span>
-                    <small>{item.category}</small>
-                    <h3>{item.title}</h3>
-                    <p>{item.description}</p>
+                    <div className={styles.cardCopy}>
+                      <small>{item.category}</small>
+                      <h3>{item.title}</h3>
+                      <p>{item.description}</p>
+                    </div>
                     <footer>
                       <span>
                         <PlayCircle size={15} />{" "}

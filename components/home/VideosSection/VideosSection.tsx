@@ -3,6 +3,7 @@ import { ArrowLeft, Play, Video } from "lucide-react";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import { ShareButton } from "@/components/content/ShareButton/ShareButton";
 import ViewCount from "@/components/content/ViewCount/ViewCount";
+import VideoPreview from "@/components/video/VideoPreview/VideoPreview";
 import {
   getScientificVideosHome,
   scientificVideosErrorMessage,
@@ -37,6 +38,11 @@ export default async function VideosSection() {
         {featured ? (
           <div className={styles.stage}>
             <article className={styles.featured}>
+              <VideoPreview
+                className={styles.featuredPreview}
+                previewUrl={featured.preview_url}
+                posterUrl={featured.thumbnail_url}
+              />
               <Link
                 aria-label={`مشاهدة المادة: ${featured.title}`}
                 className={styles.cardLink}
@@ -67,29 +73,34 @@ export default async function VideosSection() {
                 const href = `/videos/${video.slug}`;
 
                 return (
-                <article className={styles.videoCard} key={video.slug}>
-                  <Link
-                    aria-label={`مشاهدة المادة: ${video.title}`}
-                    className={styles.cardLink}
-                    href={href}
-                  />
-                  <span>
-                    {toArabicDigits(String(index + 2).padStart(2, "0"))}
-                  </span>
-                  <Play fill="currentColor" size={13} />
-                  <div>
-                    <small>{video.category}</small>
-                    <h3>{video.title}</h3>
-                    <ViewCount count={video.views_count} tone="light" />
-                  </div>
-                  <ShareButton
-                    ariaLabel={`نسخ رابط المادة المرئية: ${video.title}`}
-                    className={styles.listShare}
-                    href={href}
-                    iconOnly
-                  />
-                  <em>{toArabicDigits(video.duration_label)}</em>
-                </article>
+                  <article className={styles.videoCard} key={video.slug}>
+                    <VideoPreview
+                      className={styles.listPreview}
+                      previewUrl={video.preview_url}
+                      posterUrl={video.thumbnail_url}
+                    />
+                    <Link
+                      aria-label={`مشاهدة المادة: ${video.title}`}
+                      className={styles.cardLink}
+                      href={href}
+                    />
+                    <span>
+                      {toArabicDigits(String(index + 2).padStart(2, "0"))}
+                    </span>
+                    <Play fill="currentColor" size={13} />
+                    <div>
+                      <small>{video.category}</small>
+                      <h3>{video.title}</h3>
+                      <ViewCount count={video.views_count} tone="light" />
+                    </div>
+                    <ShareButton
+                      ariaLabel={`نسخ رابط المادة المرئية: ${video.title}`}
+                      className={styles.listShare}
+                      href={href}
+                      iconOnly
+                    />
+                    <em>{toArabicDigits(video.duration_label)}</em>
+                  </article>
                 );
               })}
             </div>

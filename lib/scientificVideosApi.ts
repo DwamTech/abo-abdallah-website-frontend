@@ -32,6 +32,7 @@ export const scientificVideoCardSchema = z.object({
   duration_label: z.string().trim().min(1),
   date_label: z.string().trim().min(1),
   thumbnail_url: nullableText,
+  preview_url: nullableText.optional().default(null),
   views_count: viewCount,
 });
 

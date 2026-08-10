@@ -19,6 +19,7 @@ import { ShareButton } from "@/components/content/ShareButton/ShareButton";
 import TrackedViewCount from "@/components/content/ViewCount/TrackedViewCount";
 import ViewCount from "@/components/content/ViewCount/ViewCount";
 import VideoEngagement from "./VideoEngagement";
+import AdaptiveVideoPlayer from "@/components/video/AdaptiveVideoPlayer/AdaptiveVideoPlayer";
 import styles from "./VideoDetailContent.module.css";
 import playerStyles from "./VideoPlayerState.module.css";
 
@@ -81,51 +82,51 @@ export default function VideoDetailContent({
               </div>
               <VideoEngagement downloadUrl={video.download_url} />
             </header>
-            <div className={styles.player}>
-              {playback.kind === "video" ? (
-                <video
-                  controls
-                  preload="metadata"
-                  src={playback.url}
-                  poster={video.thumbnail_url || undefined}
-                >
-                  متصفحك لا يدعم تشغيل الفيديو.
-                </video>
-              ) : playback.kind === "embed" ? (
-                <iframe
-                  className={playerStyles.frame}
-                  src={playback.url}
-                  title={video.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
-              ) : playback.kind === "external" ? (
-                <div className={playerStyles.external}>
-                  <span>
-                    <ExternalLink size={31} />
-                  </span>
-                  <strong>المادة متاحة على منصة خارجية</strong>
-                  <small>
-                    يُفتح الرابط الأصلي في نافذة جديدة مع الحفاظ على هذه الصفحة.
-                  </small>
-                  <a href={playback.url} target="_blank" rel="noreferrer">
-                    مشاهدة المادة
-                  </a>
-                </div>
-              ) : (
-                <div className={styles.playerPlaceholder}>
-                  <span>
-                    <Play size={34} fill="currentColor" />
-                  </span>
-                  <strong>مشغل الدرس المرئي</strong>
-                  <small>
-                    يُفعّل فور إضافة ملف الفيديو أو رابط المشاهدة من لوحة
-                    الإدارة
-                  </small>
-                </div>
-              )}
-              <span className={styles.duration}>{duration}</span>
-            </div>
+            {playback.kind === "video" ? (
+              <AdaptiveVideoPlayer
+                src={playback.url}
+                poster={video.thumbnail_url}
+                duration={duration}
+              />
+            ) : (
+              <div className={styles.player}>
+                {playback.kind === "embed" ? (
+                  <iframe
+                    className={playerStyles.frame}
+                    src={playback.url}
+                    title={video.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                ) : playback.kind === "external" ? (
+                  <div className={playerStyles.external}>
+                    <span>
+                      <ExternalLink size={31} />
+                    </span>
+                    <strong>المادة متاحة على منصة خارجية</strong>
+                    <small>
+                      يُفتح الرابط الأصلي في نافذة جديدة مع الحفاظ على هذه
+                      الصفحة.
+                    </small>
+                    <a href={playback.url} target="_blank" rel="noreferrer">
+                      مشاهدة المادة
+                    </a>
+                  </div>
+                ) : (
+                  <div className={styles.playerPlaceholder}>
+                    <span>
+                      <Play size={34} fill="currentColor" />
+                    </span>
+                    <strong>مشغل الدرس المرئي</strong>
+                    <small>
+                      يُفعّل فور إضافة ملف الفيديو أو رابط المشاهدة من لوحة
+                      الإدارة
+                    </small>
+                  </div>
+                )}
+                <span className={styles.duration}>{duration}</span>
+              </div>
+            )}
           </div>
           <aside className={styles.description}>
             <span>عن هذه المادة</span>
@@ -158,29 +159,29 @@ export default function VideoDetailContent({
                 const href = `/videos/${item.slug}`;
 
                 return (
-                <article className={styles.relatedCard} key={item.slug}>
-                  <Link
-                    aria-label={`مشاهدة المادة: ${item.title}`}
-                    className={styles.relatedLink}
-                    href={href}
-                  />
-                  <span className={styles.relatedPlay}>
-                    <Play size={18} fill="currentColor" />
-                  </span>
-                  <small>{item.category}</small>
-                  <h3>{item.title}</h3>
-                  <footer>
-                    <span>{toArabicDigits(item.duration_label)}</span>
-                    <ViewCount count={item.views_count} tone="light" />
-                    <ShareButton
-                      ariaLabel={`نسخ رابط المادة المرئية: ${item.title}`}
-                      className={styles.relatedShare}
+                  <article className={styles.relatedCard} key={item.slug}>
+                    <Link
+                      aria-label={`مشاهدة المادة: ${item.title}`}
+                      className={styles.relatedLink}
                       href={href}
-                      iconOnly
                     />
-                    <ArrowLeft size={16} />
-                  </footer>
-                </article>
+                    <span className={styles.relatedPlay}>
+                      <Play size={18} fill="currentColor" />
+                    </span>
+                    <small>{item.category}</small>
+                    <h3>{item.title}</h3>
+                    <footer>
+                      <span>{toArabicDigits(item.duration_label)}</span>
+                      <ViewCount count={item.views_count} tone="light" />
+                      <ShareButton
+                        ariaLabel={`نسخ رابط المادة المرئية: ${item.title}`}
+                        className={styles.relatedShare}
+                        href={href}
+                        iconOnly
+                      />
+                      <ArrowLeft size={16} />
+                    </footer>
+                  </article>
                 );
               })}
             </div>
