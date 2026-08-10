@@ -18,6 +18,7 @@ import SubpageBackdrop from "@/components/layout/SubpageBackdrop/SubpageBackdrop
 import { ShareButton } from "@/components/content/ShareButton/ShareButton";
 import TrackedViewCount from "@/components/content/ViewCount/TrackedViewCount";
 import ViewCount from "@/components/content/ViewCount/ViewCount";
+import VideoPreview from "@/components/video/VideoPreview/VideoPreview";
 import VideoEngagement from "./VideoEngagement";
 import AdaptiveVideoPlayer from "@/components/video/AdaptiveVideoPlayer/AdaptiveVideoPlayer";
 import styles from "./VideoDetailContent.module.css";
@@ -160,6 +161,11 @@ export default function VideoDetailContent({
 
                 return (
                   <article className={styles.relatedCard} key={item.slug}>
+                    <VideoPreview
+                      className={styles.relatedPreview}
+                      previewUrl={item.preview_url}
+                      posterUrl={item.thumbnail_url}
+                    />
                     <Link
                       aria-label={`مشاهدة المادة: ${item.title}`}
                       className={styles.relatedLink}

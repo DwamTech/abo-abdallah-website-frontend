@@ -19,6 +19,12 @@ export default function VideoPreview({
   const [isVisible, setIsVisible] = useState(false);
   const [canAnimate, setCanAnimate] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    setFailed(false);
+    setReady(false);
+  }, [previewUrl]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -34,7 +40,7 @@ export default function VideoPreview({
 
     const observer = new IntersectionObserver(
       ([entry]) => setIsVisible(entry.isIntersecting),
-      { rootMargin: "180px 0px", threshold: 0.12 },
+      { rootMargin: "520px 0px", threshold: 0.01 },
     );
     observer.observe(root);
 
@@ -66,21 +72,32 @@ export default function VideoPreview({
       aria-hidden="true"
     >
       <span className={styles.poster} style={posterStyle} />
+      <span
+        className={`${styles.placeholder} ${previewUrl && !failed && !ready ? styles.loading : ""} ${ready ? styles.placeholderHidden : ""}`.trim()}
+      >
+        <i />
+      </span>
       {previewUrl && isVisible && canAnimate && !failed && (
         <video
           ref={videoRef}
-          className={styles.video}
+          className={`${styles.video} ${ready ? styles.videoReady : ""}`.trim()}
           src={previewUrl}
           poster={posterUrl || undefined}
-          preload="metadata"
+          preload="auto"
+          autoPlay
           muted
           loop
           playsInline
           tabIndex={-1}
           onCanPlay={() => {
+            setReady(true);
             if (isVisible && canAnimate) void videoRef.current?.play();
           }}
-          onError={() => setFailed(true)}
+          onLoadedData={() => setReady(true)}
+          onError={() => {
+            setFailed(true);
+            setReady(false);
+          }}
         />
       )}
       <span className={styles.scrim} />

@@ -10,3 +10,9 @@
 .description dl div{padding-inline:18px;border-bottom:0;border-left:1px solid #eadfce}
 .description dl div:last-child{border-left:0}
 @media(max-width:620px){.description dl{grid-template-columns:1fr}.description dl div{border-left:0;border-bottom:1px solid #eadfce}.description dl div:last-child{border-bottom:0}}
+.relatedCard{overflow:hidden;isolation:isolate}
+.relatedPreview{z-index:0;opacity:.86;transition:transform .75s ease,opacity .3s ease}
+.relatedCard:hover .relatedPreview{opacity:1;transform:scale(1.035)}
+.relatedCard>.relatedPlay,.relatedCard>small,.relatedCard>h3,.relatedCard>footer{position:relative;z-index:1}
+.relatedCard>footer{position:absolute}
+@media(prefers-reduced-motion:reduce){.relatedPreview{transition:none}}
