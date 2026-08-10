@@ -60,6 +60,23 @@ export const hadithCardProjectSchema = z.object({
 
 export type HadithCardProject = z.infer<typeof hadithCardProjectSchema>;
 
+/**
+ * A gallery card as it is composed for the home page. Keeping the parent
+ * project alongside the image makes the public card self-contained: it can
+ * always navigate to the correct section without relying on a frontend map of
+ * project names or slugs.
+ */
+const hadithCardsHomeGalleryCardSchema = hadithCardSchema.extend({
+  project: z.object({
+    slug: z.string().trim().min(1),
+    title: z.string().trim().min(1),
+  }).passthrough(),
+});
+
+export type HadithCardsHomeGalleryCard = z.infer<
+  typeof hadithCardsHomeGalleryCardSchema
+>;
+
 const hadithCardsStatsSchema = z.object({
   projects_count: nonNegativeInteger,
   cards_count: nonNegativeInteger,
@@ -67,6 +84,9 @@ const hadithCardsStatsSchema = z.object({
 
 const hadithCardsHomeSchema = z.object({
   data: z.array(hadithCardProjectSchema).max(2),
+  // Added independently from the legacy featured-project composition. Older
+  // deployments keep rendering through the compact `data` fallback below.
+  gallery_cards: z.array(hadithCardsHomeGalleryCardSchema).max(10).optional().default([]),
   stats: hadithCardsStatsSchema,
 });
 
@@ -179,9 +199,14 @@ async function fetchAndValidate<T>(
   return parsed.data;
 }
 
-/** Returns the two featured projects needed by the home-page composition. */
+/**
+ * Returns the compact legacy project data plus up to ten random gallery cards
+ * from all public projects for the home-page rail.
+ */
 export function getHadithCardsHome(signal?: AbortSignal) {
-  return fetchAndValidate("/home", hadithCardsHomeSchema, signal);
+  // The home composition needs only its cover and the first three thumbnails.
+  // Keeping it compact matters once a project contains a large gallery.
+  return fetchAndValidate("/home?gallery=preview", hadithCardsHomeSchema, signal);
 }
 
 /**

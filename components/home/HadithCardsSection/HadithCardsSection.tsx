@@ -6,14 +6,7 @@ import {
   hadithCardsErrorMessage,
   resolveHadithCardImageUrl,
 } from "@/lib/hadithCardsApi";
-import { toArabicDigits } from "@/lib/arabicNumbers";
 import styles from "./HadithCardsSection.module.css";
-
-function projectOrdinal(index: number) {
-  if (index === 0) return "الأول";
-  if (index === 1) return "الثاني";
-  return `رقم ${toArabicDigits(index + 1)}`;
-}
 
 export default async function HadithCardsSection() {
   let response: Awaited<ReturnType<typeof getHadithCardsHome>> | null = null;
@@ -26,6 +19,37 @@ export default async function HadithCardsSection() {
   }
 
   const projects = response?.data ?? [];
+  // The API field is additive so a frontend deployment remains usable while a
+  // backend is catching up. Once available, `gallery_cards` is the source of
+  // truth and is selected randomly by the backend across every public section.
+  const fallbackCardKeys = new Set<string>();
+  const fallbackGalleryCards = projects
+    .flatMap((project) => {
+      const cards = [
+        project.cover_card,
+        ...project.gallery_preview,
+        ...project.cards,
+      ].filter((card): card is NonNullable<typeof card> => Boolean(card))
+        .filter((card) => {
+          const key = `${project.slug}:${card.id}`;
+
+          if (fallbackCardKeys.has(key)) return false;
+          fallbackCardKeys.add(key);
+          return true;
+        });
+
+      return cards.map((card) => ({
+        ...card,
+        project: {
+          slug: project.slug,
+          title: project.title,
+        },
+      }));
+    })
+    .slice(0, 10);
+  const galleryCards = response?.gallery_cards.length
+    ? response.gallery_cards
+    : fallbackGalleryCards;
 
   return (
     <section className={styles.section} id="hadith-cards">
@@ -41,50 +65,51 @@ export default async function HadithCardsSection() {
           </div>
         </header>
 
-        <div className={styles.projects}>
-          {projects.map((project, index) => {
-            const cover =
-              project.cover_card ??
-              project.gallery_preview[0] ??
-              project.cards[0] ??
-              null;
-            const imageUrl = resolveHadithCardImageUrl(
-              project.cover_image_url ?? cover?.image_url,
-            );
+        <div className={styles.galleryArea}>
+          {galleryCards.length ? (
+            <ul className={styles.cardsRail} aria-label="مختارات البطاقات الحديثية">
+              {galleryCards.map((card) => {
+                const imageUrl = resolveHadithCardImageUrl(card.image_url);
+                const cardTitle = card.title || "بطاقة حديثية";
 
-            return (
-              <Link
-                className={`${styles.project} ${styles[project.accent]}`}
-                href={`/hadith-cards#${encodeURIComponent(project.slug)}`}
-                key={project.id}
-              >
-                <div className={styles.imageWrap}>
-                  {imageUrl ? (
-                    <img
-                      src={imageUrl}
-                      alt={project.cover_alt_text || cover?.alt_text || project.title}
-                      loading="lazy"
-                    />
-                  ) : (
-                    <span className={styles.imageMissing}>
-                      <Layers3 size={30} />
-                      لا توجد صورة مرفقة
-                    </span>
-                  )}
-                </div>
-                <div className={styles.projectCopy}>
-                  <span><BookOpenCheck size={14} /> المشروع {projectOrdinal(index)}</span>
-                  <h3>{project.title}</h3>
-                  {project.description && <p>{project.description}</p>}
-                  <div className={styles.projectMeta}>
-                    <ViewCount count={project.views_count} tone="muted" />
-                  </div>
-                  <strong>فتح المشروع <ArrowLeft size={16} /></strong>
-                </div>
-              </Link>
-            );
-          })}
-          {!projects.length && (
+                return (
+                  <li key={`${card.project.slug}-${card.id}`}>
+                    <Link
+                      className={styles.galleryCard}
+                      href={`/hadith-cards#${encodeURIComponent(card.project.slug)}`}
+                      aria-label={`فتح قسم ${card.project.title}: ${cardTitle}`}
+                    >
+                      <span className={styles.imageWrap}>
+                        {imageUrl ? (
+                          <img
+                            src={imageUrl}
+                            alt={card.alt_text || cardTitle}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <span className={styles.imageMissing}>
+                            <Layers3 size={29} />
+                            لا توجد صورة مرفقة
+                          </span>
+                        )}
+                      </span>
+                      <span className={styles.cardOverlay}>
+                        <span className={styles.cardProject}>
+                          <BookOpenCheck size={13} />
+                          {card.project.title}
+                        </span>
+                        <strong>{cardTitle}</strong>
+                        <span className={styles.cardMeta}>
+                          <ViewCount count={card.views_count} tone="light" />
+                          <ArrowLeft size={15} aria-hidden="true" />
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
             <div
               className={styles.sectionState}
               role={error ? "alert" : "status"}
