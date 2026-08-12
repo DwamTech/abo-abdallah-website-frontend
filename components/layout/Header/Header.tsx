@@ -107,7 +107,7 @@ export default function Header() {
           <a className={styles.brand} href="/" aria-label="الانتقال إلى الصفحة الرئيسية">
             <Image
               className={styles.brandLogo}
-              src="/media/images/real-logo-transparent.png"
+              src="/media/images/الشهري_بني.png"
               alt="أبو عبد الله يحيى بن عبد الله البكري الشهري"
               width={1600}
               height={561}
@@ -222,7 +222,7 @@ export default function Header() {
           <div className={styles.drawerHead}>
             <Image
               className={styles.drawerLogo}
-              src="/media/images/real-logo-transparent.png"
+              src="/media/images/الشهري_بني.png"
               alt=""
               width={1600}
               height={561}

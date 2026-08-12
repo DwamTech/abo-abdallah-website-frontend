@@ -26,7 +26,7 @@ export default function HeroSection() {
             </span>
             <Image
               className={styles.calligraphy}
-              src="/media/images/real-hero-logo-transparent2.png"
+              src="/media/images/الشهري.png"
               alt=""
               width={1600}
               height={533}
