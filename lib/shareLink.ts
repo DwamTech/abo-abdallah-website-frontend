@@ -9,6 +9,23 @@ export type CopyMethod = "clipboard" | "fallback";
 
 const SAFE_WEB_PROTOCOLS = new Set(["http:", "https:"]);
 
+export type SocialShareTarget = "facebook" | "x";
+
+/** Creates the public composer URL for the supported social network. */
+export function buildSocialShareUrl(
+  target: SocialShareTarget,
+  url: string,
+  title = "",
+): string {
+  if (target === "facebook") {
+    return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+  }
+
+  const parameters = new URLSearchParams({ url });
+  if (title.trim()) parameters.set("text", title.trim());
+  return `https://x.com/intent/post?${parameters.toString()}`;
+}
+
 /**
  * Resolves an internal content URL against the page's current origin and strips
  * query strings and fragments. External origins and non-web protocols are
@@ -17,6 +34,7 @@ const SAFE_WEB_PROTOCOLS = new Set(["http:", "https:"]);
 export function resolveInternalCanonicalUrl(
   location: ShareLocation,
   href?: string,
+  includeHash = false,
 ): string | null {
   try {
     const currentOrigin = new URL(location.origin);
@@ -43,7 +61,7 @@ export function resolveInternalCanonicalUrl(
       return null;
     }
 
-    return `${currentOrigin.origin}${target.pathname}`;
+    return `${currentOrigin.origin}${target.pathname}${includeHash ? target.hash : ""}`;
   } catch {
     return null;
   }

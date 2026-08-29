@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 
 import HashTrackedViewCount from "@/components/content/ViewCount/HashTrackedViewCount";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import {
   getHadithCardsProjectGalleryPage,
@@ -535,6 +536,12 @@ export default function HadithCardsProjectGallery({
             فتح الجاليري
             <ArrowLeft size={16} />
           </button>
+          <ShareButton
+            href={`/hadith-cards#${encodeURIComponent(project.slug)}`}
+            includeHash
+            shareTitle={project.title}
+            ariaLabel={`مشاركة صور مشروع: ${project.title}`}
+          />
           <span>
             <Images size={16} />
             {toArabicDigits(displayTotal)} بطاقة

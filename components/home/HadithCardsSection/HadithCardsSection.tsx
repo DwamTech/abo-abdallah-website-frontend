@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft, BookOpenCheck, Layers3 } from "lucide-react";
+import { ShareButton } from "@/components/content/ShareButton/ShareButton";
 import ViewCount from "@/components/content/ViewCount/ViewCount";
 import {
   getHadithCardsHome,
@@ -105,6 +106,14 @@ export default async function HadithCardsSection() {
                         </span>
                       </span>
                     </Link>
+                    <ShareButton
+                      className={styles.cardShare}
+                      href={`/hadith-cards#${encodeURIComponent(card.project.slug)}`}
+                      includeHash
+                      iconOnly
+                      shareTitle={cardTitle}
+                      ariaLabel={`مشاركة الصورة: ${cardTitle}`}
+                    />
                   </li>
                 );
               })}

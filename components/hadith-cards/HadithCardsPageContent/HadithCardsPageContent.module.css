@@ -14,7 +14,13 @@
 .heroStack { position: relative; min-height: 470px; }
 .stackCard { position: absolute; top: 20px; right: 50%; width: 260px; height: 365px; overflow: hidden; border: 8px solid rgba(255,255,255,.92); border-radius: 10px; background: #fff; box-shadow: 0 35px 70px rgba(0,0,0,.35); transform: translateX(14%) rotate(7deg); }
 .stackCardSecondary { top: 75px; right: 8%; z-index: 2; transform: rotate(-6deg); }
-.stackCard img { object-fit: cover; object-position: top; }
+.stackCard img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
 .stackEmpty { position: absolute; top: 70px; right: 18%; width: 250px; height: 350px; border: 1px solid rgba(229,198,129,.25); border-radius: 10px; background: linear-gradient(145deg, rgba(229,198,129,.12), rgba(255,255,255,.02)); box-shadow: 0 30px 65px rgba(0,0,0,.16); transform: rotate(-6deg); }
 .projectsSection { position: relative; padding: clamp(82px, 9vw, 130px) 0; overflow: hidden; background: radial-gradient(circle at 90% 8%, rgba(45,84,117,.09), transparent 24%), #faf6ee; }
 .projectsInner { width: min(calc(100% - 48px), var(--container)); margin: auto; }
