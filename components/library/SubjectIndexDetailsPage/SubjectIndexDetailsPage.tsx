@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toArabicDigits } from "@/lib/arabicNumbers";
-import type { SubjectIndexDetails } from "@/data/subject-index-details";
+import type { PublicSubjectIndexDetail } from "@/lib/librarySubjectIndexesContract";
 import styles from "./SubjectIndexDetailsPage.module.css";
 
 function normalizeArabic(value: string) {
@@ -35,7 +35,7 @@ function normalizeArabic(value: string) {
 export default function SubjectIndexDetailsPage({
   entry,
 }: {
-  entry: SubjectIndexDetails;
+  entry: PublicSubjectIndexDetail;
 }) {
   const [query, setQuery] = useState("");
 

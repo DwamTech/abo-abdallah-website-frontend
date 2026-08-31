@@ -9,6 +9,11 @@ import {
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import LibraryIndexesWorkspace from "@/components/library/LibraryIndexesWorkspace/LibraryIndexesWorkspace";
+import {
+  getPublicSubjectIndexes,
+  publicLibrarySubjectIndexesEnabled,
+} from "@/lib/librarySubjectIndexesApi";
+import type { PublicSubjectIndexEntry } from "@/lib/librarySubjectIndexesContract";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -17,7 +22,22 @@ export const metadata: Metadata = {
     "بوابة فهارس المكتبة البكرية: السجل الذهبي، الضيوف، الفهرس الموضوعي، والفهرس الألف بائي.",
 };
 
-export default function LibraryIndexesPage() {
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+export default async function LibraryIndexesPage() {
+  const subjectIndexesEnabled = publicLibrarySubjectIndexesEnabled();
+  let subjectIndexes: PublicSubjectIndexEntry[] = [];
+  let subjectIndexesError = "";
+
+  if (subjectIndexesEnabled) {
+    try {
+      subjectIndexes = await getPublicSubjectIndexes();
+    } catch {
+      subjectIndexesError = "تعذّر تحميل الفهارس الموضوعية حالياً. يرجى المحاولة مرة أخرى لاحقاً.";
+    }
+  }
+
   return (
     <>
       <Header />
@@ -63,7 +83,11 @@ export default function LibraryIndexesPage() {
             </a>
           </div>
         </section>
-        <LibraryIndexesWorkspace />
+        <LibraryIndexesWorkspace
+          subjectIndexesEnabled={subjectIndexesEnabled}
+          subjectIndexes={subjectIndexes}
+          subjectIndexesError={subjectIndexesError}
+        />
       </main>
       <Footer />
     </>

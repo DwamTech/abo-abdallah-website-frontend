@@ -33,7 +33,7 @@ import {
   type LibraryIndexCollection,
   type LibraryIndexSummary,
 } from "@/lib/libraryIndexesApi";
-import { subjectIndexEntries } from "@/data/subject-index";
+import type { PublicSubjectIndexEntry } from "@/lib/librarySubjectIndexesContract";
 import styles from "./LibraryIndexesWorkspace.module.css";
 
 type RegistryKind = "golden" | "guests";
@@ -90,7 +90,15 @@ function formatVisitDate(value: string) {
   }).format(new Date(Date.UTC(Number(year), Number(month) - 1, Number(day))));
 }
 
-export default function LibraryIndexesWorkspace() {
+export default function LibraryIndexesWorkspace({
+  subjectIndexesEnabled,
+  subjectIndexes = [],
+  subjectIndexesError = "",
+}: {
+  subjectIndexesEnabled: boolean;
+  subjectIndexes?: PublicSubjectIndexEntry[];
+  subjectIndexesError?: string;
+}) {
   const [summary, setSummary] = useState<LibraryIndexSummary | null>(null);
   const [summaryError, setSummaryError] = useState("");
   const [goldenRegistry, setGoldenRegistry] =
@@ -210,10 +218,10 @@ export default function LibraryIndexesWorkspace() {
 
   const filteredSubjects = useMemo(
     () =>
-      subjectIndexEntries.filter((entry) =>
+      subjectIndexes.filter((entry) =>
         smartMatch(subjectSearch, entry.number, entry.code, entry.subject),
       ),
-    [subjectSearch],
+    [subjectIndexes, subjectSearch],
   );
 
   const submitGoldenVisitor = async (event: FormEvent<HTMLFormElement>) => {
@@ -449,6 +457,7 @@ export default function LibraryIndexesWorkspace() {
         />
       </section>
 
+      {subjectIndexesEnabled && (
       <section className={`${styles.registrySection} ${styles.subjectSection}`} id="subject-index-details">
         <div className={styles.subjectHero}>
           <Image
@@ -462,16 +471,25 @@ export default function LibraryIndexesWorkspace() {
             <span className={styles.kicker}><SearchCheck size={15} /> خريطة المعرفة</span>
             <h2>الفهرس الموضوعي</h2>
             <p>قاعدة تصنيف المكتبة، منظمة وقابلة للبحث بالموضوع أو الرمز أو الرقم العام.</p>
-            <div><Database size={17} /><strong>٨٥</strong><span>تصنيفًا علميًا موثقًا</span></div>
+            <div><Database size={17} /><strong>{toArabicDigits(subjectIndexes.length)}</strong><span>تصنيفًا علميًا موثقًا</span></div>
           </div>
         </div>
-        <TableLauncher
-          count={subjectIndexEntries.length}
+        {!subjectIndexesError && (
+          <TableLauncher
+            count={subjectIndexes.length}
           description="ابحث بذكاء داخل موضوعات المكتبة ورموزها وأرقام تصنيفها."
           onClick={() => setActiveTable("subjects")}
           title="فتح الفهرس الموضوعي"
-        />
+          />
+        )}
+        {subjectIndexesError && (
+          <div className={styles.globalAlert} role="alert">
+            <X size={17} />
+            {subjectIndexesError}
+          </div>
+        )}
       </section>
+      )}
 
       <section className={`${styles.registrySection} ${styles.alphabeticalSection}`} id="alphabetical-index-details">
         <div className={styles.alphabeticalHero}>
@@ -667,7 +685,7 @@ export default function LibraryIndexesWorkspace() {
               {activeTable === "subjects" && (
                 <>
                   <div className={styles.subjectToolbar}>
-                    <label><Search size={21} /><span><small>بحث ذكي في ٨٥ تصنيفًا</small><input value={subjectSearch} onChange={(e) => setSubjectSearch(e.target.value)} placeholder="مثال: الحديث، التراجم، ب خ ر، أو رقم التصنيف..." /></span>{subjectSearch && <button type="button" onClick={() => setSubjectSearch("")} aria-label="مسح البحث"><X size={16} /></button>}</label>
+                    <label><Search size={21} /><span><small>بحث ذكي في {toArabicDigits(subjectIndexes.length)} تصنيفًا</small><input value={subjectSearch} onChange={(e) => setSubjectSearch(e.target.value)} placeholder="مثال: الحديث، التراجم، ب خ ر، أو رقم التصنيف..." /></span>{subjectSearch && <button type="button" onClick={() => setSubjectSearch("")} aria-label="مسح البحث"><X size={16} /></button>}</label>
                     <div><Database size={20} /><span><strong>{toArabicDigits(filteredSubjects.length)}</strong><small>نتيجة مطابقة</small></span></div>
                   </div>
                   <div className={`${styles.tableShell} ${styles.subjectTable}`}>
@@ -688,7 +706,7 @@ export default function LibraryIndexesWorkspace() {
                         ))}
                       </tbody>
                     </table>
-                    {!filteredSubjects.length && <EmptyTable search={subjectSearch} label="لا توجد تصنيفات مطابقة لعبارة البحث" />}
+                    {!filteredSubjects.length && <EmptyTable search={subjectSearch} label={subjectSearch ? "لا توجد تصنيفات مطابقة لعبارة البحث" : "لا توجد فهارس موضوعية منشورة حتى الآن"} />}
                   </div>
                 </>
               )}
