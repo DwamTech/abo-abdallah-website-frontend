@@ -1337,6 +1337,44 @@
   font: 600 13px "Noto Kufi Arabic Variable", sans-serif;
 }
 
+.subjectRow {
+  position: relative;
+}
+
+.subjectLink {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.subjectLink::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
+
+.subjectLink > span {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 5px;
+  color: #9b7440;
+  font: 8px "Noto Kufi Arabic Variable", sans-serif;
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.subjectRow:hover .subjectLink > span {
+  color: #563b2d;
+  transform: translate(-3px, -2px);
+}
+
+.subjectLink:focus-visible {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 4px;
+}
+
 .alphabeticalSection {
   width: 100%;
   padding: 112px max(24px, calc((100% - var(--container)) / 2)) 125px;
@@ -1783,6 +1821,10 @@
     gap: 10px;
     text-align: right;
     border-bottom: 1px solid #eee4d5;
+  }
+
+  .modalBody .subjectLink {
+    min-width: 0;
   }
 
   .modalBody .tableShell td:last-child {

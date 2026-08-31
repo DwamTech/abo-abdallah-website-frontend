@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import {
+  ArrowUpLeft,
   BookOpenCheck,
   BookUser,
   CalendarDays,
@@ -671,7 +673,20 @@ export default function LibraryIndexesWorkspace() {
                   <div className={`${styles.tableShell} ${styles.subjectTable}`}>
                     <table>
                       <thead><tr><th>الرقم العام</th><th>رمز التصنيف</th><th>الموضوع</th></tr></thead>
-                      <tbody>{filteredSubjects.map((entry) => <tr key={entry.number}><td data-label="الرقم العام"><span className={styles.numberBadge}>{toArabicDigits(entry.number)}</span></td><td data-label="رمز التصنيف"><code>{entry.code}</code></td><td data-label="الموضوع"><strong>{entry.subject}</strong></td></tr>)}</tbody>
+                      <tbody>
+                        {filteredSubjects.map((entry) => (
+                          <tr className={styles.subjectRow} key={entry.number}>
+                            <td data-label="الرقم العام"><span className={styles.numberBadge}>{toArabicDigits(entry.number)}</span></td>
+                            <td data-label="رمز التصنيف"><code>{entry.code}</code></td>
+                            <td data-label="الموضوع">
+                              <Link className={styles.subjectLink} href={`/library-indexes/${entry.number}`}>
+                                <strong>{entry.subject}</strong>
+                                <span>فتح الفهرس <ArrowUpLeft size={15} /></span>
+                              </Link>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
                     </table>
                     {!filteredSubjects.length && <EmptyTable search={subjectSearch} label="لا توجد تصنيفات مطابقة لعبارة البحث" />}
                   </div>
