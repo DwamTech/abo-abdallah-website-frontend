@@ -84,7 +84,6 @@ export default async function LibraryIndexesPage() {
           </div>
         </section>
         <LibraryIndexesWorkspace
-          subjectIndexesEnabled={subjectIndexesEnabled}
           subjectIndexes={subjectIndexes}
           subjectIndexesError={subjectIndexesError}
         />

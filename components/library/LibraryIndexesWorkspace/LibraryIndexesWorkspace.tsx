@@ -91,11 +91,9 @@ function formatVisitDate(value: string) {
 }
 
 export default function LibraryIndexesWorkspace({
-  subjectIndexesEnabled,
   subjectIndexes = [],
   subjectIndexesError = "",
 }: {
-  subjectIndexesEnabled: boolean;
   subjectIndexes?: PublicSubjectIndexEntry[];
   subjectIndexesError?: string;
 }) {
@@ -457,7 +455,6 @@ export default function LibraryIndexesWorkspace({
         />
       </section>
 
-      {subjectIndexesEnabled && (
       <section className={`${styles.registrySection} ${styles.subjectSection}`} id="subject-index-details">
         <div className={styles.subjectHero}>
           <Image
@@ -477,7 +474,7 @@ export default function LibraryIndexesWorkspace({
         {!subjectIndexesError && (
           <TableLauncher
             count={subjectIndexes.length}
-          description="ابحث بذكاء داخل موضوعات المكتبة ورموزها وأرقام تصنيفها."
+          description={subjectIndexes.length ? "ابحث بذكاء داخل موضوعات المكتبة ورموزها وأرقام تصنيفها." : "لا توجد فهارس موضوعية منشورة حتى الآن."}
           onClick={() => setActiveTable("subjects")}
           title="فتح الفهرس الموضوعي"
           />
@@ -489,7 +486,6 @@ export default function LibraryIndexesWorkspace({
           </div>
         )}
       </section>
-      )}
 
       <section className={`${styles.registrySection} ${styles.alphabeticalSection}`} id="alphabetical-index-details">
         <div className={styles.alphabeticalHero}>
