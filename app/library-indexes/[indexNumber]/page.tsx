@@ -7,19 +7,22 @@ import SubjectIndexDetailsUnavailable from "@/components/library/SubjectIndexDet
 import { ApiError } from "@/lib/api";
 import {
   getPublicSubjectIndex,
-  publicLibrarySubjectIndexesEnabled,
 } from "@/lib/librarySubjectIndexesApi";
+import type { LibraryIndexType } from "@/lib/librarySubjectIndexesContract";
 import { cache } from "react";
 
 type PageProps = {
   params: Promise<{ indexNumber: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
 export const revalidate = 0;
 
-const loadSubjectIndex = cache((number: number) => getPublicSubjectIndex(number));
+const loadSubjectIndex = cache((number: number, type: LibraryIndexType) =>
+  getPublicSubjectIndex(number, type),
+);
 
 function parseIndexNumber(value: string) {
   if (!/^\d+$/.test(value)) return null;
@@ -27,14 +30,20 @@ function parseIndexNumber(value: string) {
   return Number.isSafeInteger(number) && number > 0 ? number : null;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+function parseType(value: string | string[] | undefined): LibraryIndexType | null {
+  if (value === undefined) return "subject_index";
+  return typeof value === "string" && (value === "subject_index" || value === "alpha_index") ? value : null;
+}
+
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const { indexNumber } = await params;
   const number = parseIndexNumber(indexNumber);
+  const type = parseType((await searchParams).type);
 
-  if (!number || !publicLibrarySubjectIndexesEnabled()) return {};
+  if (!number || !type) return {};
 
   try {
-    const entry = await loadSubjectIndex(number);
+    const entry = await loadSubjectIndex(number, type);
     return {
       title: `الفهرس رقم ${entry.number}`,
       description: `${entry.subject}، الرمز ${entry.code}، ضمن الفهرس الموضوعي للمكتبة البكرية.`,
@@ -44,14 +53,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default async function SubjectIndexPage({ params }: PageProps) {
+export default async function SubjectIndexPage({ params, searchParams }: PageProps) {
   const { indexNumber } = await params;
   const number = parseIndexNumber(indexNumber);
+  const type = parseType((await searchParams).type);
 
-  if (!number || !publicLibrarySubjectIndexesEnabled()) notFound();
+  if (!number || !type) notFound();
 
   try {
-    const entry = await loadSubjectIndex(number);
+    const entry = await loadSubjectIndex(number, type);
     return (
       <>
         <Header />

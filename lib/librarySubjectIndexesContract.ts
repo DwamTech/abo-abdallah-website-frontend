@@ -14,6 +14,9 @@ export type PublicSubjectIndexEntry = z.infer<
   typeof publicSubjectIndexEntrySchema
 >;
 
+export const libraryIndexTypes = ["subject_index", "alpha_index"] as const;
+export type LibraryIndexType = (typeof libraryIndexTypes)[number];
+
 export const publicSubjectIndexBookSchema = z.object({
   id: z.string().min(1),
   title: requiredText,

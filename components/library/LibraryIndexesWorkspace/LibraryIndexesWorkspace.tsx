@@ -93,9 +93,13 @@ function formatVisitDate(value: string) {
 export default function LibraryIndexesWorkspace({
   subjectIndexes = [],
   subjectIndexesError = "",
+  alphaIndexes = [],
+  alphaIndexesError = "",
 }: {
   subjectIndexes?: PublicSubjectIndexEntry[];
   subjectIndexesError?: string;
+  alphaIndexes?: PublicSubjectIndexEntry[];
+  alphaIndexesError?: string;
 }) {
   const [summary, setSummary] = useState<LibraryIndexSummary | null>(null);
   const [summaryError, setSummaryError] = useState("");
@@ -220,6 +224,10 @@ export default function LibraryIndexesWorkspace({
         smartMatch(subjectSearch, entry.number, entry.code, entry.subject),
       ),
     [subjectIndexes, subjectSearch],
+  );
+  const filteredAlphabetical = useMemo(
+    () => alphaIndexes.filter((entry) => smartMatch(alphabeticalSearch, entry.number, entry.code, entry.subject)),
+    [alphaIndexes, alphabeticalSearch],
   );
 
   const submitGoldenVisitor = async (event: FormEvent<HTMLFormElement>) => {
@@ -506,7 +514,7 @@ export default function LibraryIndexesWorkspace({
           </div>
         </div>
         <TableLauncher
-          count={0}
+          count={alphaIndexes.length}
           description="استعرض العناوين مرتبة هجائيًا وابحث داخل الفهرس فور إضافة بياناته."
           onClick={() => setActiveTable("alphabetical")}
           title="فتح الفهرس الألف بائي"
@@ -693,7 +701,7 @@ export default function LibraryIndexesWorkspace({
                             <td data-label="الرقم العام"><span className={styles.numberBadge}>{toArabicDigits(entry.number)}</span></td>
                             <td data-label="رمز التصنيف"><code>{entry.code}</code></td>
                             <td data-label="الموضوع">
-                              <Link className={styles.subjectLink} href={`/library-indexes/${entry.number}`}>
+                              <Link className={styles.subjectLink} href={`/library-indexes/${entry.number}?type=subject_index`}>
                                 <strong>{entry.subject}</strong>
                                 <span>فتح الفهرس <ArrowUpLeft size={15} /></span>
                               </Link>
@@ -731,9 +739,18 @@ export default function LibraryIndexesWorkspace({
                   <div className={`${styles.tableShell} ${styles.subjectTable}`}>
                     <table>
                       <thead><tr><th>الحرف</th><th>العنوان</th><th>التصنيف</th></tr></thead>
-                      <tbody />
+                      <tbody>
+                        {filteredAlphabetical.map((entry) => (
+                          <tr className={styles.subjectRow} key={entry.number}>
+                            <td><span className={styles.numberBadge}>{toArabicDigits(entry.number)}</span></td>
+                            <td><code>{entry.code}</code></td>
+                            <td><Link className={styles.subjectLink} href={`/library-indexes/${entry.number}?type=alpha_index`}><strong>{entry.subject}</strong><span>فتح الفهرس <ArrowUpLeft size={15} /></span></Link></td>
+                          </tr>
+                        ))}
+                      </tbody>
                     </table>
-                    <EmptyTable search={alphabeticalSearch} label="الفهرس الألف بائي فارغ حاليًا" />
+                    {!alphaIndexesError && !filteredAlphabetical.length && <EmptyTable search={alphabeticalSearch} label="الفهرس الألف بائي فارغ حاليًا" />}
+                    {alphaIndexesError && <TableError message={alphaIndexesError} onRetry={() => window.location.reload()} />}
                   </div>
                 </>
               )}

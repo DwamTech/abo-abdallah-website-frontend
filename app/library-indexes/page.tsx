@@ -11,7 +11,6 @@ import Footer from "@/components/layout/Footer/Footer";
 import LibraryIndexesWorkspace from "@/components/library/LibraryIndexesWorkspace/LibraryIndexesWorkspace";
 import {
   getPublicSubjectIndexes,
-  publicLibrarySubjectIndexesEnabled,
 } from "@/lib/librarySubjectIndexesApi";
 import type { PublicSubjectIndexEntry } from "@/lib/librarySubjectIndexesContract";
 import styles from "./page.module.css";
@@ -26,18 +25,21 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function LibraryIndexesPage() {
-  const subjectIndexesEnabled = publicLibrarySubjectIndexesEnabled();
   let subjectIndexes: PublicSubjectIndexEntry[] = [];
   let subjectIndexesError = "";
+  let alphaIndexes: PublicSubjectIndexEntry[] = [];
+  let alphaIndexesError = "";
 
-  if (subjectIndexesEnabled) {
-    try {
-      subjectIndexes = await getPublicSubjectIndexes();
-    } catch {
-      subjectIndexesError = "تعذّر تحميل الفهارس الموضوعية حالياً. يرجى المحاولة مرة أخرى لاحقاً.";
-    }
+  try {
+    subjectIndexes = await getPublicSubjectIndexes("subject_index");
+  } catch {
+    subjectIndexesError = "Unable to load subject indexes.";
   }
-
+  try {
+    alphaIndexes = await getPublicSubjectIndexes("alpha_index");
+  } catch {
+    alphaIndexesError = "Unable to load alphabetical indexes.";
+  }
   return (
     <>
       <Header />
@@ -86,6 +88,8 @@ export default async function LibraryIndexesPage() {
         <LibraryIndexesWorkspace
           subjectIndexes={subjectIndexes}
           subjectIndexesError={subjectIndexesError}
+          alphaIndexes={alphaIndexes}
+          alphaIndexesError={alphaIndexesError}
         />
       </main>
       <Footer />

@@ -4,11 +4,8 @@ import {
   publicSubjectIndexListResponseSchema,
   type PublicSubjectIndexDetail,
   type PublicSubjectIndexEntry,
+  type LibraryIndexType,
 } from "./librarySubjectIndexesContract.ts";
-
-export function publicLibrarySubjectIndexesEnabled() {
-  return process.env.PUBLIC_LIBRARY_SUBJECT_INDEXES_ENABLED === "true";
-}
 
 async function fetchPublicSubjectIndexes<T>(
   path: string,
@@ -45,11 +42,11 @@ async function fetchPublicSubjectIndexes<T>(
   return parsed.data;
 }
 
-export async function getPublicSubjectIndexes(): Promise<
+export async function getPublicSubjectIndexes(type: LibraryIndexType = "subject_index"): Promise<
   PublicSubjectIndexEntry[]
 > {
   const response = await fetchPublicSubjectIndexes(
-    "/library-subject-indexes",
+    `/library-subject-indexes?type=${encodeURIComponent(type)}`,
     publicSubjectIndexListResponseSchema,
   );
   return response.data;
@@ -57,9 +54,10 @@ export async function getPublicSubjectIndexes(): Promise<
 
 export async function getPublicSubjectIndex(
   number: number,
+  type: LibraryIndexType = "subject_index",
 ): Promise<PublicSubjectIndexDetail> {
   const response = await fetchPublicSubjectIndexes(
-    `/library-subject-indexes/${number}`,
+    `/library-subject-indexes/${number}?type=${encodeURIComponent(type)}`,
     publicSubjectIndexDetailResponseSchema,
   );
   return response.data;
