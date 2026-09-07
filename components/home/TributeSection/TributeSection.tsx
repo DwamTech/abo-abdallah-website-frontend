@@ -21,7 +21,7 @@ export default function TributeSection() {
           </span>
 
           <h2 id="tribute-heading" className={styles.verse}>
-            ﴿وَٱجْعَل لِّى لِسَانَ صِدْقٍۢ
+            ﴿وَٱجْعَل لِّى لِسَانَ صِدْقٍ
             <span>فِى ٱلْـَٔاخِرِينَ﴾</span>
           </h2>
 
