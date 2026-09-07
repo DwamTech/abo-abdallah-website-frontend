@@ -138,6 +138,11 @@
   font-size: 10px;
 }
 
+.statisticsTicker .title {
+  color: var(--cream-50);
+  font-size: 13px;
+}
+
 .separator {
   width: 4px;
   height: 4px;
@@ -216,6 +221,10 @@
 
   .category {
     display: none;
+  }
+
+  .statisticsTicker .category {
+    display: inline;
   }
 
   .title {

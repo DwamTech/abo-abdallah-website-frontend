@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import "@fontsource-variable/noto-kufi-arabic";
 import "@fontsource-variable/noto-naskh-arabic";
-import NewsTicker from "@/components/layout/NewsTicker/NewsTicker";
+import SiteStatisticsTicker from "@/components/layout/SiteStatisticsTicker/SiteStatisticsTicker";
 import ScrollReveal from "@/components/layout/ScrollReveal/ScrollReveal";
 import ScrollToTop from "@/components/layout/ScrollToTop/ScrollToTop";
 import "./globals.css";
@@ -37,7 +37,7 @@ export default function RootLayout({
     <html lang="ar" dir="rtl">
       <body>
         <Suspense fallback={null}>
-          <NewsTicker />
+          <SiteStatisticsTicker />
         </Suspense>
         {children}
         <ScrollReveal />

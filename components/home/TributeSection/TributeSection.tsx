@@ -1,6 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowLeft, Feather, Maximize2 } from "lucide-react";
+import { Feather, Maximize2 } from "lucide-react";
 import styles from "./TributeSection.module.css";
 
 const artworkPath = "/media/images/sheikh-tribute-poem.png";
@@ -21,24 +20,30 @@ export default function TributeSection() {
             من نفحات الوفاء
           </span>
 
-          <h2 id="tribute-heading">
-            العلمُ أثرٌ
-            <span>لا تغيب مناراته</span>
+          <h2 id="tribute-heading" className={styles.verse}>
+            ﴿وَٱجْعَل لِّى لِسَانَ صِدْقٍۢ
+            <span>فِى ٱلْـَٔاخِرِينَ﴾</span>
           </h2>
 
           <p className={styles.intro}>
-            أثر مسيرةٍ علمية امتد عطاؤها في تعليم الحديث
-            وعلومه، وخدمة هدي النبي ﷺ، وبناء أجيالٍ من طلاب العلم.
+            «تَسْمَعُونَ، ويُسْمَعُ مِنْكُمْ، ويُسْمَعُ مِمَّنْ سَمِعَ مِنْكُمْ».
+            <span>رواه أبو داود.</span>
           </p>
 
           <blockquote className={styles.quote}>
             <span className={styles.quoteMark} aria-hidden="true">
               “
             </span>
-            <p>
-              يا أيها الشيخ الجليل بعلمه
-              <span>وبقدره وببذله وفضائله</span>
-            </p>
+            <div className={styles.poem}>
+              <p>
+                دينُ النبيِّ محمدٍ أخبارُ
+                <span>نِعْمَ المطيَّةُ للفتى الآثارُ</span>
+              </p>
+              <p>
+                لا تَرْغَبَنَّ عن الحديثِ وأهلِهِ
+                <span>فالرأيُ ليلٌ والحديثُ نهارُ</span>
+              </p>
+            </div>
           </blockquote>
 
           <div className={styles.actions}>

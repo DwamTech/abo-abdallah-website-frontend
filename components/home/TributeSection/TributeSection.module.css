@@ -139,12 +139,31 @@
   color: var(--brown-700);
 }
 
+.copy .verse {
+  font-family: "Noto Naskh Arabic Variable", serif;
+  font-size: clamp(35px, 3.6vw, 49px);
+  font-weight: 650;
+  letter-spacing: 0;
+  line-height: 1.65;
+}
+
+.copy .verse span {
+  color: inherit;
+}
+
 .intro {
   max-width: 450px;
   margin-bottom: 25px;
   color: #66584e;
   font-size: 17px;
   line-height: 2;
+}
+
+.intro span {
+  display: block;
+  color: #9a8168;
+  font-family: "Noto Kufi Arabic Variable", sans-serif;
+  font-size: 10px;
 }
 
 .quote {
@@ -180,17 +199,21 @@
   line-height: 1;
 }
 
-.quote p {
+.poem p {
   position: relative;
   z-index: 1;
-  margin: 0 0 8px;
+  margin: 0;
   color: var(--brown-900);
-  font-size: 23px;
+  font-size: 21px;
   font-weight: 650;
-  line-height: 1.72;
+  line-height: 1.8;
 }
 
-.quote p span {
+.poem p + p {
+  margin-top: 12px;
+}
+
+.poem p span {
   display: block;
 }
 
@@ -416,8 +439,8 @@
     font-size: 55px;
   }
 
-  .quote p {
-    font-size: 20px;
+  .poem p {
+    font-size: 18px;
   }
 
   .actions {
