@@ -1,6 +1,9 @@
 import { z } from "zod";
 
-const indexNumber = z.coerce.number().int().positive();
+const indexNumber = z.preprocess(
+  (value) => (typeof value === "number" ? String(value) : value),
+  z.string().trim().min(1).max(64),
+);
 const requiredText = z.string().trim().min(1);
 const optionalText = z.string().nullable();
 

@@ -53,11 +53,11 @@ export async function getPublicSubjectIndexes(type: LibraryIndexType = "subject_
 }
 
 export async function getPublicSubjectIndex(
-  number: number,
+  number: string,
   type: LibraryIndexType = "subject_index",
 ): Promise<PublicSubjectIndexDetail> {
   const response = await fetchPublicSubjectIndexes(
-    `/library-subject-indexes/${number}?type=${encodeURIComponent(type)}`,
+    `/library-subject-indexes/${encodeURIComponent(number)}?type=${encodeURIComponent(type)}`,
     publicSubjectIndexDetailResponseSchema,
   );
   return response.data;

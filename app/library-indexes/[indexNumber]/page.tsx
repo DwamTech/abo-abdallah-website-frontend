@@ -20,14 +20,14 @@ export const dynamic = "force-dynamic";
 export const dynamicParams = true;
 export const revalidate = 0;
 
-const loadSubjectIndex = cache((number: number, type: LibraryIndexType) =>
+const loadSubjectIndex = cache((number: string, type: LibraryIndexType) =>
   getPublicSubjectIndex(number, type),
 );
 
 function parseIndexNumber(value: string) {
-  if (!/^\d+$/.test(value)) return null;
-  const number = Number(value);
-  return Number.isSafeInteger(number) && number > 0 ? number : null;
+  const number = value.trim();
+
+  return number.length > 0 && number.length <= 64 ? number : null;
 }
 
 function parseType(value: string | string[] | undefined): LibraryIndexType | null {

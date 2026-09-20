@@ -701,7 +701,7 @@ export default function LibraryIndexesWorkspace({
                             <td data-label="الرقم العام"><span className={styles.numberBadge}>{toArabicDigits(entry.number)}</span></td>
                             <td data-label="رمز التصنيف"><code>{entry.code}</code></td>
                             <td data-label="الموضوع">
-                              <Link className={styles.subjectLink} href={`/library-indexes/${entry.number}?type=subject_index`}>
+                              <Link className={styles.subjectLink} href={`/library-indexes/${encodeURIComponent(entry.number)}?type=subject_index`}>
                                 <strong>{entry.subject}</strong>
                                 <span>فتح الفهرس <ArrowUpLeft size={15} /></span>
                               </Link>
@@ -744,7 +744,7 @@ export default function LibraryIndexesWorkspace({
                           <tr className={styles.subjectRow} key={entry.number}>
                             <td><span className={styles.numberBadge}>{toArabicDigits(entry.number)}</span></td>
                             <td><code>{entry.code}</code></td>
-                            <td><Link className={styles.subjectLink} href={`/library-indexes/${entry.number}?type=alpha_index`}><strong>{entry.subject}</strong><span>فتح الفهرس <ArrowUpLeft size={15} /></span></Link></td>
+                            <td><Link className={styles.subjectLink} href={`/library-indexes/${encodeURIComponent(entry.number)}?type=alpha_index`}><strong>{entry.subject}</strong><span>فتح الفهرس <ArrowUpLeft size={15} /></span></Link></td>
                           </tr>
                         ))}
                       </tbody>
