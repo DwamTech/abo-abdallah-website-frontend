@@ -286,7 +286,7 @@ export default function DissertationIndexContent() {
                 </span>
                 <h2>ابحث وحدّد نطاق الدراسة</h2>
                 <p>
-                  ابحث في السجل ثم خصّص النتائج بحسب الجهة والتخصص والدور
+                  ابحث في السجل ثم خصّص النتائج بحسب الجهة والمسار العلمي والدور
                   العلمي.
                 </p>
               </div>
@@ -301,7 +301,7 @@ export default function DissertationIndexContent() {
                     type="text"
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
-                    placeholder="عنوان الرسالة، الباحث، الجامعة أو التخصص..."
+                    placeholder="عنوان الرسالة، الباحث، الجامعة أو المسار العلمي..."
                   />
                 </span>
                 {query && (
@@ -350,7 +350,7 @@ export default function DissertationIndexContent() {
                 }}
               />
               <FilterRow
-                label="التخصص"
+                label="المسار العلمي"
                 icon={<BookOpen size={14} />}
                 options={specializations}
                 value={specialization}

@@ -177,10 +177,10 @@ export default function AboutPageContent() {
             </nav>
 
             <span className={styles.kicker}>السيرة العلمية والأكاديمية</span>
-            <h1>عن فضيلة الشيخ</h1>
+            <h1>لفضيلة الشيخ</h1>
             <p className={styles.name}>{sheikhProfile.displayName}</p>
             <p className={styles.role}>
-              {sheikhProfile.academicTitle} سابقًا في {sheikhProfile.university}
+              {sheikhProfile.academicTitle} في {sheikhProfile.university}
             </p>
             <div className={styles.heroFacts}>
               <span>
@@ -252,7 +252,7 @@ export default function AboutPageContent() {
             <div className={styles.identityNote}>
               <Sparkles size={17} />
               <span>
-                {sheikhProfile.academicTitle} في {sheikhProfile.department}، ومتقاعد منذ {sheikhProfile.retirementDate}
+                {sheikhProfile.academicTitle} في {sheikhProfile.department}
               </span>
             </div>
           </div>
@@ -276,7 +276,7 @@ export default function AboutPageContent() {
             number="٢"
             eyebrow="التأهيل والترقي العلمي"
             title="الشهادات والدرجات العلمية"
-            description="تسلسل زمني للشهادات الأكاديمية والدرجات العلمية منذ بداية المسيرة الجامعية."
+            description="تسلسل زمني للشهادات الأكاديمية والدرجات العلمية منذ بداية المسيرة العلمية."
             light
           />
 

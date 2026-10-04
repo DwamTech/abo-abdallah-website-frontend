@@ -658,7 +658,7 @@
 .timelineItem {
   position: relative;
   min-height: 78px;
-  padding: 0 7px 22px 112px;
+  padding: 0 7px 22px 172px;
 }
 
 .timelineItem:last-child {
@@ -1914,7 +1914,13 @@
   }
 
   .timelineItem {
-    padding-left: 92px;
+    padding-left: 0;
+  }
+
+  .timelineItem time {
+    position: static;
+    display: block;
+    margin-bottom: 4px;
   }
 
   .timelineItem time,

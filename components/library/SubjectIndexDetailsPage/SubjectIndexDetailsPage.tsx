@@ -14,7 +14,10 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toArabicDigits } from "@/lib/arabicNumbers";
-import type { PublicSubjectIndexDetail } from "@/lib/librarySubjectIndexesContract";
+import type {
+  LibraryIndexType,
+  PublicSubjectIndexDetail,
+} from "@/lib/librarySubjectIndexesContract";
 import styles from "./SubjectIndexDetailsPage.module.css";
 
 function normalizeArabic(value: string) {
@@ -34,10 +37,17 @@ function normalizeArabic(value: string) {
 
 export default function SubjectIndexDetailsPage({
   entry,
+  type,
 }: {
   entry: PublicSubjectIndexDetail;
+  type: LibraryIndexType;
 }) {
   const [query, setQuery] = useState("");
+  const isAlphabetical = type === "alpha_index";
+  const indexLabel = isAlphabetical ? "الفهرس الألف بائي" : "الفهرس الموضوعي";
+  const backHref = isAlphabetical
+    ? "/library-indexes#alphabetical-index-details"
+    : "/library-indexes#subject-index-details";
 
   const filteredBooks = useMemo(() => {
     const normalizedQuery = normalizeArabic(query);
@@ -74,13 +84,13 @@ export default function SubjectIndexDetailsPage({
             <strong>الفهرس رقم {toArabicDigits(entry.number)}</strong>
           </nav>
 
-          <Link className={styles.backLink} href="/library-indexes#subject-index-details">
-            <ArrowRight size={16} /> العودة إلى الفهرس الموضوعي
+          <Link className={styles.backLink} href={backHref}>
+            <ArrowRight size={16} /> العودة إلى {indexLabel}
           </Link>
 
           <div className={styles.heroStage}>
             <div className={styles.heroContent}>
-              <span className={styles.eyebrow}><LibraryBig size={16} /> الفهرس الموضوعي</span>
+              <span className={styles.eyebrow}><LibraryBig size={16} /> {indexLabel}</span>
               <h1>{entry.subject}</h1>
               <p className={styles.heroDescription}>
                 تصنيف علمي يجمع مقتنيات المكتبة في سجل موحّد، منظم ليسهّل الوصول إلى العناوين وبيانات نشرها.
@@ -103,7 +113,7 @@ export default function SubjectIndexDetailsPage({
 
           <div className={styles.statsPanel}>
             <div className={styles.statsIntro}>
-              <span>بيانات المجموعة</span>
+              <span>بيانات النوع</span>
               <small>إجمالي المحتوى المسجل في هذا التصنيف</small>
             </div>
             <div className={styles.stats} aria-label="إحصاءات الفهرس">

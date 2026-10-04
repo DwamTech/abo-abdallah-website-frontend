@@ -34,7 +34,7 @@
     },
     {
       "icon": "BookOpenCheck",
-      "title": "التخصص العلمي",
+      "title": "المسار العلمي العلمي",
       "text": "العناية بالحديث النبوي وعلوم الرواية والدراية."
     },
     {
@@ -51,7 +51,7 @@
     },
     {
       "icon": "BookOpenCheck",
-      "label": "مجال التخصص",
+      "label": "مجال المسار العلمي",
       "value": "الحديث النبوي وعلومه"
     },
     {
@@ -106,7 +106,7 @@
     },
     {
       "icon": "BookOpenCheck",
-      "title": "التخصص العلمي",
+      "title": "المسار العلمي العلمي",
       "text": "العناية بالسنة النبوية وعلوم الرواية والدراية."
     },
     {
@@ -242,13 +242,11 @@
   "navigation": [
     { "label": "الرئيسية", "href": "/" },
     { "label": "المسيرة العلمية", "href": "/about" },
-    { "label": "مجالس السماع", "href": "/listening" },
-    { "label": "بطاقات حديثية", "href": "/hadith-cards" },
     { "label": "المكتبة البكرية", "href": "/library" },
-    { "label": "الإشراف العلمي", "href": "/dissertations" },
-    { "label": "الفتاوى", "href": "/fatwas" },
-    { "label": "المرئيات", "href": "/videos" },
-    { "label": "المقالات", "href": "/articles" }
+    { "label": "البطاقات الحديثية", "href": "/hadith-cards" },
+    { "label": "المقالات", "href": "/articles" },
+    { "label": "الفتاوى الحديثية", "href": "/fatwas" },
+    { "label": "مجالس السماع", "href": "/listening" }
   ],
   "searchLinks": [
     {
@@ -282,21 +280,13 @@
       "href": "/"
     }
   ],
-  "footerQuickLinks": [
-    { "label": "المسيرة العلمية", "href": "/about" },
-    { "label": "مجالس السماع", "href": "/listening" },
-    { "label": "الكتب والمؤلفات", "href": "/library" },
-    { "label": "البحوث والدراسات", "href": "#featured" },
-    { "label": "المقالات", "href": "/articles" },
-    { "label": "المرئيات", "href": "/videos" }
-  ],
   "footerKnowledgeLinks": [
     { "label": "مجالس السماع", "href": "/listening" },
     { "label": "المكتبة البكرية", "href": "/library" },
+    { "label": "المقالات", "href": "/articles" },
     { "label": "الإشراف العلمي", "href": "/dissertations" },
-    { "label": "الفتاوى والأجوبة", "href": "/fatwas" },
-    { "label": "المسيرة العلمية", "href": "/about" },
-    { "label": "البحث في الموقع", "href": "#home" }
+    { "label": "الفتاوى الحديثية", "href": "/fatwas" },
+    { "label": "المسيرة العلمية", "href": "/about" }
   ],
   "footerLegalLinks": [
     { "label": "الشروط والأحكام", "href": "/terms" },

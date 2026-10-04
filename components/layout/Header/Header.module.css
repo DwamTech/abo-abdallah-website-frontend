@@ -19,11 +19,11 @@
 .navShell {
   display: grid;
   width: min(calc(100% - 48px), var(--container));
-  min-height: 92px;
+  min-height: 88px;
   margin-inline: auto;
-  grid-template-columns: minmax(215px, 0.75fr) auto minmax(215px, 0.75fr);
+  grid-template-columns: 190px minmax(0, 1fr) 44px;
   align-items: center;
-  gap: 28px;
+  gap: clamp(14px, 2vw, 26px);
   transition: min-height 220ms ease;
 }
 
@@ -33,8 +33,8 @@
 
 .brand {
   display: flex;
-  width: clamp(215px, 21vw, 275px);
-  height: 68px;
+  width: 190px;
+  height: 64px;
   align-items: center;
   justify-self: start;
 }
@@ -42,10 +42,10 @@
 .brandLogo {
   width: 100%;
   height: auto;
-  max-height: 75px;
+  max-height: 64px;
   object-fit: contain;
   object-position: right center;
-  filter: drop-shadow(0 2px 8px rgba(103, 73, 58, 0.15));
+  filter: drop-shadow(0 3px 8px rgba(0, 111, 69, 0.14));
   transition: transform 220ms ease;
 }
 
@@ -57,15 +57,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  padding: 5px;
+  gap: 2px;
+  padding: 4px;
   color: #64574d;
   border: 1px solid rgba(166, 122, 53, 0.18);
   border-radius: 999px;
   background: rgba(248, 243, 233, 0.72);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
   font-family: "Noto Kufi Arabic Variable", sans-serif;
-  font-size: 11px;
+  font-size: 10px;
 }
 
 .desktopNav a {
@@ -74,7 +74,7 @@
   min-height: 39px;
   align-items: center;
   justify-content: center;
-  padding-inline: 11px;
+  padding-inline: clamp(7px, 0.8vw, 11px);
   border-radius: 999px;
   white-space: nowrap;
   transition:
@@ -90,7 +90,7 @@
 .navDropdownTrigger {
   display: inline-flex;
   min-height: 39px;
-  padding-inline: 11px;
+  padding-inline: clamp(7px, 0.8vw, 11px);
   align-items: center;
   gap: 6px;
   color: inherit;
@@ -255,7 +255,7 @@
   align-items: center;
   justify-content: flex-end;
   justify-self: end;
-  gap: 9px;
+  gap: 0;
 }
 
 .searchButton,
@@ -283,66 +283,6 @@
   border-color: var(--brown-800);
   background: var(--brown-800);
   transform: translateY(-2px);
-}
-
-.actionDivider {
-  width: 1px;
-  height: 23px;
-  margin-inline: 2px;
-  background: var(--cream-300);
-}
-
-.libraryButton {
-  display: inline-flex;
-  min-height: 45px;
-  align-items: center;
-  gap: 8px;
-  padding-inline: 15px;
-  color: var(--brown-950);
-  border: 1px solid #d0ad69;
-  border-radius: 4px;
-  background: linear-gradient(135deg, #ead4a7, var(--gold-300));
-  box-shadow: 0 8px 24px rgba(166, 122, 53, 0.14);
-  font-family: "Noto Kufi Arabic Variable", sans-serif;
-  font-size: 10px;
-  transition:
-    box-shadow 180ms ease,
-    transform 180ms ease,
-    background 180ms ease;
-}
-
-.libraryButton > svg:last-child {
-  margin-right: 4px;
-  transition: transform 180ms ease;
-}
-
-.audioQuranIcon {
-  position: relative;
-  display: grid;
-  width: 25px;
-  height: 25px;
-  flex: 0 0 auto;
-  place-items: center;
-}
-
-.audioQuranIcon svg:last-child {
-  position: absolute;
-  right: -3px;
-  bottom: 0;
-  padding: 1px;
-  color: var(--cream-50);
-  border-radius: 50%;
-  background: var(--brown-800);
-}
-
-.libraryButton:hover {
-  background: linear-gradient(135deg, #efdcb8, #e1c48e);
-  box-shadow: 0 11px 28px rgba(166, 122, 53, 0.2);
-  transform: translateY(-2px);
-}
-
-.libraryButton:hover > svg:last-child {
-  transform: translate(-3px, -3px);
 }
 
 .menuButton {
@@ -402,9 +342,9 @@
 }
 
 .drawerLogo {
-  width: 230px;
+  width: 205px;
   height: auto;
-  max-height: 58px;
+  max-height: 64px;
   object-fit: contain;
   object-position: right center;
 }
@@ -804,7 +744,7 @@
   }
 }
 
-@media (max-width: 1120px) {
+@media (max-width: 1180px) {
   .navShell {
     display: flex;
     justify-content: space-between;
@@ -831,8 +771,8 @@
   }
 
   .brand {
-    width: clamp(170px, 50vw, 220px);
-    height: 54px;
+    width: clamp(155px, 44vw, 195px);
+    height: 58px;
     min-width: 0;
   }
 
@@ -844,11 +784,6 @@
   .menuButton {
     width: 40px;
     height: 40px;
-  }
-
-  .actionDivider,
-  .libraryButton {
-    display: none;
   }
 
   .searchPanel {
@@ -899,7 +834,7 @@
 
 @media (max-width: 390px) {
   .brand {
-    width: 155px;
+    width: 145px;
   }
 
   .navShell {

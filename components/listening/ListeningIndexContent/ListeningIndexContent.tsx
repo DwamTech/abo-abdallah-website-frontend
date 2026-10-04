@@ -121,17 +121,12 @@ export default function ListeningIndexContent() {
 
           <span className={styles.eyebrow}>
             <Headphones size={14} />
-            أقراء وتدبر
+            اسمع وتفقَّه
           </span>
           <h1>
             مجالس السماع
             <span>والمواد الصوتية</span>
           </h1>
-          <p>
-            مكتبة صوتية علمية مرتبة في سلاسل متصلة، تجمع التسجيل والكتاب وتساعد
-            طالب العلم على المتابعة من أول مجلس إلى آخره.
-          </p>
-
           <div className={styles.heroStats}>
             <span>
               <strong>

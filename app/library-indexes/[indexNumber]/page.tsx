@@ -44,9 +44,10 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
 
   try {
     const entry = await loadSubjectIndex(number, type);
+    const indexLabel = type === "alpha_index" ? "الفهرس الألف بائي" : "الفهرس الموضوعي";
     return {
       title: `الفهرس رقم ${entry.number}`,
-      description: `${entry.subject}، الرمز ${entry.code}، ضمن الفهرس الموضوعي للمكتبة البكرية.`,
+      description: `${entry.subject}، الرمز ${entry.code}، ضمن ${indexLabel} للمكتبة البكرية.`,
     };
   } catch {
     return {};
@@ -66,7 +67,7 @@ export default async function SubjectIndexPage({ params, searchParams }: PagePro
       <>
         <Header />
         <main>
-          <SubjectIndexDetailsPage entry={entry} />
+          <SubjectIndexDetailsPage entry={entry} type={type} />
         </main>
         <Footer />
       </>

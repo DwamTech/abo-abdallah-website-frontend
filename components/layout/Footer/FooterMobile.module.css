@@ -1,6 +1,6 @@
 @media (max-width: 620px) {
   .main {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    grid-template-columns: 1fr !important;
     column-gap: 24px !important;
     row-gap: 34px !important;
   }

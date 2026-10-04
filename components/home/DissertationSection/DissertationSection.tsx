@@ -59,7 +59,7 @@ export default async function DissertationSection() {
           <div className={styles.intro}>
             <p>
               سجل منظم للرسائل الجامعية التي أشرف عليها فضيلة الشيخ أو ناقشها أو
-              شارك في لجانها، يربط الباحث بالموضوع والتخصص والجهة العلمية.
+              شارك في لجانها، يربط الباحث بالموضوع والمسار العلمي والجهة العلمية.
             </p>
             <Link href="/dissertations">
               استكشف السجل الأكاديمي
@@ -243,7 +243,7 @@ export default async function DissertationSection() {
         <div className={styles.specialties}>
           <span className={styles.specialtiesTitle}>
             <Building2 size={16} />
-            خريطة التخصصات
+            خريطة المسار العلميات
           </span>
           <div>
             {specializations.length > 0 ? (
@@ -255,7 +255,7 @@ export default async function DissertationSection() {
             )}
           </div>
           <Link href="/dissertations">
-            جميع التخصصات
+            جميع المسار العلميات
             <ArrowLeft size={15} />
           </Link>
         </div>

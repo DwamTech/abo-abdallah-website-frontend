@@ -4,10 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
-  AudioLines,
   ArrowUpLeft,
   BookMarked,
-  BookOpen,
   ChevronDown,
   GraduationCap,
   LibraryBig,
@@ -45,7 +43,7 @@ const libraryNavigation = [
   },
 ];
 
-const visibleNavigation = navigation.filter((item) => item.href !== '/dissertations');
+const visibleNavigation = navigation;
 
 function isActivePath(pathname: string, href: string) {
   return pathname === href || (href !== '/' && pathname.startsWith(`${href}/`));
@@ -107,10 +105,10 @@ export default function Header() {
           <a className={styles.brand} href="/" aria-label="الانتقال إلى الصفحة الرئيسية">
             <Image
               className={styles.brandLogo}
-              src="/media/images/الشهري_بني.png"
-              alt="أبو عبد الله يحيى بن عبد الله البكري الشهري"
-              width={1600}
-              height={561}
+              src="/media/images/elmaktaba_elbakrya.png"
+              alt="المكتبة البكرية"
+              width={834}
+              height={299}
               priority
             />
           </a>
@@ -186,17 +184,6 @@ export default function Header() {
               <Search size={19} strokeWidth={1.7} />
             </button>
 
-            <span className={styles.actionDivider} aria-hidden="true" />
-
-            <a className={styles.libraryButton} href="/listening">
-              <span className={styles.audioQuranIcon} aria-hidden="true">
-                <BookOpen size={20} strokeWidth={1.45} />
-                <AudioLines size={10} strokeWidth={2} />
-              </span>
-              <span>المكتبة الصوتية</span>
-              <ArrowUpLeft size={15} strokeWidth={1.7} />
-            </a>
-
             <button
               className={styles.menuButton}
               type="button"
@@ -222,10 +209,10 @@ export default function Header() {
           <div className={styles.drawerHead}>
             <Image
               className={styles.drawerLogo}
-              src="/media/images/الشهري_بني.png"
-              alt=""
-              width={1600}
-              height={561}
+              src="/media/images/elmaktaba_elbakrya.png"
+              alt="المكتبة البكرية"
+              width={834}
+              height={299}
             />
             <button type="button" onClick={() => setMenuOpen(false)} aria-label="إغلاق القائمة">
               <X size={21} />

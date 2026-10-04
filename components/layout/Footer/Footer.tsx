@@ -14,8 +14,6 @@ import logoStyles from "./DwamCredit.module.css";
 import mobileStyles from "./FooterMobile.module.css";
 import siteContent from "@/data/site-content.json";
 
-const quickLinks = siteContent.footerQuickLinks;
-
 const knowledgeLinks = siteContent.footerKnowledgeLinks;
 const legalLinks = siteContent.footerLegalLinks;
 
@@ -46,26 +44,16 @@ export default function Footer() {
             >
               <Image
                 className={styles.footerLogo}
-                src="/media/images/الشهري.png"
-                alt="أبو عبد الله يحيى بن عبد الله البكري الشهري"
-                width={1600}
-                height={561}
+                src="/media/images/elmaktaba_elbakrya.png"
+                alt="المكتبة البكرية"
+                width={834}
+                height={299}
               />
             </a>
             <p>
-              موقع علمي يجمع الإنتاج الأكاديمي، ويخدم الباحثين وطلاب
-              العلم في الحديث النبوي وعلومه.
+             منصة علمية تجمع أهم مصادر المعرفة، والإنتاج العلمي والأكاديمي، والجهود في خدمة السنة النبوية.
             </p>
             <div className={premium.identityTags}><span><BookOpenCheck size={15}/>مكتبة علمية</span><span><Headphones size={15}/>مجالس سماع</span><span><MessageCircleQuestion size={15}/>فتاوى حديثية</span></div>
-          </div>
-
-          <div className={`${styles.links} ${mobileStyles.centerBlock}`}>
-            <h3>روابط سريعة</h3>
-            {quickLinks.map((item) => (
-              <a key={item.label} href={item.href}>
-                {item.label}
-              </a>
-            ))}
           </div>
 
           <div className={`${styles.links} ${mobileStyles.centerBlock}`}>

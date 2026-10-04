@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, Layers3, Share2, Sparkles } from "lucide-react";
+import { ArrowLeft, Layers3, Share2 } from "lucide-react";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import {
   getHadithCardsProjects,
@@ -16,10 +16,10 @@ function projectCountNoun(count: number) {
 }
 
 function sectionTitle(count: number) {
-  if (count === 1) return "مشروع واحد، ورسالة علمية واحدة";
-  if (count === 2) return "مشروعان، ورسالة علمية واحدة";
-  if (count > 2) return `${toArabicDigits(count)} مشروعات، ورسالة علمية واحدة`;
-  return "مشروعات البطاقات الحديثية";
+  if (count === 1) return "مشروع واحد";
+  if (count === 2) return "مشروعان";
+  if (count > 2) return `${toArabicDigits(count)} مشروعات`;
+  return "البطاقات الحديثية";
 }
 
 function projectOrdinal(index: number) {
@@ -87,7 +87,6 @@ export default async function HadithCardsPageContent() {
       <section className={styles.projectsSection}>
         <div className={styles.projectsInner}>
           <header className={styles.sectionHeading}>
-            <span><Sparkles size={15} /> مشروعات البطاقات</span>
             <h2>{sectionTitle(projectsCount)}</h2>
             <p>كل مشروع مساحة مستقلة تُعرض داخلها بطاقاته تباعًا عند نشرها من لوحة التحكم.</p>
           </header>
@@ -114,7 +113,7 @@ export default async function HadithCardsPageContent() {
                     : "لا توجد مشروعات بطاقات منشورة بعد"}
                 </strong>
                 <p>
-                  {error || "ستظهر مشروعات البطاقات هنا فور نشرها من لوحة الإدارة."}
+                  {error || "ستظهر البطاقات هنا فور نشرها من لوحة الإدارة."}
                 </p>
               </div>
             )}

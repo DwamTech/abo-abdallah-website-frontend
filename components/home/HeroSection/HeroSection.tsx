@@ -10,20 +10,20 @@ export default function HeroSection() {
       <div className={styles.pattern} aria-hidden="true" />
       <div className={styles.container}>
         <div className={styles.content}>
-          <div className={styles.introHeader}>
+          {/* <div className={styles.introHeader}>
             <span className={styles.introSeal} aria-hidden="true">۞</span>
             <div className={styles.introCopy}>
               <div className={styles.eyebrow}>العلم ميراث النبوة</div>
               <p className={styles.preTitle}>الموقع الرسمي لفضيلة الأستاذ الدكتور</p>
             </div>
-          </div>
+          </div> */}
           <h1 className={styles.srOnly}>أبو عبد الله يحيى بن عبد الله البكري الشهري</h1>
           <div className={styles.nameArtwork} aria-hidden="true">
-            <span className={styles.nameOrnament}>
+            {/* <span className={styles.nameOrnament}>
               <i />
               <b>۞</b>
               <i />
-            </span>
+            </span> */}
             <Image
               className={styles.calligraphy}
               src="/media/images/الشهري.png"
@@ -33,7 +33,7 @@ export default function HeroSection() {
               priority
             />
              <span className={styles.englishName} lang="en" dir="ltr">
-              Yahya Abdullah Al-Bakri Al-Shehri
+              Yahya Abdullah Al-Bakry Al-Shehry
             </span>
           </div>
           <div className={styles.profileSummary}>
@@ -41,8 +41,7 @@ export default function HeroSection() {
             <div>
               <p className={styles.subtitle}>أستاذ الحديث وعلومه بجامعة الملك خالد في أبها</p>
               <p className={styles.intro}>
-                منصة علمية تجمع الإنتاج الأكاديمي، وتيسّر للباحثين وطلاب العلم
-                الوصول إلى المؤلفات والبحوث والدروس ومجالس السماع.
+              منصة علمية تجمع أهم مصادر المعرفة، والإنتاج العلمي والأكاديمي، والجهود في خدمة السنة النبوية. 
               </p>
             </div>
           </div>

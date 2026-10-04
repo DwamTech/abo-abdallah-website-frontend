@@ -12,7 +12,7 @@
 .main {
   display: grid;
   padding: 78px 0 65px;
-  grid-template-columns: 1.5fr 0.65fr 0.7fr 1fr;
+  grid-template-columns: 1.45fr 0.75fr 1fr;
   gap: clamp(35px, 5vw, 70px);
 }
 
@@ -22,7 +22,7 @@
 
 .brand {
   display: block;
-  width: min(100%, 330px);
+  width: min(100%, 285px);
   margin-bottom: 20px;
 }
 
@@ -31,7 +31,7 @@
   height: auto;
   object-fit: contain;
   object-position: right center;
-  filter: drop-shadow(0 4px 16px rgba(191, 150, 80, 0.16));
+  filter: drop-shadow(0 4px 16px rgba(0, 111, 69, 0.18));
 }
 
 .identity p {
