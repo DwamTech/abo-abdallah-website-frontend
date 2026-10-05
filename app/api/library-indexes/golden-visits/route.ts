@@ -19,6 +19,7 @@ export const dynamic = "force-dynamic";
 
 const goldenFieldsSchema = z.object({
   name: z.string().trim().min(2).max(180),
+  visitor_comment: z.string().trim().max(10000).optional(),
   visit_date: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/)
@@ -57,8 +58,12 @@ export async function POST(request: Request) {
   if (!body) return libraryIndexFailure(422, "بيانات الزيارة غير مكتملة.");
 
   const rawDate = body.get("visit_date");
+  const rawComment = body.get("visitor_comment");
   const parsed = goldenFieldsSchema.safeParse({
     name: body.get("name"),
+    ...(typeof rawComment === "string" && rawComment.trim()
+      ? { visitor_comment: rawComment }
+      : {}),
     ...(typeof rawDate === "string" && rawDate ? { visit_date: rawDate } : {}),
   });
   const image = body.get("image");
@@ -75,6 +80,9 @@ export async function POST(request: Request) {
 
   const upstreamBody = new FormData();
   upstreamBody.set("name", parsed.data.name);
+  if (parsed.data.visitor_comment) {
+    upstreamBody.set("visitor_comment", parsed.data.visitor_comment);
+  }
   if (parsed.data.visit_date) {
     upstreamBody.set("visit_date", parsed.data.visit_date);
   }

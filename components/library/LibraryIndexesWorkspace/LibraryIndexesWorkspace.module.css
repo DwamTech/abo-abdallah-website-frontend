@@ -373,6 +373,29 @@
   color: #aa9b8f;
 }
 
+.commentField textarea {
+  width: 100%;
+  min-height: 86px;
+  resize: vertical;
+  padding: 13px 15px;
+  border: 1px solid #dcc9b0;
+  border-radius: 12px;
+  outline: 0;
+  color: var(--brown-900);
+  background: #fffdf8;
+  font: 13px/1.8 "Noto Kufi Arabic Variable", sans-serif;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.commentField textarea::placeholder {
+  color: #aa9b8f;
+}
+
+.commentField textarea:focus {
+  border-color: #b98b48;
+  box-shadow: 0 0 0 4px rgba(185, 139, 72, 0.1);
+}
+
 .dateField input {
   direction: ltr;
   text-align: right;
@@ -840,6 +863,25 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.viewVisit {
+  display: inline-flex;
+  padding: 8px 12px;
+  align-items: center;
+  gap: 7px;
+  color: #654734;
+  border: 1px solid #dcc8ac;
+  border-radius: 7px;
+  background: #fbf3e5;
+  font: 9px "Noto Kufi Arabic Variable", sans-serif;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.viewVisit:hover {
+  color: #fff9ee;
+  background: #654734;
 }
 
 .savedBadge {

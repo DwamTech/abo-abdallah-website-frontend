@@ -9,6 +9,7 @@ import DigitalLibrarySection from "@/components/home/DigitalLibrarySection/Digit
 import DissertationSection from "@/components/home/DissertationSection/DissertationSection";
 import FatwaSection from "@/components/home/FatwaSection/FatwaSection";
 import ArticlesSection from "@/components/home/ArticlesSection/ArticlesSection";
+import GoldenVisitsSection from "@/components/home/GoldenVisitsSection/GoldenVisitsSection";
 import VideosSection from "@/components/home/VideosSection/VideosSection";
 
 export default function HomePage() {
@@ -30,6 +31,7 @@ export default function HomePage() {
         <VideosSection />
         <SectionDivider variant="audioBook" />
         <ArticlesSection />
+        <GoldenVisitsSection />
         <SectionDivider variant="manuscript" />
       </main>
       <Footer />

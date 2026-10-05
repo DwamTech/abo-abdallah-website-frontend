@@ -1,0 +1,657 @@
+.page {
+  min-height: 85vh;
+  padding: 132px 24px 110px;
+  color: #3f2b22;
+  background:
+    radial-gradient(circle at 8% 18%, rgba(188, 139, 66, 0.15), transparent 26%),
+    radial-gradient(circle at 91% 82%, rgba(113, 77, 48, 0.09), transparent 26%),
+    #f8f2e8;
+}
+
+.wrap {
+  width: min(100%, 1200px);
+  margin: auto;
+}
+
+.breadcrumb {
+  display: flex;
+  margin-bottom: 28px;
+  align-items: center;
+  gap: 12px;
+  color: #927863;
+  font: 11px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #815e37;
+  text-decoration: none;
+}
+
+.story {
+  display: grid;
+  min-height: 590px;
+  grid-template-columns: minmax(270px, 0.82fr) minmax(0, 1.18fr);
+  overflow: hidden;
+  border: 1px solid #ddc9aa;
+  border-radius: 28px;
+  background: #fffcf7;
+  box-shadow: 0 34px 80px rgba(64, 41, 29, 0.12);
+}
+
+.photoPanel {
+  display: flex;
+  min-height: 590px;
+  padding: 42px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 22px;
+  background:
+    linear-gradient(145deg, rgba(37, 24, 19, 0.05), rgba(37, 24, 19, 0.65)),
+    url('/media/images/liberrary/kku-20.jpg') center / cover,
+    #3d2c23;
+}
+
+.photoFrame {
+  display: grid;
+  width: min(100%, 345px);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  place-items: center;
+  color: #d6ba8b;
+  border: 9px solid #f8f0df;
+  border-radius: 155px 155px 18px 18px;
+  background: #eadcca;
+  box-shadow: 0 0 0 1px #b88947, 0 20px 40px rgba(20, 13, 10, 0.32);
+}
+
+.photoFrame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoCaption {
+  color: #f1e2c7;
+  font: 10px "Noto Kufi Arabic Variable", sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.storyBody {
+  display: flex;
+  padding: clamp(34px, 6vw, 86px);
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #a57737;
+  font: 11px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.storyBody h1 {
+  margin: 15px 0 16px;
+  color: #38251e;
+  font: 600 clamp(31px, 3.5vw, 48px) "Noto Naskh Arabic Variable", serif;
+}
+
+.rule {
+  width: 90px;
+  height: 2px;
+  margin-bottom: 35px;
+  background: #b98a4c;
+}
+
+.quoteBox {
+  width: 100%;
+  padding: 27px 32px 33px;
+  color: #aa7836;
+  border-right: 3px solid #ba8b4b;
+  border-radius: 12px 0 0 12px;
+  background: #f8f0e3;
+}
+
+.quoteBox blockquote {
+  margin: 6px 0 0;
+  color: #49362b;
+  font: 400 clamp(22px, 2.2vw, 30px) / 1.95 "Noto Naskh Arabic Variable", serif;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.visitorMeta {
+  display: flex;
+  width: 100%;
+  margin-top: 32px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  color: #8c7868;
+  font: 11px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.visitorMeta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.visitorMeta .visitorName {
+  color: #493027;
+  font-weight: 700;
+}
+
+.backLink,
+.unavailable a {
+  display: inline-flex;
+  margin-top: 35px;
+  padding: 12px 20px;
+  align-items: center;
+  gap: 9px;
+  color: #fff9ef;
+  border-radius: 8px;
+  background: #4c3429;
+  font: 10px "Noto Kufi Arabic Variable", sans-serif;
+  text-decoration: none;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.backLink:hover,
+.unavailable a:hover {
+  background: #755037;
+  transform: translateY(-2px);
+}
+
+.unavailable {
+  min-height: 70vh;
+  padding: 200px 24px 100px;
+  color: #493027;
+  background: #f8f2e8;
+  text-align: center;
+}
+
+@media (max-width: 800px) {
+  .page { padding: 110px 16px 70px; }
+  .story { grid-template-columns: 1fr; }
+  .photoPanel { min-height: 360px; padding: 30px; }
+  .photoFrame { width: min(220px, 70%); }
+  .storyBody { padding: 35px 25px 45px; }
+  .quoteBox { padding: 22px; }
+}
+
+/* The portrait and the visitor's word are separate reading regions. */
+.wrap {
+  width: min(100%, 1120px);
+}
+
+.story {
+  display: block;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 30px 30px 10px 30px;
+  background: #fffdf9;
+}
+
+.profileHero {
+  position: relative;
+  display: grid;
+  min-height: 440px;
+  padding: clamp(34px, 5vw, 64px);
+  grid-template-columns: minmax(250px, 330px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(38px, 7vw, 92px);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 88% 12%, rgba(223, 182, 111, 0.18), transparent 30%),
+    radial-gradient(circle at 10% 88%, rgba(200, 148, 74, 0.12), transparent 28%),
+    linear-gradient(135deg, #3d2922, #674635 66%, #765038);
+}
+
+.profileHero::before {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  bottom: 28px;
+  left: 28px;
+  content: "";
+  pointer-events: none;
+  border: 1px solid rgba(236, 204, 148, 0.16);
+  border-radius: 19px 19px 5px 19px;
+}
+
+.profileHero::after {
+  position: absolute;
+  top: 50%;
+  left: -90px;
+  width: 260px;
+  height: 260px;
+  content: "";
+  pointer-events: none;
+  border: 1px solid rgba(225, 185, 116, 0.1);
+  border-radius: 50%;
+  box-shadow: 0 0 0 30px rgba(225, 185, 116, 0.025);
+  transform: translateY(-50%);
+}
+
+.portraitColumn {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.photoFrame {
+  width: min(100%, 285px);
+  height: auto;
+  aspect-ratio: 4 / 5;
+  border: 9px solid #f1e1c3;
+  border-radius: 145px 145px 16px 16px;
+  background: #e6d5b9;
+  box-shadow:
+    0 0 0 1px #b98443,
+    0 22px 42px rgba(19, 12, 9, 0.34);
+}
+
+.photoFrame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  background: #e8dcc8;
+}
+
+.photoCaption {
+  color: #ddc7a1;
+  font-size: 9px;
+  letter-spacing: 0;
+}
+
+.intro {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.intro .kicker {
+  color: #ddb978;
+}
+
+.intro h1 {
+  max-width: 650px;
+  margin: 18px 0 16px;
+  color: #fff8ea;
+  font: 600 clamp(36px, 5vw, 62px) / 1.35 "Noto Naskh Arabic Variable", serif;
+  overflow-wrap: anywhere;
+}
+
+.intro .rule {
+  margin-bottom: 25px;
+  background: linear-gradient(90deg, #b9813c, #e1bd7b);
+}
+
+.intro .visitorMeta {
+  margin-top: 0;
+  color: #d7c2a5;
+}
+
+.intro .visitorMeta .visitorName {
+  color: #f4e5cb;
+}
+
+.intro > p {
+  max-width: 550px;
+  margin: 24px 0 0;
+  color: #d7c6b0;
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.wordSection {
+  position: relative;
+  padding: clamp(40px, 6vw, 78px) clamp(28px, 8vw, 105px) clamp(46px, 7vw, 82px);
+  background:
+    linear-gradient(90deg, rgba(183, 132, 59, 0.035) 1px, transparent 1px),
+    #fffdf9;
+  background-size: 48px 100%, auto;
+}
+
+.wordHeading {
+  display: flex;
+  width: min(100%, 860px);
+  margin: 0 auto 30px;
+  padding-bottom: 22px;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid #eadbc3;
+}
+
+.quoteIcon {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: #fff9ef;
+  border-radius: 50% 50% 12px 50%;
+  background: #a87639;
+  box-shadow: 0 9px 20px rgba(106, 70, 43, 0.16);
+}
+
+.wordHeading small {
+  display: block;
+  color: #a17a52;
+  font: 8px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.wordHeading h2 {
+  margin: 3px 0 0;
+  color: #3e2a22;
+  font: 600 clamp(28px, 3vw, 38px) "Noto Naskh Arabic Variable", serif;
+}
+
+.wordSection .quoteBox {
+  width: min(100%, 860px);
+  margin-inline: auto;
+  padding: clamp(28px, 4vw, 48px);
+  color: inherit;
+  border: 1px solid #e7d6ba;
+  border-right: 4px solid #b88342;
+  border-radius: 16px 5px 5px 16px;
+  background: rgba(248, 240, 227, 0.74);
+  box-shadow: 0 18px 44px rgba(66, 42, 29, 0.06);
+}
+
+.wordSection .quoteBox blockquote {
+  margin: 0;
+  color: #49352c;
+  font: 400 clamp(20px, 2vw, 25px) / 2.15 "Noto Naskh Arabic Variable", serif;
+  text-align: start;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.storyFooter {
+  display: flex;
+  width: min(100%, 860px);
+  margin: 26px auto 0;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.storyFooter .backLink {
+  margin-top: 0;
+}
+
+.storyFooter > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #a08264;
+  font: 9px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+@media (max-width: 820px) {
+  .profileHero {
+    min-height: 0;
+    padding: 48px 28px;
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .photoFrame {
+    width: min(245px, 72vw);
+  }
+
+  .intro {
+    align-items: center;
+    text-align: center;
+  }
+
+  .intro .visitorMeta {
+    justify-content: center;
+  }
+
+  .wordSection {
+    padding: 38px 20px 48px;
+  }
+
+  .wordSection .quoteBox {
+    padding: 26px 22px;
+  }
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding-inline: 12px;
+  }
+
+  .breadcrumb {
+    font-size: 9px;
+  }
+
+  .story {
+    border-radius: 20px 20px 7px 20px;
+  }
+
+  .profileHero::before {
+    inset: 15px;
+  }
+
+  .intro h1 {
+    font-size: 36px;
+  }
+
+  .wordHeading {
+    margin-bottom: 22px;
+  }
+
+  .quoteIcon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .wordSection .quoteBox blockquote {
+    font-size: 19px;
+    line-height: 2;
+  }
+
+  .storyFooter {
+    justify-content: center;
+  }
+}
+
+/* Dedicated page hero. */
+.page {
+  padding: 0 0 110px;
+}
+
+.hero {
+  position: relative;
+  min-height: 510px;
+  overflow: hidden;
+  color: #fff8ea;
+  background:
+    linear-gradient(90deg, rgba(38, 24, 18, 0.28), rgba(38, 24, 18, 0.78)),
+    url('/media/images/liberrary/kku-20.jpg') center 58% / cover,
+    #35231c;
+}
+
+.hero::before {
+  position: absolute;
+  inset: 22px;
+  z-index: 1;
+  content: "";
+  pointer-events: none;
+  border: 1px solid rgba(235, 204, 149, 0.16);
+  border-radius: 18px 18px 5px 18px;
+}
+
+.hero::after {
+  position: absolute;
+  right: -115px;
+  bottom: -170px;
+  width: 390px;
+  height: 390px;
+  content: "";
+  pointer-events: none;
+  border: 1px solid rgba(229, 193, 130, 0.14);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 38px rgba(229, 193, 130, 0.03),
+    0 0 0 82px rgba(229, 193, 130, 0.018);
+}
+
+.heroVeil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(0deg, rgba(35, 22, 17, 0.78), transparent 62%),
+    radial-gradient(circle at 72% 32%, rgba(190, 139, 68, 0.16), transparent 28%);
+}
+
+.heroInner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: min(calc(100% - 64px), 1120px);
+  min-height: 510px;
+  margin-inline: auto;
+  padding: 48px 0 104px;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.hero .breadcrumb {
+  position: absolute;
+  top: 46px;
+  right: 0;
+  margin: 0;
+  color: rgba(255, 248, 234, 0.58);
+}
+
+.hero .breadcrumb a {
+  color: #e3c48d;
+}
+
+.heroCopy {
+  width: min(100%, 720px);
+}
+
+.heroEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #e0bd7d;
+  font: 10px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.heroCopy h1 {
+  margin: 15px 0 17px;
+  color: #fff9ee;
+  font: 600 clamp(45px, 6vw, 76px) / 1.2 "Noto Naskh Arabic Variable", serif;
+}
+
+.heroCopy h1 span {
+  display: block;
+  color: #e5bd76;
+}
+
+.heroCopy > p {
+  max-width: 650px;
+  margin: 0;
+  color: rgba(255, 248, 234, 0.76);
+  font-size: 17px;
+  line-height: 1.95;
+}
+
+.heroMeta {
+  display: flex;
+  margin-top: 28px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.heroMeta span {
+  display: inline-flex;
+  min-height: 38px;
+  padding: 0 13px;
+  align-items: center;
+  gap: 7px;
+  color: #ead9bc;
+  border: 1px solid rgba(232, 199, 143, 0.26);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(8px);
+  font: 9px "Noto Kufi Arabic Variable", sans-serif;
+}
+
+.wrap {
+  position: relative;
+  z-index: 3;
+  margin: -68px auto 0;
+  padding-inline: 24px;
+}
+
+@media (max-width: 700px) {
+  .page {
+    padding: 0 0 78px;
+  }
+
+  .hero,
+  .heroInner {
+    min-height: 480px;
+  }
+
+  .heroInner {
+    width: min(calc(100% - 40px), 1120px);
+    padding: 75px 0 92px;
+  }
+
+  .hero .breadcrumb {
+    top: 34px;
+  }
+
+  .heroCopy h1 {
+    font-size: clamp(42px, 13vw, 60px);
+  }
+
+  .heroCopy > p {
+    font-size: 15px;
+  }
+
+  .wrap {
+    margin-top: -48px;
+    padding-inline: 14px;
+  }
+}
+
+@media (max-width: 430px) {
+  .hero::before {
+    inset: 12px;
+  }
+
+  .heroMeta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .heroMeta span {
+    max-width: 100%;
+  }
+}

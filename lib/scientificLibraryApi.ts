@@ -112,6 +112,10 @@ export type ScientificLibraryIndex = z.infer<
   typeof scientificLibraryIndexSchema
 >;
 
+const scientificLibraryCatalogSchema = z.object({
+  data: z.array(scientificLibraryCardSchema),
+});
+
 const scientificLibraryFilterOptionsSchema = z.object({
   data: z.object({
     content_types: z.array(z.string()),
@@ -238,6 +242,16 @@ export function getScientificLibraryItems(
   signal?: AbortSignal,
 ) {
   return fetchAndParse("/items", scientificLibraryIndexSchema, {
+    params,
+    signal,
+  });
+}
+
+export function getScientificLibraryCatalog(
+  params: { search?: string } = {},
+  signal?: AbortSignal,
+) {
+  return fetchAndParse("/catalog", scientificLibraryCatalogSchema, {
     params,
     signal,
   });

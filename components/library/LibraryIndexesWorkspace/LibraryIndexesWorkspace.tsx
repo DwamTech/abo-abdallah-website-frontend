@@ -9,6 +9,7 @@ import {
   CalendarDays,
   CheckCircle2,
   Database,
+  Eye,
   ImagePlus,
   ListOrdered,
   LoaderCircle,
@@ -109,6 +110,7 @@ export default function LibraryIndexesWorkspace({
     useState<RegistryRequestState>(emptyRegistryState);
   const [goldenName, setGoldenName] = useState("");
   const [goldenVisitDate, setGoldenVisitDate] = useState("");
+  const [goldenVisitorComment, setGoldenVisitorComment] = useState("");
   const [guestName, setGuestName] = useState("");
   const [guestTitle, setGuestTitle] = useState("");
   const [guestVisitDate, setGuestVisitDate] = useState("");
@@ -251,10 +253,12 @@ export default function LibraryIndexesWorkspace({
       await submitGoldenVisit({
         name: goldenName,
         visitDate: goldenVisitDate || undefined,
+        visitorComment: goldenVisitorComment || undefined,
         image: selectedFile,
       });
       setGoldenName("");
       setGoldenVisitDate("");
+      setGoldenVisitorComment("");
       setSelectedFile(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
       setGoldenMessage("تم إرسال طلب الزيارة للمراجعة، وسيظهر في السجل بعد اعتماده.");
@@ -363,6 +367,17 @@ export default function LibraryIndexesWorkspace({
                 />
               </div>
             </label>
+            <label className={`${styles.field} ${styles.commentField}`}>
+              <span>كلمة عن الزيارة <small>اختيارية — تُنشر بعد اعتمادها</small></span>
+              <textarea
+                value={goldenVisitorComment}
+                onChange={(event) => setGoldenVisitorComment(event.target.value)}
+                placeholder="اكتب كلمتك أو انطباعك عن زيارتك للمكتبة..."
+                maxLength={10000}
+                rows={6}
+                disabled={goldenSubmitting}
+              />
+            </label>
             <label className={styles.uploadField}>
               <input
                 ref={fileInputRef}
@@ -410,6 +425,7 @@ export default function LibraryIndexesWorkspace({
           onClick={() => setActiveTable("golden")}
           title="فتح سجل الزيارات"
         />
+
       </section>
 
       <section className={`${styles.registrySection} ${styles.guestSection}`} id="guests-details">
@@ -588,7 +604,7 @@ export default function LibraryIndexesWorkspace({
                     ) : (
                       <>
                         <table>
-                          <thead><tr><th>الصورة</th><th>اسم الزائر</th><th>تاريخ الزيارة</th></tr></thead>
+                          <thead><tr><th>الصورة</th><th>اسم الزائر</th><th>تاريخ الزيارة</th><th>التفاصيل</th></tr></thead>
                           <tbody>
                             {(goldenResult?.data ?? []).map((visitor) => (
                               <tr key={visitor.id}>
@@ -597,6 +613,7 @@ export default function LibraryIndexesWorkspace({
                                 </td>
                                 <td data-label="اسم الزائر"><strong>{visitor.name}</strong><small>زائر السجل الذهبي</small></td>
                                 <td data-label="تاريخ الزيارة">{formatVisitDate(visitor.visit_date)}</td>
+                                <td data-label="التفاصيل"><Link className={styles.viewVisit} href={`/library-indexes/golden-visits/${visitor.id}`}><Eye size={15} /> عرض الكلمة</Link></td>
                               </tr>
                             ))}
                           </tbody>
@@ -787,10 +804,18 @@ function TableProgress() {
 }
 
 function VisitorAvatar({ visitor }: { visitor: GoldenVisitRecord }) {
+  return <VisitorPhoto visitor={visitor} className={styles.avatar} />;
+}
+
+function VisitorPhoto({ visitor, className }: { visitor: GoldenVisitRecord; className: string }) {
+  const [imageFailed, setImageFailed] = useState(false);
+
   return (
-    <span className={styles.avatar}>
-      {visitor.image_url ? (
-        <img src={visitor.image_url} alt={`صورة الزائر ${visitor.name}`} loading="lazy" />
+    <span className={className}>
+      {visitor.image_url && !imageFailed ? (
+        // Images are delivered by the backend's approved-visit image endpoint.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={visitor.image_url} alt={`صورة الزائر ${visitor.name}`} loading="lazy" onError={() => setImageFailed(true)} />
       ) : (
         <UserRound aria-hidden="true" size={21} />
       )}

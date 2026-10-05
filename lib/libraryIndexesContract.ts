@@ -12,6 +12,7 @@ const publicRecordBaseSchema = z
 
 export const goldenVisitRecordSchema = publicRecordBaseSchema.extend({
   image_url: nullableText,
+  visitor_comment: nullableText,
 });
 
 export const guestVisitRecordSchema = publicRecordBaseSchema.extend({

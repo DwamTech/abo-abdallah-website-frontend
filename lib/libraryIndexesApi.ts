@@ -106,7 +106,7 @@ export async function getLibraryIndexSummary(signal?: AbortSignal) {
 
 export async function getLibraryIndexRecords(
   kind: IndexKind,
-  params: { search?: string; page?: number; per_page?: number } = {},
+  params: { search?: string; page?: number; per_page?: number; with_comment?: number } = {},
   signal?: AbortSignal,
 ) {
   const response = await clientFetch(clientUrl(kind, params), {
@@ -127,11 +127,15 @@ export async function getLibraryIndexRecords(
 export async function submitGoldenVisit(values: {
   name: string;
   visitDate?: string;
+  visitorComment?: string;
   image: File;
 }) {
   const body = new FormData();
   body.set("name", values.name.trim());
   if (values.visitDate) body.set("visit_date", values.visitDate);
+  if (values.visitorComment?.trim()) {
+    body.set("visitor_comment", values.visitorComment.trim());
+  }
   body.set("image", values.image);
 
   const response = await clientFetch(clientUrl("golden-visits"), {

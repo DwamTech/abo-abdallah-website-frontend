@@ -21,7 +21,7 @@ import { apiErrorMessage } from "@/lib/api";
 import { toArabicDigits } from "@/lib/arabicNumbers";
 import {
   getScientificLibraryHome,
-  getScientificLibraryItems,
+  getScientificLibraryCatalog,
   resolveScientificLibraryUrl,
   type ScientificLibraryCard,
   type ScientificLibraryStats,
@@ -29,6 +29,10 @@ import {
 import styles from "./LibraryIndexContent.module.css";
 
 const WORK_ACCENTS = ["#795238", "#556a5c", "#786449", "#6d4c45", "#596873"];
+const ARABIC_COLLATOR = new Intl.Collator("ar", {
+  sensitivity: "base",
+  numeric: true,
+});
 
 function workAccent(item: ScientificLibraryCard) {
   const seed = String(item.id)
@@ -37,28 +41,10 @@ function workAccent(item: ScientificLibraryCard) {
   return WORK_ACCENTS[seed % WORK_ACCENTS.length];
 }
 
-function visiblePages(current: number, last: number) {
-  const start = Math.max(1, Math.min(current - 2, last - 4));
-  const end = Math.min(last, Math.max(current + 2, 5));
-  return Array.from(
-    { length: Math.max(0, end - start + 1) },
-    (_, index) => start + index,
-  );
-}
-
 export default function LibraryIndexContent() {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
-  const [page, setPage] = useState(1);
   const [items, setItems] = useState<ScientificLibraryCard[]>([]);
-  const [meta, setMeta] = useState<{
-    current_page: number;
-    last_page: number;
-    per_page: number;
-    total: number;
-    from?: number;
-    to?: number;
-  } | null>(null);
   const [stats, setStats] = useState<ScientificLibraryStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -66,7 +52,6 @@ export default function LibraryIndexContent() {
 
   useEffect(() => {
     const timeout = window.setTimeout(() => {
-      setPage(1);
       setDebouncedQuery(query.trim());
     }, 350);
     return () => window.clearTimeout(timeout);
@@ -94,13 +79,12 @@ export default function LibraryIndexContent() {
     setLoading(true);
     setError(null);
 
-    getScientificLibraryItems(
-      { search: debouncedQuery || undefined, page, per_page: 12 },
+    getScientificLibraryCatalog(
+      { search: debouncedQuery || undefined },
       controller.signal,
     )
       .then((result) => {
         setItems(result.data);
-        setMeta(result.meta);
       })
       .catch((requestError: unknown) => {
         if (
@@ -109,7 +93,6 @@ export default function LibraryIndexContent() {
         )
           return;
         setItems([]);
-        setMeta(null);
         setError(apiErrorMessage(requestError));
       })
       .finally(() => {
@@ -117,12 +100,22 @@ export default function LibraryIndexContent() {
       });
 
     return () => controller.abort();
-  }, [debouncedQuery, page, retryKey]);
+  }, [debouncedQuery, retryKey]);
 
-  const pages = useMemo(
-    () => (meta ? visiblePages(meta.current_page, meta.last_page) : []),
-    [meta],
-  );
+  const groupedItems = useMemo(() => {
+    const groups = new Map<string, ScientificLibraryCard[]>();
+
+    for (const item of items) {
+      const field = item.scientific_field.trim();
+      const group = groups.get(field) ?? [];
+      group.push(item);
+      groups.set(field, group);
+    }
+
+    return Array.from(groups, ([field, books]) => ({ field, books })).sort(
+      (left, right) => ARABIC_COLLATOR.compare(left.field, right.field),
+    );
+  }, [items]);
 
   const retry = () => setRetryKey((value) => value + 1);
 
@@ -238,13 +231,13 @@ export default function LibraryIndexContent() {
                 </button>
               )}
               <span className={styles.resultCount}>
-                {meta ? toArabicDigits(meta.total) : "—"}
+                {loading ? "—" : toArabicDigits(items.length)}
                 <small>نتيجة</small>
               </span>
             </label>
           </header>
 
-          <div className={styles.grid} aria-busy={loading}>
+          <div className={styles.fieldGroups} aria-busy={loading}>
             {loading ? (
               <div className={styles.state}>
                 <LoaderCircle size={30} className={styles.spinner} />
@@ -272,7 +265,17 @@ export default function LibraryIndexContent() {
                 )}
               </div>
             ) : (
-              items.map((item, index) => {
+              groupedItems.map(({ field, books }) => (
+                <section className={styles.fieldSection} key={field}>
+                  <header className={styles.fieldSectionHead}>
+                    <div>
+                      <span aria-hidden="true"><BookOpen size={18} /></span>
+                      <h3>{field}</h3>
+                    </div>
+                    <small>{toArabicDigits(books.length)} {books.length === 1 ? "كتاب" : "كتب"}</small>
+                  </header>
+                  <div className={styles.grid}>
+                    {books.map((item, index) => {
                 const accent = workAccent(item);
                 const shortTitle = item.short_title || item.title;
                 const coverUrl = resolveScientificLibraryUrl(item.cover_url);
@@ -291,7 +294,7 @@ export default function LibraryIndexContent() {
                       <div className={styles.coverStage}>
                         <span className={styles.cardNumber}>
                           {toArabicDigits(
-                            String((meta?.from ?? 1) + index).padStart(2, "0"),
+                            String(index + 1).padStart(2, "0"),
                           )}
                         </span>
                         <div className={styles.cover}>
@@ -352,48 +355,14 @@ export default function LibraryIndexContent() {
                       ariaLabel={`نسخ رابط المصنَّف: ${item.title}`}
                     />
                   </article>
-                );
-              })
+                      );
+                    })}
+                  </div>
+                </section>
+              ))
             )}
           </div>
 
-          {!loading && !error && meta && meta.last_page > 1 && (
-            <nav className={styles.pagination} aria-label="صفحات فهرس المكتبة">
-              <button
-                type="button"
-                disabled={meta.current_page === 1}
-                onClick={() => setPage((value) => Math.max(1, value - 1))}
-              >
-                السابق
-              </button>
-              {pages.map((pageNumber) => (
-                <button
-                  type="button"
-                  aria-current={
-                    pageNumber === meta.current_page ? "page" : undefined
-                  }
-                  className={
-                    pageNumber === meta.current_page
-                      ? styles.currentPage
-                      : undefined
-                  }
-                  key={pageNumber}
-                  onClick={() => setPage(pageNumber)}
-                >
-                  {toArabicDigits(pageNumber)}
-                </button>
-              ))}
-              <button
-                type="button"
-                disabled={meta.current_page === meta.last_page}
-                onClick={() =>
-                  setPage((value) => Math.min(meta.last_page, value + 1))
-                }
-              >
-                التالي
-              </button>
-            </nav>
-          )}
         </div>
       </section>
     </>

@@ -29,6 +29,7 @@ export function approvedIndexQuery(searchParams: URLSearchParams) {
       : 12;
 
   if (search) query.set("search", search);
+  if (searchParams.get("with_comment") === "1") query.set("with_comment", "1");
   query.set("page", String(page));
   query.set("per_page", String(perPage));
   return query;
