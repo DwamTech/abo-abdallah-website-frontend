@@ -18,11 +18,15 @@ export default function ScrollReveal() {
       return;
     }
 
-    root.classList.add("scroll-reveal-ready");
     sections.forEach((section, index) => {
       section.classList.add("scroll-reveal-section");
       section.style.setProperty("--scroll-reveal-delay", `${(index % 4) * 45}ms`);
+      const bounds = section.getBoundingClientRect();
+      if (bounds.top < window.innerHeight * 0.92 && bounds.bottom > 0) {
+        section.classList.add("scroll-reveal-visible");
+      }
     });
+    root.classList.add("scroll-reveal-ready");
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -32,10 +36,12 @@ export default function ScrollReveal() {
           observer.unobserve(entry.target);
         });
       },
-      { rootMargin: "0px 0px -8%", threshold: 0.08 },
+      { rootMargin: "0px 0px -8%", threshold: 0 },
     );
 
-    sections.forEach((section) => observer.observe(section));
+    sections
+      .filter((section) => !section.classList.contains("scroll-reveal-visible"))
+      .forEach((section) => observer.observe(section));
     return () => {
       observer.disconnect();
       root.classList.remove("scroll-reveal-ready");
