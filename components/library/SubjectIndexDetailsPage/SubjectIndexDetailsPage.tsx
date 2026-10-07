@@ -6,6 +6,7 @@ import {
   BookOpen,
   Boxes,
   FileArchive,
+  FileText,
   FolderSearch2,
   Home,
   LibraryBig,
@@ -111,11 +112,18 @@ export default function SubjectIndexDetailsPage({
             </aside>
           </div>
 
-          <div className={styles.statsPanel}>
+          <div className={`${styles.statsPanel} ${entry.pdfUrl ? styles.withPdf : ""}`}>
             <div className={styles.statsIntro}>
               <span>بيانات النوع</span>
               <small>إجمالي المحتوى المسجل في هذا التصنيف</small>
             </div>
+            {entry.pdfUrl && (
+              <a className={styles.pdfCard} href={entry.pdfUrl} target="_blank" rel="noopener noreferrer" aria-label={`استعراض ملف PDF للفهرس رقم ${toArabicDigits(entry.number)}`}>
+                <span className={styles.pdfIcon}><FileText size={25} /></span>
+                <span className={styles.pdfText}><strong>استعراض الفهرس بصيغة PDF</strong><small>افتح النسخة الكاملة في نافذة جديدة</small></span>
+                <span className={styles.pdfAction}>فتح الملف ↗</span>
+              </a>
+            )}
             <div className={styles.stats} aria-label="إحصاءات الفهرس">
               <Stat icon={<BookOpen size={20} />} value={entry.titleCount} label="عنوانًا" />
               <Stat icon={<Boxes size={20} />} value={entry.volumeCount} label="مجلدًا" />

@@ -252,6 +252,32 @@
   backdrop-filter: blur(13px);
 }
 
+.withPdf { grid-template-columns: 170px minmax(300px, 1.25fr) minmax(0, 2fr); }
+
+.pdfCard {
+  display: flex;
+  min-height: 70px;
+  padding: 10px 15px;
+  align-items: center;
+  gap: 12px;
+  color: #fff7e8;
+  border: 1px solid rgba(230, 199, 144, 0.28);
+  border-radius: 11px;
+  background: rgba(222, 183, 111, 0.12);
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.pdfCard:hover, .pdfCard:focus-visible {
+  background: rgba(222, 183, 111, 0.22);
+  transform: translateY(-2px);
+}
+
+.pdfIcon { color: #e4c58d; }
+.pdfText { display: grid; gap: 2px; }
+.pdfText strong { font-size: 11px; white-space: nowrap; }
+.pdfText small { color: rgba(255, 249, 237, 0.55); font-size: 9px; white-space: nowrap; }
+.pdfAction { color: #e4c58d; font-size: 10px; white-space: nowrap; }
+
 .statsIntro {
   padding-inline-start: 6px;
 }
@@ -601,6 +627,10 @@
   cursor: pointer;
 }
 
+@media (max-width: 1050px) {
+  .withPdf { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 820px) {
   .hero .container {
     min-height: 900px;
@@ -626,6 +656,8 @@
     grid-template-columns: 1fr;
     padding: 15px;
   }
+
+  .withPdf { grid-template-columns: 1fr; }
 
   .statsIntro {
     padding: 0 3px 10px;

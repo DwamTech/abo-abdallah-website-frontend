@@ -36,6 +36,7 @@ export const publicSubjectIndexDetailSchema =
     titleCount: z.coerce.number().int().nonnegative(),
     volumeCount: z.coerce.number().int().nonnegative(),
     coverCount: z.coerce.number().int().nonnegative(),
+    pdfUrl: z.string().url().nullable(),
     books: z.array(publicSubjectIndexBookSchema),
   });
 
