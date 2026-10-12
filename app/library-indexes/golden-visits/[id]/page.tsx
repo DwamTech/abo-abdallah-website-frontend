@@ -73,8 +73,8 @@ export default async function GoldenVisitPage({ params }: PageProps) {
 
         <div className={styles.wrap}>
           <article className={styles.story}>
-            <header className={styles.profileHero}>
-              <div className={styles.portraitColumn}>
+            <header className={`${styles.profileHero} ${!visit.image_url ? styles.profileWithoutPortrait : ""}`}>
+              {visit.image_url && <div className={styles.portraitColumn}>
                 <div className={styles.photoFrame}>
                   {visit.image_url ? (
                     // The photo is served by the backend's approved-visit image endpoint.
@@ -85,11 +85,11 @@ export default async function GoldenVisitPage({ params }: PageProps) {
                   )}
                 </div>
                 <span className={styles.photoCaption}>صورة من سجل زوار المكتبة</span>
-              </div>
+              </div>}
 
               <div className={styles.intro}>
               <span className={styles.kicker}><Sparkles size={17} /> السجل الذهبي</span>
-                <h1>{visit.name}</h1>
+                <h2>{visit.name}</h2>
               <div className={styles.rule} aria-hidden="true"><span /></div>
               <div className={styles.visitorMeta}>
                   <span className={styles.visitorName}><UserRound size={18} /> زائر المكتبة البكرية</span>
@@ -107,9 +107,17 @@ export default async function GoldenVisitPage({ params }: PageProps) {
                   <h2 id="visitor-word-title">كلمة الزائر</h2>
                 </div>
               </header>
-              <div className={styles.quoteBox}>
-                <blockquote>{visit.visitor_comment || "لم يضف الزائر كلمة لهذه الزيارة."}</blockquote>
-              </div>
+              {visit.visitor_comment && <div className={styles.quoteBox}>
+                <blockquote>{visit.visitor_comment}</blockquote>
+              </div>}
+              {visit.word_image_url && <figure className={styles.wordImageFrame}>
+                <a href={visit.word_image_url} target="_blank" rel="noopener noreferrer" aria-label={`فتح صورة كلمة ${visit.name} بالحجم الكامل`}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={visit.word_image_url} alt={`كلمة الزائر ${visit.name} في السجل الذهبي`} />
+                </a>
+                <figcaption>صورة كلمة الزائر — اضغط لعرضها بالحجم الكامل</figcaption>
+              </figure>}
+              {!visit.visitor_comment && !visit.word_image_url && <p>لم تُضف كلمة لهذه الزيارة بعد.</p>}
               <footer className={styles.storyFooter}>
               <Link className={styles.backLink} href="/library-indexes#golden-record-details">
                 <ArrowRight size={17} /> العودة إلى السجل الذهبي

@@ -21,5 +21,6 @@ export async function getPublicGoldenVisit(id: string) {
   return {
     ...result.data.data,
     image_url: resolveLibraryIndexImageUrl(result.data.data.image_url, BACKEND_ORIGIN),
+    word_image_url: resolveLibraryIndexImageUrl(result.data.data.word_image_url, BACKEND_ORIGIN),
   };
 }

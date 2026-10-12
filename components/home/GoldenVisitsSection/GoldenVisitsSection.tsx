@@ -91,7 +91,7 @@ export default function GoldenVisitsSection() {
     if (visits.length < 2 || sliderPaused) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const timer = window.setInterval(() => moveSlider(1), 1000);
+    const timer = window.setInterval(() => moveSlider(1), 2000);
     return () => window.clearInterval(timer);
   }, [visits.length, sliderPaused]);
 

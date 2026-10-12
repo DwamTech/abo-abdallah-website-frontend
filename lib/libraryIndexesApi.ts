@@ -128,7 +128,8 @@ export async function submitGoldenVisit(values: {
   name: string;
   visitDate?: string;
   visitorComment?: string;
-  image: File;
+  wordImage?: File;
+  image?: File;
 }) {
   const body = new FormData();
   body.set("name", values.name.trim());
@@ -136,7 +137,8 @@ export async function submitGoldenVisit(values: {
   if (values.visitorComment?.trim()) {
     body.set("visitor_comment", values.visitorComment.trim());
   }
-  body.set("image", values.image);
+  if (values.wordImage) body.set("word_image", values.wordImage);
+  if (values.image) body.set("image", values.image);
 
   const response = await clientFetch(clientUrl("golden-visits"), {
     method: "POST",

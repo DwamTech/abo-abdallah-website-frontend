@@ -59,6 +59,7 @@ export function normalizeLibraryIndexCollectionImages(
     data: collection.data.map((record) => ({
       ...record,
       image_url: resolveLibraryIndexImageUrl(record.image_url, backendOrigin),
+      word_image_url: resolveLibraryIndexImageUrl(record.word_image_url, backendOrigin),
     })),
   };
 }

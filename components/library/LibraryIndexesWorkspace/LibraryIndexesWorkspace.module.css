@@ -1928,3 +1928,9 @@
 @keyframes registrySpin {
   to { transform: rotate(360deg); }
 }
+
+.wordMode { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; padding: 16px; border: 1px solid #dfc9a6; border-radius: 12px; }
+.wordMode legend { padding-inline: 8px; color: #60442e; font-weight: 600; }
+.wordMode label { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px; background: #fffaf1; cursor: pointer; }
+.wordMode input { accent-color: #9b703a; }
+.imagePreview { width: 90px; height: 110px; flex-shrink: 0; background-size: contain; background-repeat: no-repeat; }

@@ -66,16 +66,18 @@ export async function POST(request: Request) {
       : {}),
     ...(typeof rawDate === "string" && rawDate ? { visit_date: rawDate } : {}),
   });
-  const image = body.get("image");
+  const image = body.get("word_image");
+  const portrait = body.get("image");
+  if (portrait !== null && (!(portrait instanceof File) || portrait.size === 0 || portrait.size > MAX_IMAGE_BYTES || !ALLOWED_IMAGE_TYPES.has(portrait.type))) {
+    return libraryIndexFailure(422, "صورة الزائر يجب أن تكون JPG أو PNG أو WebP وبحد أقصى ٨ ميجابايت.");
+  }
 
   if (
     !parsed.success ||
-    !(image instanceof File) ||
-    image.size === 0 ||
-    image.size > MAX_IMAGE_BYTES ||
-    !ALLOWED_IMAGE_TYPES.has(image.type)
+    (!(image instanceof File) && !parsed.data.visitor_comment) ||
+    (image !== null && (!(image instanceof File) || image.size === 0 || image.size > MAX_IMAGE_BYTES || !ALLOWED_IMAGE_TYPES.has(image.type)))
   ) {
-    return libraryIndexFailure(422, "راجع الاسم والصورة وتاريخ الزيارة.");
+    return libraryIndexFailure(422, "راجع الاسم وكلمة الزائر: أدخل نصًا أو ارفع صورة للكلمة.");
   }
 
   const upstreamBody = new FormData();
@@ -86,7 +88,8 @@ export async function POST(request: Request) {
   if (parsed.data.visit_date) {
     upstreamBody.set("visit_date", parsed.data.visit_date);
   }
-  upstreamBody.set("image", image, image.name);
+  if (image instanceof File) upstreamBody.set("word_image", image, image.name);
+  if (portrait instanceof File) upstreamBody.set("image", portrait, portrait.name);
 
   let upstream: Response;
   try {

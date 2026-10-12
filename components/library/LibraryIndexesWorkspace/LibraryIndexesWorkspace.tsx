@@ -111,6 +111,7 @@ export default function LibraryIndexesWorkspace({
   const [goldenName, setGoldenName] = useState("");
   const [goldenVisitDate, setGoldenVisitDate] = useState("");
   const [goldenVisitorComment, setGoldenVisitorComment] = useState("");
+  const [wordMode, setWordMode] = useState<"text" | "image" | "both">("text");
   const [guestName, setGuestName] = useState("");
   const [guestTitle, setGuestTitle] = useState("");
   const [guestVisitDate, setGuestVisitDate] = useState("");
@@ -119,6 +120,10 @@ export default function LibraryIndexesWorkspace({
   const [subjectSearch, setSubjectSearch] = useState("");
   const [alphabeticalSearch, setAlphabeticalSearch] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [portraitFile, setPortraitFile] = useState<File | null>(null);
+  const [portraitPreview, setPortraitPreview] = useState<string | null>(null);
+  const portraitInputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => () => { if (portraitPreview) URL.revokeObjectURL(portraitPreview); }, [portraitPreview]);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [goldenMessage, setGoldenMessage] = useState("");
   const [guestMessage, setGuestMessage] = useState("");
@@ -236,15 +241,15 @@ export default function LibraryIndexesWorkspace({
     event.preventDefault();
     setGoldenMessage("");
     setFormError("");
-    if (!goldenName.trim() || !selectedFile) {
-      setFormError("أدخل اسم الزائر وارفع صورته أولًا.");
+    if (!goldenName.trim() || (wordMode !== "image" && !goldenVisitorComment.trim()) || (wordMode !== "text" && !selectedFile)) {
+      setFormError("أدخل اسم الزائر وأكمل نص الكلمة أو صورتها حسب اختيارك.");
       return;
     }
-    if (selectedFile.size > 8 * 1024 * 1024) {
+    if (wordMode !== "text" && selectedFile && selectedFile.size > 8 * 1024 * 1024) {
       setFormError("حجم الصورة يجب ألا يتجاوز ٨ ميجابايت.");
       return;
     }
-    if (!ALLOWED_IMAGE_TYPES.has(selectedFile.type)) {
+    if (wordMode !== "text" && selectedFile && !ALLOWED_IMAGE_TYPES.has(selectedFile.type)) {
       setFormError("صيغة الصورة يجب أن تكون JPG أو PNG أو WebP.");
       return;
     }
@@ -253,13 +258,18 @@ export default function LibraryIndexesWorkspace({
       await submitGoldenVisit({
         name: goldenName,
         visitDate: goldenVisitDate || undefined,
-        visitorComment: goldenVisitorComment || undefined,
-        image: selectedFile,
+        visitorComment: wordMode !== "image" ? goldenVisitorComment : undefined,
+        wordImage: wordMode !== "text" ? selectedFile ?? undefined : undefined,
+        image: portraitFile ?? undefined,
       });
       setGoldenName("");
       setGoldenVisitDate("");
       setGoldenVisitorComment("");
       setSelectedFile(null);
+      setPortraitFile(null);
+      setPortraitPreview(null);
+      if (portraitInputRef.current) portraitInputRef.current.value = "";
+      setWordMode("text");
       if (fileInputRef.current) fileInputRef.current.value = "";
       setGoldenMessage("تم إرسال طلب الزيارة للمراجعة، وسيظهر في السجل بعد اعتماده.");
     } catch (error) {
@@ -367,18 +377,38 @@ export default function LibraryIndexesWorkspace({
                 />
               </div>
             </label>
-            <label className={`${styles.field} ${styles.commentField}`}>
-              <span>كلمة عن الزيارة <small>اختيارية — تُنشر بعد اعتمادها</small></span>
+            <label className={styles.uploadField}>
+              <input ref={portraitInputRef} type="file" accept="image/jpeg,image/png,image/webp" disabled={goldenSubmitting} aria-label="صورة الزائر" onChange={(event) => {
+                const file = event.target.files?.[0] ?? null;
+                setFormError("");
+                if (file && (file.size > MAX_IMAGE_SIZE || !ALLOWED_IMAGE_TYPES.has(file.type))) {
+                  setPortraitFile(null); setPortraitPreview(null); event.target.value = "";
+                  setFormError("صورة الزائر يجب أن تكون JPG أو PNG أو WebP وبحد أقصى ٨ ميجابايت."); return;
+                }
+                setPortraitFile(file); setPortraitPreview(file ? URL.createObjectURL(file) : null);
+              }} />
+              {portraitPreview ? <span className={styles.imagePreview} style={{ backgroundImage: `url(${portraitPreview})` }} /> : <span className={styles.uploadIcon}><ImagePlus size={23} /></span>}
+              <span><strong>{portraitFile ? portraitFile.name : "رفع صورة الزائر"}</strong><small>صورة شخصية للزائر — اختيارية، حتى ٨ ميجابايت</small></span>
+            </label>
+            <fieldset className={styles.wordMode} disabled={goldenSubmitting}>
+              <legend>نوع كلمة الزائر</legend>
+              {([['text', 'نص الكلمة'], ['image', 'صورة الكلمة'], ['both', 'نص وصورة']] as const).map(([value, label]) => (
+                <label key={value}><input type="radio" name="word_mode" value={value} checked={wordMode === value} onChange={() => { setWordMode(value); setFormError(""); if (value === "text") { setSelectedFile(null); if (fileInputRef.current) fileInputRef.current.value = ""; } }} />{label}</label>
+              ))}
+            </fieldset>
+            {wordMode !== "image" && <label className={`${styles.field} ${styles.commentField}`}>
+              <span>نص كلمة الزائر <small>تُنشر بعد اعتمادها</small></span>
               <textarea
                 value={goldenVisitorComment}
                 onChange={(event) => setGoldenVisitorComment(event.target.value)}
                 placeholder="اكتب كلمتك أو انطباعك عن زيارتك للمكتبة..."
                 maxLength={10000}
                 rows={6}
+                required
                 disabled={goldenSubmitting}
               />
-            </label>
-            <label className={styles.uploadField}>
+            </label>}
+            {wordMode !== "text" && <label className={styles.uploadField}>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -409,8 +439,8 @@ export default function LibraryIndexesWorkspace({
               ) : (
                 <span className={styles.uploadIcon}><ImagePlus size={23} /></span>
               )}
-              <span><strong>{selectedFile ? selectedFile.name : "رفع صورة الزائر"}</strong><small>JPG أو PNG أو WebP — بحد أقصى ٨ ميجابايت</small></span>
-            </label>
+              <span><strong>{selectedFile ? selectedFile.name : "رفع صورة الكلمة المكتوبة"}</strong><small>صورة للكلمة أو صفحة السجل — JPG أو PNG أو WebP، حتى ٨ ميجابايت</small></span>
+            </label>}
             <button className={styles.submitButton} type="submit" disabled={goldenSubmitting} aria-busy={goldenSubmitting}>
               {goldenSubmitting ? <LoaderCircle className={styles.spinner} size={16} /> : <Send size={16} />}
               {goldenSubmitting ? "جارٍ إرسال الطلب..." : "تسجيل الزيارة"}

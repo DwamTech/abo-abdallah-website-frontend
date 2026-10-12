@@ -655,3 +655,11 @@
     max-width: 100%;
   }
 }
+
+.wordImageFrame { width: min(100%, 860px); margin: 28px auto 0; padding: 16px; border: 1px solid #e7d6ba; border-radius: 16px; background: #fff; }
+.wordImageFrame a { display: block; }
+.wordImageFrame img { display: block; width: 100%; height: auto; object-fit: contain; }
+.wordImageFrame figcaption { margin-top: 14px; color: #806246; text-align: center; font-size: 13px; line-height: 1.8; }
+.intro h2 { max-width: 650px; margin: 18px 0 16px; color: #fff8ea; font: 600 clamp(36px, 5vw, 62px) / 1.35 "Noto Naskh Arabic Variable", serif; overflow-wrap: anywhere; }
+
+.profileWithoutPortrait { grid-template-columns: minmax(0, 1fr); min-height: 280px; }
