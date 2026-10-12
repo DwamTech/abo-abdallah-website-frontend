@@ -60,7 +60,7 @@ export default async function GoldenVisitPage({ params }: PageProps) {
           </nav>
 
             <div className={styles.heroCopy}>
-              <span className={styles.heroEyebrow}><Sparkles size={16} /> من ذاكرة المكتبة البكرية</span>
+              {/* <span className={styles.heroEyebrow}><Sparkles size={16} /> من ذاكرة المكتبة البكرية</span> */}
               <h1>كلمات <span>السجل الذهبي</span></h1>
               <p>مساحة تحفظ كلمات زوار المكتبة وانطباعاتهم، لتبقى الزيارة جزءًا من ذاكرتها العلمية والإنسانية.</p>
               <div className={styles.heroMeta}>
