@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 
+import { ApiError } from "@/lib/api";
 import { getPublicComments, submitPublicComment } from "@/lib/commentsApi";
 import {
   COMMENTS_MAX_LENGTH,
@@ -27,7 +28,7 @@ type CommentsSectionProps = {
   target: PublicCommentTarget;
 };
 
-type LoadingState = "loading" | "ready" | "error";
+type LoadingState = "checking" | "loading" | "ready" | "error" | "unavailable";
 
 const fallbackDateFormatter = new Intl.DateTimeFormat("ar-SA", {
   day: "numeric",
@@ -60,7 +61,7 @@ export default function CommentsSection({ target }: CommentsSectionProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const [loadingState, setLoadingState] = useState<LoadingState>("loading");
+  const [loadingState, setLoadingState] = useState<LoadingState>("checking");
   const [loadingMore, setLoadingMore] = useState(false);
   const [loadMoreError, setLoadMoreError] = useState("");
   const [body, setBody] = useState("");
@@ -80,7 +81,7 @@ export default function CommentsSection({ target }: CommentsSectionProps) {
         setLoadingMore(true);
         setLoadMoreError("");
       } else {
-        setLoadingState("loading");
+        setLoadingState((current) => current === "checking" ? current : "loading");
         setComments([]);
         setCurrentPage(1);
         setLastPage(1);
@@ -110,6 +111,10 @@ export default function CommentsSection({ target }: CommentsSectionProps) {
       } catch (error) {
         if (error instanceof DOMException && error.name === "AbortError") return;
         if (sequence !== loadSequenceRef.current) return;
+        if (error instanceof ApiError && error.status === 404) {
+          setLoadingState("unavailable");
+          return;
+        }
         const message =
           error instanceof Error
             ? error.message
@@ -164,6 +169,10 @@ export default function CommentsSection({ target }: CommentsSectionProps) {
         "تم إرسال تعليقك بنجاح، وسيظهر هنا بعد مراجعته واعتماده.",
       );
     } catch (submissionFailure) {
+      if (submissionFailure instanceof ApiError && submissionFailure.status === 404) {
+        setLoadingState("unavailable");
+        return;
+      }
       setSubmissionError(
         submissionFailure instanceof Error
           ? submissionFailure.message
@@ -177,6 +186,9 @@ export default function CommentsSection({ target }: CommentsSectionProps) {
   };
 
   const remaining = COMMENTS_MAX_LENGTH - unicodeCharacterCount(body);
+
+  // A hidden module and an unavailable target both return 404 from Laravel.
+  if (loadingState === "checking" || loadingState === "unavailable") return null;
 
   return (
     <section

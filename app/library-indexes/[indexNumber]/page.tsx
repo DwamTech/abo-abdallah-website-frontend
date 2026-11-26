@@ -25,7 +25,11 @@ const loadSubjectIndex = cache((number: string, type: LibraryIndexType) =>
 );
 
 function parseIndexNumber(value: string) {
-  const number = value.trim();
+  // Next can leave encoded path separators in a dynamic parameter. The API
+  // client encodes the canonical index number when constructing its URL.
+  const number = value.replace(/%2f|%20/gi, (separator) =>
+    separator.toLowerCase() === "%2f" ? "/" : " ",
+  ).trim();
 
   return number.length > 0 && number.length <= 64 ? number : null;
 }

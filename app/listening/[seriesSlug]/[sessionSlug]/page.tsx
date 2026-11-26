@@ -6,7 +6,6 @@ import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import AudioStudyWorkspace from "@/components/listening/AudioStudyWorkspace/AudioStudyWorkspace";
 import CommentsSection from "@/components/content/CommentsSection/CommentsSection";
 import { ApiError, getListeningSessionDetail } from "@/lib/api";
-import { commentsModuleEnabled } from "@/lib/commentsFeature";
 
 type SessionPageProps = {
   params: Promise<{ seriesSlug: string; sessionSlug: string }>;
@@ -53,14 +52,12 @@ export default async function SessionPage({ params }: SessionPageProps) {
           previousSession={detail.previous_session}
           nextSession={detail.next_session}
         />
-        {commentsModuleEnabled() && (
-          <CommentsSection
-            target={{
-              type: "listening_session",
-              targetId: String(detail.session.id),
-            }}
-          />
-        )}
+        <CommentsSection
+          target={{
+            type: "listening_session",
+            targetId: String(detail.session.id),
+          }}
+        />
         <SectionDivider variant="manuscript" />
       </main>
       <Footer />

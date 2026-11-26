@@ -1,26 +1,14 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { cache } from "react";
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import DissertationDetailContent from "@/components/dissertation/DissertationDetailContent/DissertationDetailContent";
 import CommentsSection from "@/components/content/CommentsSection/CommentsSection";
-import { ApiError, getDissertation } from "@/lib/api";
-import { commentsModuleEnabled } from "@/lib/commentsFeature";
+import { loadDissertation } from "./detail";
 
 type DissertationPageProps = {
   params: Promise<{ dissertationId: string }>;
 };
-
-const loadDissertation = cache(async (identifier: string) => {
-  try {
-    return await getDissertation(identifier);
-  } catch (error) {
-    if (error instanceof ApiError && error.status === 404) notFound();
-    throw error;
-  }
-});
 
 export async function generateMetadata({
   params,
@@ -48,14 +36,12 @@ export default async function DissertationPage({
       <Header />
       <main>
         <DissertationDetailContent initialData={initialData} />
-        {commentsModuleEnabled() && (
-          <CommentsSection
-            target={{
-              type: "dissertation",
-              targetId: String(initialData.data.id),
-            }}
-          />
-        )}
+        <CommentsSection
+          target={{
+            type: "dissertation",
+            targetId: String(initialData.data.id),
+          }}
+        />
         <SectionDivider variant="manuscript" />
       </main>
       <Footer />

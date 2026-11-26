@@ -1,40 +1,26 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import VideoDetailContent from "@/components/video/VideoDetailContent/VideoDetailContent";
 import CommentsSection from "@/components/content/CommentsSection/CommentsSection";
-import { commentsModuleEnabled } from "@/lib/commentsFeature";
-import {
-  getScientificVideoDetail,
-  ScientificVideosApiError,
-} from "@/lib/scientificVideosApi";
+import { loadVideo } from "./detail";
 
 type Props = { params: Promise<{ videoSlug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { videoSlug } = await params;
   try {
-    const { item } = await getScientificVideoDetail(videoSlug);
+    const { item } = await loadVideo(videoSlug);
     return { title: item.title, description: item.description };
-  } catch (error) {
-    if (error instanceof ScientificVideosApiError && error.status === 404)
-      notFound();
+  } catch {
     return { title: "المرئيات" };
   }
 }
 
 export default async function VideoPage({ params }: Props) {
   const { videoSlug } = await params;
-  let detail: Awaited<ReturnType<typeof getScientificVideoDetail>>;
-  try {
-    detail = await getScientificVideoDetail(videoSlug);
-  } catch (error) {
-    if (error instanceof ScientificVideosApiError && error.status === 404)
-      notFound();
-    throw error;
-  }
+  const detail = await loadVideo(videoSlug);
   return (
     <>
       <Header />
@@ -43,14 +29,12 @@ export default async function VideoPage({ params }: Props) {
           video={detail.item}
           related={detail.related_items}
         />
-        {commentsModuleEnabled() && (
-          <CommentsSection
-            target={{
-              type: "scientific_video",
-              targetId: String(detail.item.id),
-            }}
-          />
-        )}
+        <CommentsSection
+          target={{
+            type: "scientific_video",
+            targetId: String(detail.item.id),
+          }}
+        />
         <SectionDivider variant="manuscript" />
       </main>
       <Footer />

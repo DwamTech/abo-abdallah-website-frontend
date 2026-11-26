@@ -1,6 +1,5 @@
 import { API_BASE_URL } from "@/lib/api";
 import { createCommentsBffProxyHeaders } from "@/lib/commentsBffProxyHeaders";
-import { commentsModuleEnabled } from "@/lib/commentsFeature";
 import {
   COMMENTS_PAGE_SIZE,
   parsePublicCommentRouteTarget,
@@ -54,10 +53,6 @@ function upstreamPath(targetType: string, targetId: string) {
 }
 
 export async function GET(request: Request, context: RouteContext) {
-  if (!commentsModuleEnabled()) {
-    return failure(404, "الخدمة المطلوبة غير متاحة.");
-  }
-
   const target = await routeTarget(context);
   if (!target) return failure(404, "المادة المطلوبة غير موجودة.");
 
@@ -102,10 +97,6 @@ export async function GET(request: Request, context: RouteContext) {
 }
 
 export async function POST(request: Request, context: RouteContext) {
-  if (!commentsModuleEnabled()) {
-    return failure(404, "الخدمة المطلوبة غير متاحة.");
-  }
-
   if (!isSameOriginMutation(request)) {
     return failure(403, "تعذر التحقق من مصدر الطلب.");
   }

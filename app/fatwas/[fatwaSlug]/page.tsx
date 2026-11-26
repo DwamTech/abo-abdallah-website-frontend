@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { cache } from "react";
 
 import FatwaDetailContent from "@/components/fatwa/FatwaDetailContent/FatwaDetailContent";
 import CommentsSection from "@/components/content/CommentsSection/CommentsSection";
 import Footer from "@/components/layout/Footer/Footer";
 import Header from "@/components/layout/Header/Header";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
-import { ApiError } from "@/lib/api";
-import { commentsModuleEnabled } from "@/lib/commentsFeature";
-import { getScientificFatwaItem } from "@/lib/scientificFatwaApi";
+import { loadFatwa } from "./detail";
 
 type Props = { params: Promise<{ fatwaSlug: string }> };
 
@@ -18,11 +14,6 @@ type Props = { params: Promise<{ fatwaSlug: string }> };
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
 export const revalidate = 0;
-
-// React cache only de-duplicates metadata/page reads in the current render;
-// getScientificFatwaItem itself uses `no-store`, so records are not cached
-// between requests.
-const loadFatwa = cache((slug: string) => getScientificFatwaItem(slug));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { fatwaSlug } = await params;
@@ -37,28 +28,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function FatwaPage({ params }: Props) {
   const { fatwaSlug } = await params;
-  let detail;
-
-  try {
-    detail = await loadFatwa(fatwaSlug);
-  } catch (error) {
-    if (error instanceof ApiError && error.status === 404) notFound();
-    throw error;
-  }
+  const detail = await loadFatwa(fatwaSlug);
 
   return (
     <>
       <Header />
       <main>
         <FatwaDetailContent fatwa={detail.data} related={detail.related} />
-        {commentsModuleEnabled() && (
-          <CommentsSection
-            target={{
-              type: "scientific_fatwa",
-              targetId: String(detail.data.id),
-            }}
-          />
-        )}
+        <CommentsSection
+          target={{
+            type: "scientific_fatwa",
+            targetId: String(detail.data.id),
+          }}
+        />
         <SectionDivider variant="manuscript" />
       </main>
       <Footer />

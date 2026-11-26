@@ -1,35 +1,20 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
-import { notFound } from "next/navigation";
-import { cache } from "react";
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import SectionDivider from "@/components/layout/SectionDivider/SectionDivider";
 import LibraryItemContent from "@/components/library/LibraryItemContent/LibraryItemContent";
 import CommentsSection from "@/components/content/CommentsSection/CommentsSection";
-import { ApiError } from "@/lib/api";
-import { commentsModuleEnabled } from "@/lib/commentsFeature";
-import { getScientificLibraryItem } from "@/lib/scientificLibraryApi";
+import { loadBook } from "./detail";
 
 type LibraryItemPageProps = {
   params: Promise<{ workSlug: string }>;
 };
 
-const loadBook = cache(async (identifier: string, cookieHeader: string) => {
-  try {
-    return await getScientificLibraryItem(identifier, { cookie: cookieHeader });
-  } catch (error) {
-    if (error instanceof ApiError && error.status === 404) notFound();
-    throw error;
-  }
-});
-
 export async function generateMetadata({
   params,
 }: LibraryItemPageProps): Promise<Metadata> {
   const { workSlug } = await params;
-  const cookieHeader = (await cookies()).toString();
-  const { item } = await loadBook(workSlug, cookieHeader);
+  const { item } = await loadBook(workSlug);
 
   return {
     title: item.title,
@@ -43,22 +28,19 @@ export default async function LibraryItemPage({
   params,
 }: LibraryItemPageProps) {
   const { workSlug } = await params;
-  const cookieHeader = (await cookies()).toString();
-  const initialData = await loadBook(workSlug, cookieHeader);
+  const initialData = await loadBook(workSlug);
 
   return (
     <>
       <Header />
       <main>
         <LibraryItemContent initialData={initialData} />
-        {commentsModuleEnabled() && (
-          <CommentsSection
-            target={{
-              type: "scientific_library_item",
-              targetId: String(initialData.item.id),
-            }}
-          />
-        )}
+        <CommentsSection
+          target={{
+            type: "scientific_library_item",
+            targetId: String(initialData.item.id),
+          }}
+        />
         <SectionDivider variant="manuscript" />
       </main>
       <Footer />
