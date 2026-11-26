@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
+import { connection } from "next/server";
+import { maintenanceHistoryScript } from "@/lib/maintenanceDocument";
 import "@fontsource-variable/noto-kufi-arabic";
 import "@fontsource-variable/noto-naskh-arabic";
 import SiteStatisticsTicker from "@/components/layout/SiteStatisticsTicker/SiteStatisticsTicker";
@@ -35,9 +37,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  await connection();
   const contact = await getFooterContact();
   return (
     <html lang="ar" dir="rtl">
+      <head><script dangerouslySetInnerHTML={{ __html: maintenanceHistoryScript }} /></head>
       <body>
         <Suspense fallback={null}>
           <SiteStatisticsTicker />
