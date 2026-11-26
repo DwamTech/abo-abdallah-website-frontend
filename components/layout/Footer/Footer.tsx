@@ -1,8 +1,6 @@
 import {
   BookOpenCheck,
   Headphones,
-  Mail,
-  MapPin,
   MessageCircleQuestion,
   University,
 } from "lucide-react";
@@ -13,23 +11,10 @@ import premium from "./FooterPremium.module.css";
 import logoStyles from "./DwamCredit.module.css";
 import mobileStyles from "./FooterMobile.module.css";
 import siteContent from "@/data/site-content.json";
+import FooterContactDetails from "./FooterContactDetails";
 
 const knowledgeLinks = siteContent.footerKnowledgeLinks;
 const legalLinks = siteContent.footerLegalLinks;
-
-const telegramChannels = [
-  { label: "القناة العلمية الأولى", href: "https://t.me/Suohv5qO9j3oQjNS" },
-  { label: "القناة العلمية الثانية", href: "https://t.me/+HyNBeIUGsHE0ZGM0" },
-  { label: "قناة المكتبة البكرية", href: "https://t.me/ALbakrih" },
-];
-
-function TelegramIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M21.7 3.4 18.8 20c-.2 1.2-.9 1.5-1.9.9l-4.4-3.3-2.1 2.1c-.2.2-.4.4-.9.4l.3-4.5 8.2-7.4c.4-.3-.1-.5-.5-.2L7.4 14.4 3 13c-1-.3-1-1 .2-1.5L20.4 4c.8-.3 1.5.2 1.3 1.4Z" fill="currentColor" />
-    </svg>
-  );
-}
 
 export default function Footer() {
   return (
@@ -71,28 +56,7 @@ export default function Footer() {
               <University size={18} />
               أستاذ الحديث وعلومه
             </span>
-            <span>
-              <MapPin size={18} />
-              جامعة الملك خالد · أبها
-            </span>
-            <span>
-              <Mail size={18} />
-              قناة التواصل الرسمية
-            </span>
-            <div className={styles.telegramChannels} aria-label="قنوات تيليجرام العلمية">
-              {telegramChannels.map((channel) => (
-                <a
-                  href={channel.href}
-                  key={channel.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`فتح ${channel.label} على تيليجرام`}
-                  title={channel.label}
-                >
-                  <TelegramIcon />
-                </a>
-              ))}
-            </div>
+            <FooterContactDetails />
           </div>
         </div>
 

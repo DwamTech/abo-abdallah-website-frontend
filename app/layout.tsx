@@ -5,6 +5,8 @@ import "@fontsource-variable/noto-naskh-arabic";
 import SiteStatisticsTicker from "@/components/layout/SiteStatisticsTicker/SiteStatisticsTicker";
 import ScrollReveal from "@/components/layout/ScrollReveal/ScrollReveal";
 import ScrollToTop from "@/components/layout/ScrollToTop/ScrollToTop";
+import { FooterContactProvider } from "@/components/layout/Footer/FooterContactProvider";
+import { getFooterContact } from "@/lib/footerContact";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -28,18 +30,19 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const contact = await getFooterContact();
   return (
     <html lang="ar" dir="rtl">
       <body>
         <Suspense fallback={null}>
           <SiteStatisticsTicker />
         </Suspense>
-        {children}
+        <FooterContactProvider contact={contact}>{children}</FooterContactProvider>
         <ScrollReveal />
         <ScrollToTop />
       </body>
